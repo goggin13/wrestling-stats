@@ -14,10 +14,11 @@ class WrestlerService
       data = tr.content.split(/(\n|\t)+/).compact
       name = data[4]
       wrestler = Wrestler.find_by(name: name)
+      college = College.find_or_create_by!(name: data[6])
       update_data = {
         name: name,
         rank: data[2],
-        college: data[6],
+        college: college,
         weight: weight.to_i,
       }
 

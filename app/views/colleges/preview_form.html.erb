@@ -1,0 +1,10 @@
+<h1>Preview</h1>
+
+<div data-turbolinks="false">
+  <%= form_with(url: preview_path, method: :post, data: {turbolinks: false, remote: false}) do |f| %>
+    <%= f.select :team_1, @college_names_map %>
+    VS
+    <%= f.select :team_2, @college_names_map %>
+    <%= f.submit "Preview" %>
+  <% end %>
+</div>

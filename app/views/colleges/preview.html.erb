@@ -1,0 +1,24 @@
+<h1>
+  <%= @away[:college].name %>
+   at
+   <%= @home[:college].name %>
+</h1>
+
+<table>
+  <% WrestlerService::WEIGHTS.each do |weight| %>
+    <tr>
+      <th><%= weight %></th>
+      <td>
+        <% if @away.has_key?(weight) %>
+          (<%= @away[weight].rank %>) <%= @away[weight].name %>
+        <% end %>
+      </td>
+      <td>
+        <% if @home.has_key?(weight) %>
+          (<%= @home[weight].rank %>) <%= @home[weight].name %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+

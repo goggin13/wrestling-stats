@@ -30,7 +30,7 @@ describe WrestlerService do
       WrestlerService.scrape_rankings_for_weight(125)
 
       wrestler = Wrestler.find_by(name: "Nick Suriano")
-      expect(wrestler.college).to eq("Michigan")
+      expect(wrestler.college.name).to eq("Michigan")
       expect(wrestler.rank).to eq(1)
       expect(wrestler.weight).to eq(125)
     end
@@ -50,7 +50,7 @@ describe WrestlerService do
       FactoryBot.create(:wrestler,
         name: "Nick Suriano",
         rank: 17,
-        college: "Rutgers",
+        college: FactoryBot.create(:college, name:"Rutgers"),
         weight: 133
       )
 
@@ -59,9 +59,16 @@ describe WrestlerService do
       expect(Wrestler.where(name: "Nick Suriano").count).to eq(1)
 
       wrestler = Wrestler.find_by(name: "Nick Suriano")
-      expect(wrestler.college).to eq("Michigan")
+      expect(wrestler.college.name).to eq("Michigan")
       expect(wrestler.rank).to eq(1)
       expect(wrestler.weight).to eq(125)
+    end
+
+    it "creates a college for a new wrestler" do
+      allow(DownloadService).to receive(:download).and_return(@rankings_125_html)
+      expect do
+        WrestlerService.scrape_rankings_for_weight(125)
+      end.to change(College, :count).by(33)
     end
   end
 end
