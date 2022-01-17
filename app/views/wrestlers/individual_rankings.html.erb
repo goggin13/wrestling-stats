@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>Rank</th>
+    <th>Weight</th>
+    <th>Name</th>
+    <th>College</th>
+  </tr>
+  <% @wrestlers.each do |wrestler| %>
+    <tr>
+      <td><%= wrestler.rank %></td>
+      <td><%= wrestler.weight %></td>
+      <td><%= wrestler.name %></td>
+      <td><%= wrestler.college %></td>
+    </tr>
+  <% end %>
+</table>
