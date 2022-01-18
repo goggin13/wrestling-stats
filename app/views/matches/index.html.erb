@@ -1,0 +1,13 @@
+<h1>Schedule</h1>
+
+<% @matches.each do |match| %>
+
+  <p>
+    <%= match.date.strftime("%m/%d") %> <br/>
+    <%= match.away_team.name %>
+    at
+    <%= match.home_team.name %>
+    <%= link_to "Preview", preview_path(team_1: match.away_team.id, team_2: match.home_team.id) %>
+  </p>
+
+<% end %>

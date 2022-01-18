@@ -15,5 +15,4 @@ class CollegesController < ApplicationController
     colleges = College.order(:name).all
     @college_names_map = colleges.map { |c| [c.name, c.id] }
   end
-
 end
