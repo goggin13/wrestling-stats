@@ -1,12 +1,16 @@
 <h1>Schedule</h1>
 
+<% previous_date = nil %>
 <% @matches.each do |match| %>
 
+  <% if previous_date != match.date %>
+    <h2><%= match.date.strftime("%A %m/%d") %></h2>
+    <% previous_date = match.date %>
+  <% end %>
   <p>
-    <%= match.date.strftime("%m/%d") %> <br/>
-    <%= match.away_team.name %>
+    <%= name_with_rank(match.away_team) %>
     at
-    <%= match.home_team.name %>
+    <%= name_with_rank(match.home_team) %>
     <%= link_to "Preview", preview_path(team_1: match.away_team.id, team_2: match.home_team.id) %>
   </p>
 

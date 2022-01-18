@@ -1,13 +1,13 @@
 require "rails_helper.rb"
 
 describe WrestlerService do
-  before do
-    fixture_path = "spec/download_fixtures/intermat_rankings_125.html"
-    fixture_data = File.read(fixture_path)
-    @rankings_125_html = fixture_data
-  end
-
   describe ".scrape_rankings_for_weight" do
+    before do
+      fixture_path = "spec/download_fixtures/intermat_rankings_125.html"
+      fixture_data = File.read(fixture_path)
+      @rankings_125_html = fixture_data
+    end
+
     it "passes the correct URL to DownloadService" do
       url = "https://intermatwrestle.com/rankings/college/125"
       expect(DownloadService)
@@ -69,6 +69,42 @@ describe WrestlerService do
       expect do
         WrestlerService.scrape_rankings_for_weight(125)
       end.to change(College, :count).by(33)
+    end
+  end
+
+  describe ".scrape_team_dual_rankings" do
+    before do
+      fixture_path = "spec/download_fixtures/intermat_team_dual_rankings.html"
+      fixture_data = File.read(fixture_path)
+      allow(DownloadService).to receive(:download).and_return(fixture_data)
+    end
+
+    it "updates a teams dual meet ranking" do
+      college = FactoryBot.create(:college, name: "Cornell")
+      expect(college.dual_rank).to eq(nil)
+
+      WrestlerService.scrape_team_dual_rankings
+
+      college.reload
+      expect(college.dual_rank).to eq(11)
+    end
+  end
+
+  describe ".scrape_team_tournament_rankings" do
+    before do
+      fixture_path = "spec/download_fixtures/intermat_team_tournament_rankings.html"
+      fixture_data = File.read(fixture_path)
+      allow(DownloadService).to receive(:download).and_return(fixture_data)
+    end
+
+    it "updates a teams dual meet ranking" do
+      college = FactoryBot.create(:college, name: "Cornell")
+      expect(college.tournament_rank).to eq(nil)
+
+      WrestlerService.scrape_team_tournament_rankings
+
+      college.reload
+      expect(college.tournament_rank).to eq(9)
     end
   end
 end

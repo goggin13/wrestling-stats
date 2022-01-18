@@ -30,6 +30,30 @@ class WrestlerService
     end
   end
 
+  def self.scrape_team_dual_rankings
+    url = "https://intermatwrestle.com/rankings/college/Team2"
+    document = Nokogiri::HTML(DownloadService.download(url))
+    document.css(".oddrow, .evenrow").each do |tr|
+      data = tr.content.split(/(\n|\t)+/).compact
+      dual_rank = data[2].to_i
+      college = College.find_or_create_by!(name: data[4])
+      college.dual_rank = dual_rank
+      college.save!
+    end
+  end
+
+  def self.scrape_team_tournament_rankings
+    url = "https://intermatwrestle.com/rankings/college/Team"
+    document = Nokogiri::HTML(DownloadService.download(url))
+    document.css(".oddrow, .evenrow").each do |tr|
+      data = tr.content.split(/(\n|\t)+/).compact
+      tournament_rank = data[2].to_i
+      college = College.find_or_create_by!(name: data[4])
+      college.tournament_rank = tournament_rank
+      college.save!
+    end
+  end
+
   def self.url_for_weight(weight)
     if weight == 285
       weight = "Hwt"
