@@ -3,7 +3,7 @@ class RawSchedule
     Match.destroy_all
     matches.each do |data|
       Match.create!(
-        date: Date.strptime(data[0], "%m/%d/%Y"),
+        date: Date.strptime(data[0], "%m/%d/%y"),
         away_team: College.find_by!(name: data[1]),
         home_team: College.find_by!(name: data[2]),
       )
