@@ -5,8 +5,5 @@ Rails.application.routes.draw do
 
   get '/individual_rankings/:weight', to: 'wrestlers#individual_rankings', as: 'individual_rankings'
 
-  get '/colleges/preview_form', to: 'colleges#preview_form', as: 'preview_form'
-  post '/colleges/preview', to: 'colleges#preview', as: 'preview'
-  get '/colleges/preview', to: 'colleges#preview'
-  resources :colleges
+  get '/matches/preview', to: 'matches#preview', as: 'preview'
 end

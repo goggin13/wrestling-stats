@@ -8,7 +8,7 @@ describe WrestlerService do
 
   describe "preview" do
     it "returns a hash with the home and away teams" do
-      result = MatchService.preview(@away.id, @home.id)
+      result = MatchService.preview(@away, @home)
       expect(result[:home][:college].id).to eq(@home.id)
       expect(result[:away][:college].id).to eq(@away.id)
     end
@@ -26,7 +26,7 @@ describe WrestlerService do
         rank: 1,
         college: @home
       )
-      result = MatchService.preview(@away.id, @home.id)
+      result = MatchService.preview(@away, @home)
 
       result[:home][125].id = @vito.id
       result[:home][149].id = @yianni.id
@@ -45,7 +45,7 @@ describe WrestlerService do
         rank: 1,
         college: @away
       )
-      result = MatchService.preview(@away.id, @home.id)
+      result = MatchService.preview(@away, @home)
 
       result[:away][125].id = @vito.id
       result[:away][149].id = @yianni.id

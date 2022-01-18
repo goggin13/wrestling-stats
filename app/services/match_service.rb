@@ -1,8 +1,5 @@
 class MatchService
-  def self.preview(away_college_id, home_college_id)
-    home = College.find(home_college_id)
-    away = College.find(away_college_id)
-
+  def self.preview(away, home)
     home_data = home.wrestlers.inject({college: home}) do |acc, w|
       acc[w.weight] = w
       acc

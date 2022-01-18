@@ -5,6 +5,7 @@ class CollegesController < ApplicationController
   end
 
   def preview
+
     @match_preview = MatchService.preview(params[:team_1], params[:team_2])
     @home = @match_preview[:home]
     @away = @match_preview[:away]
