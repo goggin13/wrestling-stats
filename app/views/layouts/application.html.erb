@@ -13,6 +13,7 @@
 
   <body>
     <%= link_to "Home", root_path %>
+    <%= link_to "Teams", colleges_path %>
     <% WrestlerService::WEIGHTS.each do |weight| %>
       <%= link_to weight, individual_rankings_path(weight: weight) %>
     <% end %>

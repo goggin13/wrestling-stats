@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>College</th>
+    <th>Dual Rank</th>
+    <th>Tournament Rank</th>
+  </tr>
+
+  <% @colleges.each do |college| %>
+    <tr>
+      <td><%= college.name %></td>
+      <td><%= college.dual_rank %></td>
+      <td><%= college.tournament_rank %></td>
+    </tr>
+  <% end %>
+
+</table>

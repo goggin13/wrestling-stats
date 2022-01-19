@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   get '/individual_rankings/:weight', to: 'wrestlers#individual_rankings', as: 'individual_rankings'
 
   get '/matches/preview', to: 'matches#preview', as: 'preview'
+
+  get '/colleges', to: 'colleges#index', as: 'colleges'
 end
