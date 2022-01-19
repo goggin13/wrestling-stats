@@ -17,7 +17,7 @@ RSpec.describe RawSchedule do
       end.to change(Match, :count).by(1)
 
       match = Match.first!
-      expect(match.date).to eq(Date.strptime("01/21/22", "%m/%d/%Y"))
+      expect(match.date).to eq(Date.strptime("01/21/22", "%m/%d/%y"))
       expect(match.away_team.id).to eq(@maryland.id)
       expect(match.home_team.id).to eq(@indiana.id)
     end
