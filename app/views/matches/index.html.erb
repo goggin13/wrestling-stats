@@ -10,6 +10,12 @@
     at
     <%= name_with_rank(match.home_team) %>
     <%= link_to "Preview", preview_path(match_id: match.id) %>
+
+    <% match.top_matchups.each do |matchup| %>
+      <br/>&emsp; <%= matchup[0].weight %>:
+          (<%= matchup[0].rank %>) <%= matchup[0].name %> vs
+          (<%= matchup[1].rank %>) <%= matchup[1].name %>
+    <% end %>
   </p>
 
 <% end %>
