@@ -1,12 +1,15 @@
 class RawSchedule
   def self.ingest
-    Match.destroy_all
     matches.each do |data|
-      Match.create!(
-        date: Date.strptime(data[0], "%m/%d/%y"),
-        away_team: College.find_by!(name: data[1]),
-        home_team: College.find_by!(name: data[2]),
-      )
+      away_team = College.find_by!(name: data[1])
+      home_team = College.find_by!(name: data[2])
+      date = Date.strptime(data[0], "%m/%d/%y")
+      match = Match.find_by(away_team: away_team, home_team: home_team)
+      if match.present?
+        Match.update!(date: date)
+      else
+        Match.create(away_team: away_team, home_team: home_team, date: date)
+      end
     end
   end
 

@@ -9,7 +9,15 @@
     <%= name_with_rank(match.away_team) %>
     at
     <%= name_with_rank(match.home_team) %>
-    <%= link_to "Preview", preview_path(match_id: match.id) %>
+    <% if match.time %>
+      | <%= match.time.strftime("%l:%M%p") %>
+    <% end %>
+
+    <% if match.watch_on %>
+      <%= match.watch_on %>
+    <% end %>
+
+    <%= link_to "...", match_path(id: match.id) %>
 
     <% match.top_matchups.each do |matchup| %>
       <br/>&emsp; <%= matchup[0].weight %>:

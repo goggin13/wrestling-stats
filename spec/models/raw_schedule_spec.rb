@@ -21,5 +21,22 @@ RSpec.describe RawSchedule do
       expect(match.away_team.id).to eq(@maryland.id)
       expect(match.home_team.id).to eq(@indiana.id)
     end
+
+    it "updates the date for an existing match" do
+      expect(RawSchedule).to receive(:matches).and_return(
+        [['01/21/22', 'Maryland', 'Indiana']],
+      )
+      RawSchedule.ingest
+
+      first_match = Match.first!
+      expect(RawSchedule).to receive(:matches).and_return(
+        [['02/21/22', 'Maryland', 'Indiana']],
+      )
+      RawSchedule.ingest
+
+      second_match = Match.first!
+      expect(second_match.date).to eq(Date.strptime("02/21/22", "%m/%d/%y"))
+      expect(first_match.id).to eq(second_match.id)
+    end
   end
 end
