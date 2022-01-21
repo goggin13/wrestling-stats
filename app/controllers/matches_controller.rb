@@ -2,7 +2,10 @@ class MatchesController < ApplicationController
   before_action :set_match, except: [:index]
 
   def index
-    @matches = Match.all.order(:date).order(:time).order(:watch_on)
+    @matches = Match
+      .where("date >= ?", Date.today)
+      .order(:date).order(:time).order(:watch_on)
+      .all
   end
 
   def edit

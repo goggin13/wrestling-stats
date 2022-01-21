@@ -64,7 +64,6 @@ class RawSchedule
     ['01/30/22', 'Iowa State', 'Oklahoma State'],
     ['02/12/22', 'Iowa', 'Oklahoma State'],
     ['02/20/22', 'Oklahoma', 'Oklahoma State'],
-    ['01/21/22', 'Virginia Tech', 'NC State'],
     ['02/11/22', 'NC State', 'Pittsburgh'],
     ['01/28/22', 'Virginia Tech', 'Pittsburgh'],
     ['02/12/22', 'Virginia Tech', 'Missouri'],
