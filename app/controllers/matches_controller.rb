@@ -3,7 +3,7 @@ class MatchesController < ApplicationController
 
   def index
     @matches = Match
-      .where("date >= ?", Date.today)
+      .where("date >= ?", Date.today.ago(1.days))
       .order(:date).order(:time).order(:watch_on)
       .all
   end
