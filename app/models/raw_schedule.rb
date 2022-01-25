@@ -3,12 +3,19 @@ class RawSchedule
     matches.each do |data|
       away_team = College.find_by!(name: data[1])
       home_team = College.find_by!(name: data[2])
+      time = data[3]
+      watch_on = data[4]
       date = Date.strptime(data[0], "%m/%d/%y")
+      params = {away_team: away_team, home_team: home_team, date: date}
+
+      params.merge!(time: time) if time.present?
+      params.merge!(watch_on: watch_on) if watch_on.present?
+
       match = Match.find_by(away_team: away_team, home_team: home_team)
       if match.present?
-        Match.update!(date: date)
+        match.update!(params)
       else
-        Match.create(away_team: away_team, home_team: home_team, date: date)
+        Match.create!(params)
       end
     end
   end
@@ -68,5 +75,7 @@ class RawSchedule
     ['01/28/22', 'Virginia Tech', 'Pittsburgh'],
     ['02/12/22', 'Virginia Tech', 'Missouri'],
     ['02/04/22', 'Stanford', 'Arizona State'],
+    ['01/28/22', 'Iowa State', 'Oklahoma', '19:00'],
+    ['02/12/22', 'Cal Poly', 'Stanford', '19:00'],
   ]
 end
