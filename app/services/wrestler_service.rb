@@ -5,6 +5,8 @@ class WrestlerService
     WEIGHTS.each do |weight|
       WrestlerService.scrape_rankings_for_weight(weight)
     end
+    WrestlerService.scrape_team_dual_rankings
+    WrestlerService.scrape_team_tournament_rankings
   end
 
   def self.scrape_rankings_for_weight(weight)
