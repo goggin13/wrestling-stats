@@ -17,4 +17,8 @@ class Match < ApplicationRecord
       acc
     end
   end
+
+  def to_s
+    "#{id} : #{away_team.name} @ #{home_team.name} (#{watch_on}, #{time}, #{date})"
+  end
 end
