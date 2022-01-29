@@ -13,3 +13,15 @@
  *= require_tree .
  *= require_self
  */
+
+tbody tr:nth-child(odd){
+  background-color: darkgray;
+}
+
+tbody tr:nth-child(even){
+  background-color: lightgray;
+}
+
+td, th {
+  padding: 5px;
+}
