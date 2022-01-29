@@ -10,6 +10,7 @@ class Match < ApplicationRecord
       away_wrestler = away_team.wrestlers.find { |w| w.weight == weight }
 
       if home_wrestler.present? && away_wrestler.present? &&
+          home_wrestler.rank.present? && away_wrestler.rank.present? &&
           home_wrestler.rank <= TOP_MATCHUP_LIMIT && away_wrestler.rank <= TOP_MATCHUP_LIMIT
         acc << [away_wrestler, home_wrestler]
       end

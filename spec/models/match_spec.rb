@@ -24,5 +24,21 @@ RSpec.describe Match do
 
       expect(match.top_matchups).to eq([])
     end
+
+    it "handles an unranked home wrestler" do
+      home_wrestler = FactoryBot.create(:wrestler, rank: nil, weight: 149, college: @home)
+      away_wrestler = FactoryBot.create(:wrestler, rank: 10, weight: 149, college: @away)
+      match = FactoryBot.create(:match, home_team: @home, away_team: @away)
+
+      expect(match.top_matchups).to eq([])
+    end
+
+    it "handles an unranked away wrestler" do
+      home_wrestler = FactoryBot.create(:wrestler, rank: 10, weight: 149, college: @home)
+      away_wrestler = FactoryBot.create(:wrestler, rank: nil, weight: 149, college: @away)
+      match = FactoryBot.create(:match, home_team: @home, away_team: @away)
+
+      expect(match.top_matchups).to eq([])
+    end
   end
 end

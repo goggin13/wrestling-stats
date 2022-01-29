@@ -70,6 +70,26 @@ describe WrestlerService do
         WrestlerService.scrape_rankings_for_weight(125)
       end.to change(College, :count).by(33)
     end
+
+    it "sets a wrestler's rank to nil if they are no longer ranked" do
+      allow(DownloadService).to receive(:download).and_return(@rankings_125_html)
+      wrestler = FactoryBot.create(:wrestler, name: "Joe Fish", rank: 17, weight: 125)
+
+      WrestlerService.scrape_rankings_for_weight(125)
+
+      wrestler.reload
+      expect(wrestler.rank).to eq(nil)
+    end
+
+    it "doesn't set a wrestler's rank to nil if they are in a different weight class" do
+      allow(DownloadService).to receive(:download).and_return(@rankings_125_html)
+      wrestler = FactoryBot.create(:wrestler, name: "Joe Fish", rank: 17, weight: 133)
+
+      WrestlerService.scrape_rankings_for_weight(125)
+
+      wrestler.reload
+      expect(wrestler.rank).to eq(17)
+    end
   end
 
   describe ".scrape_team_dual_rankings" do
@@ -88,6 +108,15 @@ describe WrestlerService do
       college.reload
       expect(college.dual_rank).to eq(11)
     end
+
+    it "updates a teams dual meet ranking to nil if they aren't on the list" do
+      college = FactoryBot.create(:college, name: "TC3", dual_rank: 1)
+
+      WrestlerService.scrape_team_dual_rankings
+
+      college.reload
+      expect(college.dual_rank).to eq(nil)
+    end
   end
 
   describe ".scrape_team_tournament_rankings" do
@@ -105,6 +134,15 @@ describe WrestlerService do
 
       college.reload
       expect(college.tournament_rank).to eq(9)
+    end
+
+    it "updates a teams tournament ranking to nil if they aren't on the list" do
+      college = FactoryBot.create(:college, name: "TC3", tournament_rank: 1)
+
+      WrestlerService.scrape_team_tournament_rankings
+
+      college.reload
+      expect(college.tournament_rank).to eq(nil)
     end
   end
 end

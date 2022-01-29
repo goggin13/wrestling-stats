@@ -1,3 +1,5 @@
+<h1><%= @weight %> lb Rankings</h1>
+
 <p>
   Updated at <%= @last_updated_at %>
 </p>
@@ -5,14 +7,12 @@
 <table>
   <tr>
     <th>Rank</th>
-    <th>Weight</th>
     <th>Name</th>
     <th>College</th>
   </tr>
   <% @wrestlers.each do |wrestler| %>
     <tr>
       <td><%= wrestler.rank %></td>
-      <td><%= wrestler.weight %></td>
       <td><%= wrestler.name %></td>
       <td><%= wrestler.college.name %></td>
     </tr>

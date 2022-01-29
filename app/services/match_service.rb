@@ -12,8 +12,4 @@ class MatchService
 
     {home: home_data, away: away_data}
   end
-
-  def self.top_ten_matchups
-    # \ff
-  end
 end
