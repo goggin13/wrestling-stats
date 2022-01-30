@@ -1,8 +1,12 @@
 class RawSchedule
   def self.ingest
     matches.each do |data|
-      away_team = College.find_by!(name: data[1])
-      home_team = College.find_by!(name: data[2])
+      away_team = College.find_by(name: data[1])
+      raise "No college '#{data[1]}'" unless away_team.present?
+
+      home_team = College.find_by(name: data[2])
+      raise "No college '#{data[2]}'" unless home_team.present?
+
       time = data[3]
       watch_on = data[4]
       date = Date.strptime(data[0], "%m/%d/%y")
@@ -77,5 +81,9 @@ class RawSchedule
     ['02/04/22', 'Stanford', 'Arizona State'],
     ['01/28/22', 'Iowa State', 'Oklahoma', '19:00'],
     ['02/12/22', 'Cal Poly', 'Stanford', '19:00'],
+    ['02/05/22', 'Cornell', 'Princeton', '12:00'],
+    ['02/06/22', 'Cornell', 'Penn', '12:00'],
+    ['02/06/22', 'Cornell', 'Drexel', '16:00'],
+    ['02/12/22', 'Binghamton', 'Cornell', '12:00'],
   ]
 end
