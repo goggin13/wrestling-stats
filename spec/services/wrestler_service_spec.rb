@@ -25,13 +25,14 @@ describe WrestlerService do
       end.to change(Wrestler, :count).by(33)
     end
 
-    it "saves the name, rank, college and weight of each wrestler" do
+    it "saves the name, rank, college, year and weight of each wrestler" do
       allow(DownloadService).to receive(:download).and_return(@rankings_125_html)
       WrestlerService.scrape_rankings_for_weight(125)
 
       wrestler = Wrestler.find_by(name: "Nick Suriano")
       expect(wrestler.college.name).to eq("Michigan")
       expect(wrestler.rank).to eq(1)
+      expect(wrestler.year).to eq("Senior")
       expect(wrestler.weight).to eq(125)
     end
 
@@ -51,7 +52,8 @@ describe WrestlerService do
         name: "Nick Suriano",
         rank: 17,
         college: FactoryBot.create(:college, name:"Rutgers"),
-        weight: 133
+        weight: 133,
+        year: "Junior",
       )
 
       WrestlerService.scrape_rankings_for_weight(125)
@@ -62,6 +64,7 @@ describe WrestlerService do
       expect(wrestler.college.name).to eq("Michigan")
       expect(wrestler.rank).to eq(1)
       expect(wrestler.weight).to eq(125)
+      expect(wrestler.year).to eq("Senior")
     end
 
     it "creates a college for a new wrestler" do

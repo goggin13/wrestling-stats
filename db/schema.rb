@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_21_193518) do
+ActiveRecord::Schema.define(version: 2022_02_02_155017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2022_01_21_193518) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "weight"
     t.bigint "college_id", null: false
+    t.string "year"
     t.index ["college_id"], name: "index_wrestlers_on_college_id"
   end
 

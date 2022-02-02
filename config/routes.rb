@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   patch '/matches/:id', to: 'matches#update', as: 'update_match'
 
   get '/colleges', to: 'colleges#index', as: 'colleges'
+  get '/colleges/:id', to: 'colleges#show', as: 'college'
 end

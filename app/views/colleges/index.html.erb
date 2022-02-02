@@ -7,6 +7,7 @@
     <th>College</th>
     <th>Dual Rank</th>
     <th>Tournament Rank</th>
+    <th>Schedule</th>
   </tr>
 
   <% @colleges.each do |college| %>
@@ -14,6 +15,7 @@
       <td><%= college.name %></td>
       <td><%= college.dual_rank %></td>
       <td><%= college.tournament_rank %></td>
+      <td><%= link_to("Schedule", college_path(college)) %></td>
     </tr>
   <% end %>
 

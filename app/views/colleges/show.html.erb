@@ -1,0 +1,44 @@
+<h1><%= @college.name %></h1>
+
+<h3>Schedule</h3>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Away</th>
+    <th>Home</th>
+    <th>Watch</th>
+    <th>...</th>
+  </tr>
+
+  <% @college.matches.each do |match| %>
+    <tr>
+      <td><%= match.date.strftime("%A %m/%d") %></td>
+      <td><%= name_with_rank(match.away_team) %></td>
+      <td><%= name_with_rank(match.home_team) %></td>
+      <td>
+        <% if match.time %>
+          <%= match.time.strftime("%l:%M%p") %>
+        <% end %>
+
+        <% if match.watch_on %>
+          <%= match.watch_on %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to "...", match_path(id: match.id) %>
+      </td>
+    </tr>
+  <% end %>
+
+</table>
+
+<h3>Ranked Wrestlers</h3>
+<table>
+  <% @college.wrestlers.each do |wrestler| %>
+    <tr>
+      <td><%= wrestler.weight %></td>
+      <td><%= wrestler.name %> (<%= wrestler.rank %>)</td>
+      <td><%= wrestler.year %></td>
+    </tr>
+  <% end %>
+</table>

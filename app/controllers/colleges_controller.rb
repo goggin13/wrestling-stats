@@ -1,5 +1,9 @@
 class CollegesController < ApplicationController
 
+  def show
+    @college = College.find(params[:id])
+  end
+
   def index
     @last_updated_at = College
       .maximum("updated_at")
