@@ -4,6 +4,8 @@
   <%= name_with_rank(@home[:college]) %>
 </h1>
 
+<h2><%= @match.date.strftime("%A %m/%d") %></h2>
+
 <table>
   <% WrestlerService::WEIGHTS.each do |weight| %>
     <tr>
