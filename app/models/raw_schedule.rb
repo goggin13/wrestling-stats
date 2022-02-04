@@ -85,5 +85,14 @@ class RawSchedule
     ['02/06/22', 'Cornell', 'Penn', '12:00'],
     ['02/06/22', 'Cornell', 'Drexel', '16:00'],
     ['02/12/22', 'Binghamton', 'Cornell', '12:00'],
+    ['02/04/22', 'Penn', 'Lehigh', '18:00', 'Flowrestling'],
+    ['02/06/22', 'Cornell', 'Penn', '12:00', 'ESPN+'],
+    ['02/12/22', 'Penn', 'Princeton', '12:00', 'ESPN+'],
+    ['02/13/22', 'Drexel', 'Penn', '11:00', 'ESPN+'],
+    ['02/06/22', 'Lehigh', 'Army West Point', '13:00', 'goarmywestpoint.com'],
+    ['02/11/22', 'Princeton', 'Lehigh', '18:00', 'Flowrestling'],
+    ['02/12/22', 'Bucknell', 'Lehigh', '13:00', 'Flowrestling'],
+    ['02/19/22', 'Lehigh', 'Arizona State', '13:00', ''],
   ]
+    # ['02/20/22', 'Penn', 'American', '12:00', 'ESPN+'],
 end
