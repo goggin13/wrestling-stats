@@ -10,7 +10,7 @@ class WrestlerService
   end
 
   def self.scrape_rankings_for_weight(weight)
-    Wrestler.where(weight: weight).update_all(rank: nil)
+    Wrestler.where(weight: weight).destroy_all
     url = url_for_weight(weight)
     document = Nokogiri::HTML(DownloadService.download(url))
     document.css(".oddrow, .evenrow").each do |tr|

@@ -74,14 +74,13 @@ describe WrestlerService do
       end.to change(College, :count).by(33)
     end
 
-    it "sets a wrestler's rank to nil if they are no longer ranked" do
+    it "deletes a wrestler if they are no longer ranked" do
       allow(DownloadService).to receive(:download).and_return(@rankings_125_html)
       wrestler = FactoryBot.create(:wrestler, name: "Joe Fish", rank: 17, weight: 125)
 
       WrestlerService.scrape_rankings_for_weight(125)
 
-      wrestler.reload
-      expect(wrestler.rank).to eq(nil)
+      expect(Wrestler.where(id: wrestler.id).count).to eq(0)
     end
 
     it "doesn't set a wrestler's rank to nil if they are in a different weight class" do
