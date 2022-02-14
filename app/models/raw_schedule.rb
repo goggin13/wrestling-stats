@@ -93,6 +93,10 @@ class RawSchedule
     ['02/11/22', 'Princeton', 'Lehigh', '18:00', 'Flowrestling'],
     ['02/12/22', 'Bucknell', 'Lehigh', '13:00', 'Flowrestling'],
     ['02/19/22', 'Lehigh', 'Arizona State', '13:00', ''],
+    ['02/18/22', 'North Carolina', 'NC State', '18:00', 'youtube.tv'],
+    ['02/20/22', 'Virginia Tech', 'NC State', '17:00', 'youtube.tv'],
+    ['02/18/22', 'Princeton', 'Rutgers', '18:00', 'BTN+'],
+    ['02/18/22', 'Central Michigan', 'Michigan State', '17:00', 'BTN+'],
   ]
     # ['02/20/22', 'Penn', 'American', '12:00', 'ESPN+'],
 end
