@@ -9,12 +9,14 @@
     <th>Rank</th>
     <th>Name</th>
     <th>College</th>
+    <th>Year</th>
   </tr>
   <% @wrestlers.each do |wrestler| %>
     <tr>
       <td><%= wrestler.rank %></td>
       <td><%= wrestler.name %></td>
       <td><%= wrestler.college.name %></td>
+      <td><%= wrestler.year %></td>
     </tr>
   <% end %>
 </table>
