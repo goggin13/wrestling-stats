@@ -1,6 +1,5 @@
 # README
 * Up Next
-Starred Wrestlers
 Team Logos
 Add links to team pages
 Wrestlers to watch list (starred wrestlers)
