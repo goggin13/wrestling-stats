@@ -1,12 +1,22 @@
 class RawSchedule
   def self.ingest
-    matches.each do |data|
-      away_team = College.find_or_create_by(name: data[1])
-      home_team = College.find_or_create_by(name: data[2])
+    if Rails.env.development?
+      Match.destroy_all
+      Wrestler.destroy_all
+      College.destroy_all
+    end
 
-      time = data[3]
+    COLLEGES.each do |data|
+      College.create!(name: data[0], url: data[1])
+    end
+
+    matches.each do |data|
+      away_team = College.find_or_create_by(name: data[2])
+      home_team = College.find_or_create_by(name: data[3])
+
+      time = data[1]
       watch_on = data[4]
-      date = Date.strptime(data[0], "%m/%d/%y")
+      date = Date.strptime(data[0], "%m/%d/%Y")
       params = {away_team: away_team, home_team: home_team, date: date}
 
       params.merge!(time: time) if time.present?
@@ -25,75 +35,43 @@ class RawSchedule
     MATCHES
   end
 
+  COLLEGES = [
+    ['Penn State', 'https://gopsusports.com/sports/wrestling/schedule'],
+    ['Iowa', 'https://hawkeyesports.com/sports/wrestling/schedule/'],
+    ['Northwestern', 'https://nusports.com/sports/wrestling/schedule'],
+ ]
+
   MATCHES = [
-    ['01/21/22', 'Maryland', 'Indiana'],
-    ['01/21/22', 'Penn State', 'Michigan'],
-    ['01/21/22', 'Rutgers', 'Michigan State'],
-    ['01/21/22', 'Iowa', 'Ohio State'],
-    ['01/21/22', 'Illinois', 'Purdue'],
-    ['01/21/22', 'Nebraska', 'Wisconsin'],
-    ['01/23/22', 'Rutgers', 'Michigan'],
-    ['01/23/22', 'Penn State', 'Michigan State'],
-    ['01/23/22', 'Nebraska', 'Northwestern'],
-    ['01/23/22', 'Maryland', 'Ohio State'],
-    ['01/23/22', 'Wisconsin', 'Purdue'],
-    ['01/28/22', 'Penn State', 'Iowa'],
-    ['01/28/22', 'Wisconsin', 'Maryland'],
-    ['01/28/22', 'Minnesota', 'Michigan'],
-    ['01/29/22', 'Northwestern', 'Illinois'],
-    ['01/29/22', 'Purdue', 'Indiana'],
-    ['01/30/22', 'Michigan', 'Maryland'],
-    ['02/04/22', 'Minnesota', 'Illinois'],
-    ['02/04/22', 'Michigan State', 'Maryland'],
-    ['02/04/22', 'Michigan', 'Nebraska'],
-    ['02/04/22', 'Ohio State', 'Penn State'],
-    ['02/05/22', 'Wisconsin', 'Iowa'],
-    ['02/06/22', 'Indiana', 'Illinois'],
-    ['02/06/22', 'Maryland', 'Northwestern'],
-    ['02/06/22', 'Minnesota', 'Purdue'],
-    ['02/06/22', 'Ohio State', 'Rutgers'],
-    ['02/06/22', 'Nebraska', 'Penn State'],
-    ['02/11/22', 'Michigan', 'Indiana'],
-    ['02/11/22', 'Northwestern', 'Michigan State'],
-    ['02/11/22', 'Ohio State', 'Minnesota'],
-    ['02/11/22', 'Illinois', 'Wisconsin'],
-    ['02/12/22', 'Maryland', 'Rutgers'],
-    ['02/13/22', 'Michigan State', 'Michigan'],
-    ['02/13/22', 'Illinois', 'Nebraska'],
-    ['02/13/22', 'Indiana', 'Ohio State'],
-    ['02/19/22', 'Purdue', 'Northwestern'],
-    ['02/20/22', 'Iowa', 'Nebraska'],
-    ['02/20/22', 'Cornell', 'Wisconsin'],
-    ['01/20/22', 'Missouri', 'Oklahoma'],
-    ['01/22/22', 'Missouri', 'South Dakota State'],
-    ['02/06/22', 'Missouri', 'Oklahoma State'],
-    ['02/12/22', 'Missouri', 'Arizona State'],
-    ['02/16/22', 'Missouri', 'Iowa State'],
-    ['01/30/22', 'Iowa State', 'Oklahoma State', '14:00'],
-    ['02/12/22', 'Iowa', 'Oklahoma State'],
-    ['02/20/22', 'Oklahoma', 'Oklahoma State'],
-    ['02/11/22', 'NC State', 'Pittsburgh'],
-    ['01/30/22', 'Virginia Tech', 'Pittsburgh', '14:00'],
-    ['02/12/22', 'Virginia Tech', 'Missouri'],
-    ['02/04/22', 'Stanford', 'Arizona State'],
-    ['01/28/22', 'Iowa State', 'Oklahoma', '19:00'],
-    ['02/12/22', 'Cal Poly', 'Stanford', '19:00'],
-    ['02/05/22', 'Cornell', 'Princeton', '12:00'],
-    ['02/06/22', 'Cornell', 'Penn', '12:00'],
-    ['02/06/22', 'Cornell', 'Drexel', '16:00'],
-    ['02/12/22', 'Binghamton', 'Cornell', '12:00'],
-    ['02/04/22', 'Penn', 'Lehigh', '18:00', 'Flowrestling'],
-    ['02/06/22', 'Cornell', 'Penn', '12:00', 'ESPN+'],
-    ['02/12/22', 'Penn', 'Princeton', '12:00', 'ESPN+'],
-    ['02/13/22', 'Drexel', 'Penn', '11:00', 'ESPN+'],
-    ['02/06/22', 'Lehigh', 'Army West Point', '13:00', 'goarmywestpoint.com'],
-    ['02/11/22', 'Princeton', 'Lehigh', '18:00', 'Flowrestling'],
-    ['02/12/22', 'Bucknell', 'Lehigh', '13:00', 'Flowrestling'],
-    ['02/19/22', 'Lehigh', 'Arizona State', '13:00', ''],
-    ['02/18/22', 'North Carolina', 'NC State', '18:00', 'youtube.tv'],
-    ['02/20/22', 'Virginia Tech', 'NC State', '17:00', 'youtube.tv'],
-    ['02/18/22', 'Princeton', 'Rutgers', '18:00', 'BTN+'],
-    ['02/18/22', 'Central Michigan', 'Michigan State', '17:00', 'BTN+'],
+    ['11/11/2022', '18:00', 'Lock Haven', 'Penn State', ''],
+    ['12/2/2022', '18:30', 'Penn State', 'Rider', ''],
+    ['12/4/2022', '13:00', 'Penn State', 'Lehigh', ''],
+    ['12/11/2022', '13:00', 'Oregon State', 'Penn State', ''],
+    ['1/6/2023', '20:00', 'Penn State', 'Wisconsin', ''],
+    ['1/20/2023', '18:00', 'Michigan', 'Penn State', ''],
+    ['1/22/2023', '12:00', 'Michigan State', 'Penn State', ''],
+    ['1/27/2023', '19:30', 'Iowa', 'Penn State', ''],
+    ['2/3/2023', '18:00', 'Penn State', 'Ohio State', ''],
+    ['2/5/2023', '12:00', 'Penn State', 'Indiana', ''],
+    ['2/12/2023', '12:00', 'Maryland', 'Penn State', ''],
+    ['2/19/2023', '12:00', 'Clarion', 'Penn State', ''],
+    ['11/17/2022', '18:00', 'Iowa', 'Army', ''],
+    ['11/18/2022', '17:30', 'Sacred Heart', 'Iowa', ''],
+    ['11/18/2022', '19:30', 'Buffalo', 'Iowa', ''],
+    ['12/4/2022', '13:30', 'Iowa State', 'Iowa', ''],
+    ['12/10/2022', '18:00', 'Iowa', 'Chattanooga', ''],
+    ['1/6/2023', '', 'Illinois', 'Iowa', ''],
+    ['1/8/2023', '13:00', 'Iowa', 'Purdue', ''],
+    ['1/13/2023', '20:00', 'Northwestern', 'Iowa', ''],
+    ['1/20/2023', '20:00', 'Nebraska', 'Iowa', ''],
+    ['1/22/2023', '', 'Iowa', 'Wisconsin', ''],
+    ['2/3/2023', '20:00', 'Iowa', 'Minnesota', ''],
+    ['2/10/2023', '20:00', 'Michigan', 'Iowa', ''],
+    ['2/19/2023', '15:30', 'Oklahoma State', 'Iowa', ''],
+    ['1/7/2023', '14:00', 'Minnesota', 'Northwestern', ''],
+    ['1/15/2023', '14:00', 'Northwestern', 'Nebraska', ''],
+    ['1/20/2023', '19:00', 'Illinois', 'Northwestern', ''],
+    ['1/29/2023', '15:00', 'Northwestern', 'Rutgers', ''],
+    ['2/5/2023', '14:00', 'Ohio State', 'Northwestern', ''],
+    ['2/12/2023', '11:00', 'Northwestern', 'Purdue', ''],
   ]
-    # ['02/20/22', 'Penn', 'American', '12:00', 'ESPN+'],
 end
