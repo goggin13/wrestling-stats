@@ -16,3 +16,19 @@ Attempt some schedule scraping. Or at least list teams to manually scrape
 X - Highlight top 10 matchups
 X - Team rankings page.
 X - Auto-update rankings
+
+# Getting Started
+./docker/build_and_tag.sh
+./docker/start_app.sh
+
+In a new pane
+./docker/exec_db.sh
+psql -Upostgres
+CREATE USER wrestlingstats login createdb;
+
+In a new pane
+./docker/exec.sh
+bundle exec rake db:create
+RAILS_ENV=development bin/rails db:migrate 
+RAILS_ENV=development bundle exec rake schedule:ingest
+RAILS_ENV=test bundle exec rspec

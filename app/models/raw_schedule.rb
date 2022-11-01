@@ -1,11 +1,8 @@
 class RawSchedule
   def self.ingest
     matches.each do |data|
-      away_team = College.find_by(name: data[1])
-      raise "No college '#{data[1]}'" unless away_team.present?
-
-      home_team = College.find_by(name: data[2])
-      raise "No college '#{data[2]}'" unless home_team.present?
+      away_team = College.find_or_create_by(name: data[1])
+      home_team = College.find_or_create_by(name: data[2])
 
       time = data[3]
       watch_on = data[4]
