@@ -17,7 +17,10 @@ X - Highlight top 10 matchups
 X - Team rankings page.
 X - Auto-update rankings
 
-# Getting Started
+Google Doc for raw schedule:
+https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496Xtkw/edit#gid=0
+
+# Getting Started in development
 ./docker/build_and_tag.sh
 ./docker/start_app.sh
 
