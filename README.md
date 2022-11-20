@@ -34,4 +34,5 @@ In a new pane
 bundle exec rake db:create
 RAILS_ENV=development bin/rails db:migrate 
 RAILS_ENV=development bundle exec rake schedule:ingest
+RAILS_ENV=development bundle exec rake rankings:update
 RAILS_ENV=test bundle exec rspec
