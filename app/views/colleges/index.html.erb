@@ -16,7 +16,7 @@
       <td><%= college.dual_rank %></td>
       <td><%= college.tournament_rank %></td>
       <td>
-        <%= link_to("Schedule #{college.matches.count}", college_path(college)) %>
+        <%= link_to("Schedule (#{college.matches.count})", college_path(college)) %>
       </td>
     </tr>
   <% end %>
