@@ -6,6 +6,14 @@ class MatchesController < ApplicationController
       .where("date >= ?", Date.today.in_time_zone("Central Time (US & Canada)") - 1.days)
       .order(:date).order(:time).order(:watch_on)
       .all
+
+    @limit_to_rank = params[:limit_to_rank].to_i
+    if @limit_to_rank > 0
+      @matches = @matches.filter do |match|
+        (match.home_team.dual_rank || 100) <= @limit_to_rank &&
+          (match.away_team.dual_rank || 100) <= @limit_to_rank
+      end
+    end
   end
 
   def edit
