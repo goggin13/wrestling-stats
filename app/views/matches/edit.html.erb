@@ -24,6 +24,14 @@
   <% end %>
 </table>
 
+<p>
+  Predicted Score <br/>
+  <%= @away[:college].name %>: <%= @match_preview[:away_score] %>
+  <%= @home[:college].name %>: <%= @match_preview[:home_score] %>
+</p>
+
+<hr/>
+
 <%= form_with model: @match do |form| %>
   <p>
     <%= form.label "Watch On" %>
