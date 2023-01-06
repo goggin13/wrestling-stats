@@ -2,14 +2,13 @@ version: '3.4'
 
 services:
   app:
-    image: goggin13/wrestling-stats:latest
+    image: goggin13/dumbledore:latest
     depends_on:
       - database
     ports:
       - "3000:3000"
     volumes:
-      - .:/var/www/wrestling-stats
-      - gem_cache:/usr/local/bundle/gems
+      - .:/var/www/dumbledore
       - node_modules:/app/node_modules
     environment:
       RAILS_ENV: development

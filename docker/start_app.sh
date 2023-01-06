@@ -1,3 +1,3 @@
 rm tmp/pids/server.pid
-docker-compose up
+docker-compose --project-name dumbledore up 
 docker-compose rm -f

@@ -27,7 +27,10 @@ https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496X
 In a new pane
 ./docker/exec_db.sh
 psql -Upostgres
-CREATE USER wrestlingstats login createdb;
+psql -Upostgres
+CREATE USER dumbledore login createdb;
+\password dumbdledore
+  <dumbledore_development>
 
 In a new pane
 ./docker/exec.sh

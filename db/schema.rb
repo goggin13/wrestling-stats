@@ -10,15 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_01_211858) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_11_01_211858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "colleges", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "dual_rank"
     t.integer "tournament_rank"
     t.string "url"
@@ -28,9 +27,9 @@ ActiveRecord::Schema.define(version: 2022_11_01_211858) do
     t.date "date", null: false
     t.integer "home_team_id", null: false
     t.integer "away_team_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "time", precision: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "time"
     t.string "watch_on"
   end
 
@@ -38,8 +37,8 @@ ActiveRecord::Schema.define(version: 2022_11_01_211858) do
     t.string "name"
     t.string "college"
     t.integer "rank"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "weight"
     t.bigint "college_id", null: false
     t.string "year"
