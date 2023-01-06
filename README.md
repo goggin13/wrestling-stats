@@ -5,9 +5,9 @@ Add links to team pages
 Wrestlers to watch list (starred wrestlers)
 Sort schedule within a day by "best matches" (sum of ranks asc?)
 Attempt some schedule scraping. Or at least list teams to manually scrape
+Namespace Wrestling Items? .... or leave it?
 
 * Maybe
-- Only show top ten matchups for two weeks out
 - logos for networks
 - logos for teams
 - add matches to Google Calendar? (would need times...)
