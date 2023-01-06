@@ -27,9 +27,6 @@ Rails.application.configure do
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
-  # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = true
-
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
@@ -39,6 +36,15 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
+
+  config.action_controller.asset_host = "https://dumbledore.s3.amazonaws.com"
+  config.action_mailer.asset_host = "https://dumbledore.s3.amazonaws.com"
+  config.serve_static_files = true
+  config.assets.compile = true
+  config.assets.digest = true
+  config.assets.enabled = true
+  config.assets.initialize_on_precompile = true
+  config.assets.prefix = "/production/assets"
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
