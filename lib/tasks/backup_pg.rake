@@ -20,8 +20,8 @@ namespace :pg do
     response = STDIN.gets.chomp
     raise "Aborted by user" unless response == "y"
 
-    # Rake::Task["db:drop"].invoke
-    # Rake::Task["db:create"].invoke
+    Rake::Task["db:drop"].invoke
+    Rake::Task["db:create"].invoke
 
     pull_from_amazon(args[:file_name])
   end
