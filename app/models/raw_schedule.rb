@@ -1,13 +1,8 @@
 class RawSchedule
   def self.ingest
-    if Rails.env.development?
-      Match.destroy_all
-      Wrestler.destroy_all
-      College.destroy_all
-    end
-
-    COLLEGES.each do |data|
-      College.create!(name: data[0], url: data[1])
+    colleges.each do |data|
+      college = College.find_or_create_by(name: data[0])
+      college.update!(url: data[1])
     end
 
     matches.each do |data|
@@ -33,6 +28,10 @@ class RawSchedule
 
   def self.matches
     MATCHES
+  end
+
+  def self.colleges
+    COLLEGES
   end
 
   COLLEGES = [

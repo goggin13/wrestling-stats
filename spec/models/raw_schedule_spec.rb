@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe RawSchedule do
   before do
@@ -6,10 +6,42 @@ RSpec.describe RawSchedule do
     @indiana = FactoryBot.create(:college, name: "Indiana")
   end
 
-  xdescribe "ingest" do
+  describe "ingest" do
+    it "creates colleges" do
+      expect(RawSchedule).to receive(:matches).and_return([])
+      expect(RawSchedule).to receive(:colleges).and_return(
+        [["Cornell", "https://cornellbigred.com/sports/wrestling/schedule/2022-23"]]
+      )
+
+      expect do
+        RawSchedule.ingest
+      end.to change(College, :count).by(1)
+
+      college = College.last!
+      expect(college.name).to eq("Cornell")
+      expect(college.url).to eq("https://cornellbigred.com/sports/wrestling/schedule/2022-23")
+    end
+
+    it "updates the URL on an existing college" do
+      original_cornell = FactoryBot.create(:college, name: "Cornell")
+      expect(RawSchedule).to receive(:matches).and_return([])
+      expect(RawSchedule).to receive(:colleges).and_return(
+        [["Cornell", "https://cornellbigred.com/sports/wrestling/schedule/2022-23"]]
+      )
+
+      expect do
+        RawSchedule.ingest
+      end.to change(College, :count).by(0)
+
+      college = College.find_by(name: "Cornell")
+      expect(college.id).to eq(original_cornell.id)
+      expect(college.url).to eq("https://cornellbigred.com/sports/wrestling/schedule/2022-23")
+    end
+
     it "creates matches from the MATCHES array" do
+      expect(RawSchedule).to receive(:colleges).and_return([])
       expect(RawSchedule).to receive(:matches).and_return(
-        [['01/21/22', 'Maryland', 'Indiana']],
+        [["01/21/2022", "20:00", "Maryland", "Indiana"]],
       )
 
       expect do
@@ -24,7 +56,7 @@ RSpec.describe RawSchedule do
 
     it "sets a time if its provided" do
       expect(RawSchedule).to receive(:matches).and_return(
-        [['01/21/22', 'Maryland', 'Indiana', '18:00']],
+        [["01/21/2022", "18:00", "Maryland", "Indiana"]],
       )
 
       RawSchedule.ingest
@@ -35,7 +67,7 @@ RSpec.describe RawSchedule do
 
     it "accepts an empty time" do
       expect(RawSchedule).to receive(:matches).and_return(
-        [['01/21/22', 'Maryland', 'Indiana', '']],
+        [["01/21/2022", "", "Maryland", "Indiana"]],
       )
 
       RawSchedule.ingest
@@ -46,7 +78,7 @@ RSpec.describe RawSchedule do
 
     it "sets a time and a watch_on if its provided" do
       expect(RawSchedule).to receive(:matches).and_return(
-        [['01/21/22', 'Maryland', 'Indiana', '18:00', 'ESPN']],
+        [["01/21/2022", "18:00","Maryland", "Indiana",  "ESPN"]],
       )
 
       RawSchedule.ingest
@@ -58,13 +90,13 @@ RSpec.describe RawSchedule do
 
     it "updates the date for an existing match" do
       expect(RawSchedule).to receive(:matches).and_return(
-        [['01/21/22', 'Maryland', 'Indiana']],
+        [["01/21/2022", "18:00", "Maryland", "Indiana"]],
       )
       RawSchedule.ingest
 
       first_match = Match.first!
       expect(RawSchedule).to receive(:matches).and_return(
-        [['02/21/22', 'Maryland', 'Indiana', '19:00']],
+        [["02/21/2022", "19:00", "Maryland", "Indiana"]],
       )
       RawSchedule.ingest
 
