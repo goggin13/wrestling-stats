@@ -17,7 +17,25 @@
     <% WrestlerService::WEIGHTS.each do |weight| %>
       <%= link_to weight, individual_rankings_path(weight: weight) %>
     <% end %>
-    <p id="notice"><%= notice %></p>
+
+    (
+    <% if user_signed_in? %>
+      <%= link_to current_user.email, edit_user_registration_path, :class => 'navbar-link' %> |
+      <%= link_to "Logout", users_sign_out_path, :class => 'navbar-link'  %>
+    <% else %>
+      <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+      <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+    <% end %>
+    )
+
+    <% if notice %>
+      <p id="notice" class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p id="notice" class="alert alert-danger"><%= alert %></p>
+    <% end %>
+
     <%= yield %>
+
   </body>
 </html>
