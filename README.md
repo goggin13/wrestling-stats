@@ -39,3 +39,34 @@ RAILS_ENV=development bin/rails db:migrate
 RAILS_ENV=development bundle exec rake schedule:ingest
 RAILS_ENV=development bundle exec rake rankings:update
 RAILS_ENV=test bundle exec rspec
+
+
+
+
+
+
+
+
+### LOMD 
+
+#### tables
+teams
+name, BP diff
+
+matches
+home_team_id, away_team_id, winner_id, game {ENUM}
+
+#### homepage
+
+scoreboard
+- display tiebreaker data in subdued rows
+- head-to-head, BP cups
+
+table 1 playing
+table 2 playing
+
+on deck
+second on deck
+in the hole
+
+rotating head-to-head tiebreaker banner
