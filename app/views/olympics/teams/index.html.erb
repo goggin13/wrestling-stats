@@ -5,10 +5,9 @@
 <div id="teams">
   <% @teams.each do |team| %>
     <%= render team %>
-    <p>
-      <%= link_to "Show this team", team %>
-    </p>
+    <%= link_to "edit", edit_olympics_team_path(team) %>
   <% end %>
 </div>
 
+<hr/>
 <%= link_to "New team", new_olympics_team_path %>

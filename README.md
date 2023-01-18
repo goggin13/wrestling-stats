@@ -51,10 +51,10 @@ RAILS_ENV=test bundle exec rspec
 
 #### tables
 teams
-name, BP diff
+name, number
 
 matches
-home_team_id, away_team_id, winner_id, game {ENUM}
+home_team_id, away_team_id, winner_id, game {ENUM}, bp_cups_remaining
 
 #### homepage
 

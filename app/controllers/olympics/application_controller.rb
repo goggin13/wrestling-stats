@@ -1,3 +1,3 @@
 class Olympics::ApplicationController < ApplicationController
-  layout "olympics"
+  layout "olympics/application"
 end

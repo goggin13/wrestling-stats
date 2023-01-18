@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :olympics do
     resources :teams
+    get "/scoreboard", to: "matches#scoreboard"
   end
 
   devise_for :users

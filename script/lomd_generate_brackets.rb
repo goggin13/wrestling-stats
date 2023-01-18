@@ -1,3 +1,4 @@
+require 'csv'
 NUM_TEAMS = 5
 TEAMS = (1..NUM_TEAMS).to_a
 EVENTS = [:beer_pong, :flip_cup, :quarters, :drink_ball]
@@ -91,7 +92,6 @@ class Olympics
     output += "\n\tgames: #{@games.length}\n"
     output += "*" * 80
     output += "\n\n"
-    previous_event = @games[0].event
     grouped =  @games.group_by(&:event)
     EVENTS.each do |event|
       event_matches = sort_within_event(grouped[event])
@@ -227,6 +227,19 @@ class Olympics
 
     !failed
   end
+
+  def write_to_file
+    bout_number = 0
+    CSV.open("matchups.csv", "w") do |csv|
+      grouped =  @games.group_by(&:event)
+      EVENTS.each do |event|
+        event_matches = sort_within_event(grouped[event])
+        event_matches.each do |game|
+          csv << [bout_number += 1, game.team_1, game.team_2, game.event]
+        end
+      end
+    end
+  end
 end
 
 olympics = Olympics.new(TEAMS)
@@ -244,4 +257,5 @@ end
 
 if success
   puts olympics
+  olympics.write_to_file
 end

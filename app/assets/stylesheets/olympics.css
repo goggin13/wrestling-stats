@@ -1,0 +1,17 @@
+.scoreboard_component {
+  border: thin solid black;
+  width: 45%;
+  margin-bottom: 2%;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.clear {
+  clear: both;
+}

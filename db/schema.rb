@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_17_213658) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_17_213659) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_17_213658) do
     t.datetime "updated_at", null: false
     t.datetime "time"
     t.string "watch_on"
+  end
+
+  create_table "olympics_matches", force: :cascade do |t|
+    t.integer "bout_number", null: false
+    t.integer "team_1_id", null: false
+    t.integer "team_2_id", null: false
+    t.integer "winning_team_id"
+    t.string "event", null: false
+    t.integer "bp_cups_remaining"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "olympics_teams", force: :cascade do |t|
