@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
   namespace :olympics do
     resources :teams
-    get "/scoreboard", to: "matches#scoreboard"
+    resources :matches, only: [:index, :update]
+
+    get "/scoreboard", to: "scoreboard#scoreboard"
+    get "/fetch_now_playing" => 'scoreboard#fetch_now_playing', as: 'fetch_now_playing'
+    get "/fetch_on_deck" => 'scoreboard#fetch_on_deck'
+    get "/fetch_rankings" => 'scoreboard#fetch_rankings'
+    get "/fetch_latest_updated_at" => 'scoreboard#fetch_latest_updated_at'
   end
 
   devise_for :users

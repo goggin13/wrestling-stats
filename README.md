@@ -49,6 +49,14 @@ RAILS_ENV=test bundle exec rspec
 
 ### LOMD 
 
+#### ToDo
+WIP - prompt for BP cups 
+Make it pretty
+Generate brackets page
+scoreboard accounts for simple tiebreakers
+dark background for daylight projection
+E2E testing
+
 #### tables
 teams
 name, number

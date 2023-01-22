@@ -1,2 +1,0 @@
-module Olympics::TeamsHelper
-end

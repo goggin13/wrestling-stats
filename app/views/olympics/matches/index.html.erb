@@ -1,0 +1,67 @@
+<div class="clear"></div>
+
+<div id="now_playing_matches" class="match_column">
+  <h1>Now Playing</h1>
+  <% @now_playing.each do |match| %>
+    <div class="match_form <%= match.event %>">
+      <%= render partial: "match", locals: {match: match} %>
+
+      Click the winning team
+      <%= form_with(model: match) do |form| %>
+        <% if match.event == Olympics::Match::Events::BEER_PONG %>
+          <%= form.hidden_field :bp_cups_remaining, required: true %>
+        <% end %>
+        <%= form.hidden_field :winning_team_id, value: match.team_1.id %>
+        <%= form.hidden_field :now_playing, value: false %>
+        <%= form.submit match.team_1.name %>
+      <% end %>
+
+      <%= form_with(model: match) do |form| %>
+        <% if match.event == Olympics::Match::Events::BEER_PONG %>
+          <%= form.hidden_field :bp_cups_remaining, required: true %>
+        <% end %>
+        <%= form.hidden_field :winning_team_id, value: match.team_2.id %>
+        <%= form.hidden_field :now_playing, value: false %>
+        <%= form.submit match.team_2.name %>
+      <% end %>
+
+      <hr/>
+      <%= form_with(model: match) do |form| %>
+        <%= form.hidden_field :now_playing, value: false %>
+        <%= form.submit "Return to Upcoming" %>
+      <% end %>
+
+    </div>
+  <% end %>
+</div>
+
+<div id="open_matches" class="match_column">
+  <h1>Upcoming</h1>
+  <% @open_matches.each do |match| %>
+    <div class="match_form">
+      <%= render partial: "match", locals: {match: match} %>
+
+      <% if Olympics::Match.where("now_playing").count < 2 %>
+        <%= form_with(model: match) do |form| %>
+          <%= form.hidden_field :now_playing, value: true %>
+          <%= form.submit "Now playing!" %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div id="closed_matches" class="match_column">
+  <h1>Completed</h1>
+  <% @closed_matches.each do |match| %>
+    <div class="match_form">
+      <%= render partial: "match", locals: {match: match} %>
+
+      <%= form_with(model: match) do |form| %>
+        <%= form.hidden_field :winning_team_id, value: nil %>
+        <%= form.submit "Reset Match" %>
+      <% end %>
+
+    </div>
+  <% end %>
+</div>

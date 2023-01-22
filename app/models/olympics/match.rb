@@ -1,6 +1,9 @@
 class Olympics::Match < ApplicationRecord
   belongs_to :team_1, class_name: "Olympics::Team"
   belongs_to :team_2, class_name: "Olympics::Team"
+  belongs_to :winning_team, class_name: "Olympics::Team", optional: true
+
+  validates_presence_of :bout_number
 
   module Events
     BEER_PONG = "beer_pong"

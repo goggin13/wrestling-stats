@@ -1,0 +1,19 @@
+<table>
+  <tr>
+    <th>Place</th>
+    <th>Points</th>
+    <th>Team</th>
+  </tr>
+
+  <% presenter.rankings.each do |place| %>
+    <tr>
+      <td><%= place[:rank] %></td>
+      <td><%= place[:points] %></td>
+      <td>
+        <% place[:teams].each do |team| %>
+          <%= team.name %><br/>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

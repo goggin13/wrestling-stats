@@ -1,6 +1,41 @@
-<div class="scoreboard_team">
-  <p>
-    <%= match.event %> | 
-    <%= match.team_1.name %> vs <%= match.team_2.name %>
-  </p>
+<div class="olympic_match">
+
+
+  <p>Match <%= match.bout_number %></p>
+  <div class="clear"></div>
+  <div class="olympic_match_panel">
+
+    <% if match.winning_team_id == match.team_1.id %>
+      <div class="winner">
+    <% elsif match.winning_team_id.present? %>
+      <div class="loser">
+    <% else %>
+      <div>
+    <% end %>
+
+      <%= match.team_1.name.gsub("&", "<br/>&<br/>").html_safe %>
+    </div>
+  </div>
+  <div class="olympic_match_panel">
+    <%= event_logo(match) %>
+
+    <% if match.winning_team_id.present? && match.event == Olympics::Match::Events::BEER_PONG %>
+      (<%= match.bp_cups_remaining %> cups)
+    <% end %>
+  </div>
+
+  <div class="olympic_match_panel">
+    <% if match.winning_team_id == match.team_2.id %>
+      <div class="winner">
+    <% elsif match.winning_team_id.present? %>
+      <div class="loser">
+    <% else %>
+      <div>
+    <% end %>
+
+      <%= match.team_2.name.gsub("&", "<br/>&<br/>").html_safe %>
+    </div>
+  </div>
+
+  <div class="clear"></div>
 </div>

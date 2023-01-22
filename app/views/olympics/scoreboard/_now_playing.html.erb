@@ -1,0 +1,4 @@
+<h1>Now Playing</h1>
+<% presenter.now_playing.each do |match| %>
+  <%= render partial: "olympics/matches/match", locals: {match: match} %>
+<% end %>

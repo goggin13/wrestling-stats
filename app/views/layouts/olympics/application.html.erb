@@ -8,6 +8,7 @@
 
     <%= favicon_link_tag asset_path('olympics/olympic.png') %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -17,6 +18,7 @@
     <% if user_signed_in? %>
       <%= link_to "Scoreboard", olympics_scoreboard_path %>
       <%= link_to "Teams", olympics_teams_path %>
+      <%= link_to "Matches", olympics_matches_path %>
       <%= link_to current_user.email, edit_user_registration_path, :class => 'navbar-link' %> |
       <%= link_to "Logout", users_sign_out_path, :class => 'navbar-link'  %>
     <% else %>

@@ -1,0 +1,4 @@
+<h1>On Deck</h1>
+<% presenter.on_deck.each do |match| %>
+  <%= render partial: "olympics/matches/match", locals: {match: match} %>
+<% end %>
