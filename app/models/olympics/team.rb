@@ -17,4 +17,25 @@ class Olympics::Team < ApplicationRecord
       )
     end
   end
+
+  def wins_over(other_team)
+    Olympics::Match
+      .where("team_1_id in (?)", [self.id, other_team.id])
+      .where("team_2_id in (?)", [self.id, other_team.id])
+      .where(winning_team_id: self.id)
+      .count
+  end
+
+  def bp_cups
+    winning_cups = Olympics::Match
+      .where(winning_team_id: self.id)
+      .sum(:bp_cups_remaining)
+
+    losing_cups = Olympics::Match
+      .where("(team_1_id = :id or team_2_id = :id)", {id: self.id})
+      .where("winning_team_id != ?", self.id)
+      .sum(:bp_cups_remaining)
+
+    winning_cups - losing_cups
+  end
 end

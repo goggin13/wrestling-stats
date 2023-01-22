@@ -128,19 +128,6 @@ module Olympics
       expect(rankings[2]).to eq({rank: 3, points: 0, teams: [@team_C]})
     end
 
-    it "includes tied teams" do
-      FactoryBot.create(:olympics_match,
-                        team_1: @team_A, team_2: @team_B, winning_team: @team_A)
-      FactoryBot.create(:olympics_match,
-                        team_1: @team_B, team_2: @team_C, winning_team: @team_B)
-
-      rankings = ScoreboardPresenter.new.rankings
-
-      expect(rankings.length).to eq(2)
-      expect(rankings[0]).to eq({rank: 1, points: 1, teams: [@team_A, @team_B]})
-      expect(rankings[1]).to eq({rank: 3, points: 0, teams: [@team_C]})
-    end
-
     it "manages nil winning_ids" do
       FactoryBot.create(:olympics_match, team_1: @team_A, team_2: @team_B)
 
@@ -149,16 +136,98 @@ module Olympics
       expect(rankings.length).to eq(1)
     end
 
-    xit "sorts tied teams by head to head" do
-      FactoryBot.create(:olympics_match,
-                        team_1: @team_B, team_2: @team_A, winning_team: @team_A)
-      FactoryBot.create(:olympics_match,
-                        team_1: @team_A, team_2: @team_C, winning_team: @team_B)
+    describe "ties" do
+      it "includes tied teams" do
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A, team_2: @team_B, winning_team: @team_A)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B, team_2: @team_C, winning_team: @team_B)
 
-      rankings = ScoreboardPresenter.new.rankings
+        rankings = ScoreboardPresenter.new.rankings
 
-      expect(rankings.length).to eq(2)
-      expect(rankings[0]).to eq({rank: 1, points: 1, teams: [@team_B, @team_A]})
+        expect(rankings.length).to eq(2)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_A, @team_B],
+          tiebreaker_message: "AAAA owns tiebreaker on H2H"
+        })
+        expect(rankings[1]).to eq({rank: 3, points: 0, teams: [@team_C]})
+      end
+
+      it "sorts 2 tied teams by head to head" do
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B, team_2: @team_A, winning_team: @team_B)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A, team_2: @team_C, winning_team: @team_A)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(2)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_B, @team_A],
+          tiebreaker_message: "BBBB owns tiebreaker on H2H"
+        })
+      end
+
+      it "sorts 2 tied teams by head to head" do
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B, team_2: @team_A, winning_team: @team_A)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B, team_2: @team_C, winning_team: @team_B)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(2)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_A, @team_B],
+          tiebreaker_message: "AAAA owns tiebreaker on H2H"
+        })
+      end
+
+      it "returns a tie breaker message for two teams with the same BP cups" do
+        FactoryBot.create(:olympics_match, :beer_pong,
+                          team_1: @team_B,
+                          winning_team: @team_B,
+                          bp_cups_remaining: 3)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A,
+                          winning_team: @team_A)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(2)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_B, @team_A],
+          tiebreaker_message: "BBBB owns tiebreaker on BP cups"
+        })
+      end
+
+      it "sorts 2 tied teams by BP cups" do
+        FactoryBot.create(:olympics_match, :beer_pong,
+                          team_1: @team_A,
+                          winning_team: @team_A,
+                          bp_cups_remaining: 3)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B,
+                          winning_team: @team_B)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(2)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_A, @team_B],
+          tiebreaker_message: "AAAA owns tiebreaker on BP cups"
+        })
+      end
     end
   end
 end

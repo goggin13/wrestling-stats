@@ -48,13 +48,36 @@ module Olympics
         # [points, [[:team_id, points], [:team_id, points]]]
         highest_scorers = points_by_team.group_by { |_, pts| pts }.max
         teams = highest_scorers[1].map { |tuple| Team.find(tuple[0]) }
+        tiebreaker_message = nil
+
+        if teams.length == 2
+          t1 = teams[0]
+          t2 = teams[1]
+
+          # puts "t1(#{t1.name}): #{t1.bp_cups}, t2(#{t2.name}): #{t2.bp_cups}"
+          if t1.wins_over(t2) > t2.wins_over(t1)
+            tiebreaker_message = "#{t1.name} owns tiebreaker on H2H"
+          elsif t2.wins_over(t1) > t1.wins_over(t2)
+            teams = [t2, t1]
+            tiebreaker_message = "#{t2.name} owns tiebreaker on H2H"
+          elsif t1.bp_cups > t2.bp_cups
+            tiebreaker_message = "#{t1.name} owns tiebreaker on BP cups"
+          elsif t2.bp_cups > t1.bp_cups
+            teams = [t2, t1]
+            tiebreaker_message = "#{t2.name} owns tiebreaker on BP cups"
+          end
+        end
 
         if teams.length > 0
           rankings << {
             rank: rank,
             points: highest_scorers[0],
-            teams: teams.sort_by(&:name)
+            teams: teams,
           }
+
+          if tiebreaker_message
+            rankings.last[:tiebreaker_message] = tiebreaker_message
+          end
 
           teams.each { |team| points_by_team.delete(team.id) }
           rank += teams.length
