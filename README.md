@@ -50,11 +50,14 @@ RAILS_ENV=test bundle exec rspec
 ### LOMD 
 
 #### ToDo
+---- Must do ----
 WIP - prompt for BP cups 
-Make it pretty
+WIP - scoreboard accounts for simple tiebreakers
+don't let a team be now_playing twice
+Make it pretty (dark background)
+
+---- nice to do ----
 Generate brackets page
-scoreboard accounts for simple tiebreakers
-dark background for daylight projection
 E2E testing
 
 #### tables

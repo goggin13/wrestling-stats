@@ -5,6 +5,7 @@ import "controllers"
 $(document).ready(function () {
   console.log("Ready");
   check_for_updates();
+  manage_bp_form();
 });
 
 function check_for_updates () {
@@ -34,6 +35,15 @@ function update_scoreboard() {
 };
 
 function manage_bp_form () {
+  $(".match_form.beer_pong .update_match_form").submit(function (event) {
+    let bp_cups = prompt("How many cups were left?");
+    if (isNaN(bp_cups) || bp_cups < 1 || bp_cups > 10) {
+      event.preventDefault();
+      alert("Please enter a number between 1 and 10");
+    } else {
+      $(this).find("input[name='olympics_match[bp_cups_remaining]']").val(bp_cups);
+    }
+  });
   // for .match_form.beer_pong submit buttons
   // on click
     // popup dialog : how many cups remaining?

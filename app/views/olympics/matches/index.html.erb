@@ -7,7 +7,7 @@
       <%= render partial: "match", locals: {match: match} %>
 
       Click the winning team
-      <%= form_with(model: match) do |form| %>
+      <%= form_with(model: match, class: "update_match_form") do |form| %>
         <% if match.event == Olympics::Match::Events::BEER_PONG %>
           <%= form.hidden_field :bp_cups_remaining, required: true %>
         <% end %>
@@ -16,7 +16,7 @@
         <%= form.submit match.team_1.name %>
       <% end %>
 
-      <%= form_with(model: match) do |form| %>
+      <%= form_with(model: match, class: "update_match_form") do |form| %>
         <% if match.event == Olympics::Match::Events::BEER_PONG %>
           <%= form.hidden_field :bp_cups_remaining, required: true %>
         <% end %>
