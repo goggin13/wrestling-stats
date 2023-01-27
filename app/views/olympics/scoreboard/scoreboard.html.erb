@@ -9,8 +9,35 @@
 
 <div class="clear"></div>
 
-<!-- <div id="playoff_picture" class="scoreboard_component left"> -->
-<!-- </div> -->
+<div id="playoff_picture" class="scoreboard_component left">
+  <p>
+    Tiebreaker Criteria
+  </p>
+  <table id="tiebreaker_criteria">
+    <tr>
+      <th></th>
+      <% Olympics::Team.all[1..].each do |team_a| %>
+        <th><%= team_a.name %></th>
+      <% end %>
+    </tr>
+
+      <% matchups = [] %>
+      <% Olympics::Team.all[0...-1].each do |team_a| %>
+        <tr>
+          <th><%= team_a.name %></th>
+          <% Olympics::Team.all[1..].each do |team_b| %>
+            <td>
+              <% if (team_a != team_b) && !matchups.include?([team_a.id, team_b.id].sort) %>
+                <%= @presenter.tiebreaker_message(team_a, team_b)[1].html_safe %>
+                <% matchups << [team_a.id, team_b.id].sort %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+
+  </table>
+</div>
 
 <div id="on_deck" class="scoreboard_component right">
   <%= render partial: "on_deck", locals: {presenter: @presenter} %>

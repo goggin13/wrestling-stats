@@ -58,3 +58,7 @@
 .hidden {
   display: none;
 }
+
+#tiebreaker_criteria td {
+  text-align: center;
+}

@@ -36,10 +36,23 @@ module Olympics
     end
 
     def self.advance_now_playing!
-      next_match = Match.where("not now_playing")
+      currently_playing_team_ids = Match
+        .where("now_playing")
+        .all
+        .map { |match| [match.team_1.id, match.team_2.id] }
+        .flatten
+
+      next_match_query = Match.where("not now_playing")
         .where("winning_team_id is null")
         .order("bout_number asc")
-        .first
+
+      if currently_playing_team_ids.length > 0
+        next_match_query = next_match_query
+          .where("team_1_id not in (?)", currently_playing_team_ids)
+          .where("team_2_id not in (?)", currently_playing_team_ids)
+      end
+
+      next_match = next_match_query.first
 
       if next_match.present?
         next_match.update_attribute(:now_playing, true)

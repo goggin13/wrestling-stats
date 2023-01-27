@@ -51,10 +51,19 @@ RAILS_ENV=test bundle exec rspec
 
 #### ToDo
 ---- Must do ----
-WIP - prompt for BP cups 
-WIP - scoreboard accounts for simple tiebreakers
-don't let a team be now_playing twice
+Work on tiebreaking and displaying
+- tiebreaker algo
+  - is there one team that is better than the rest?
+  - pull them out and put them at the top
+  - repeat
+
+Advance teams by event until last game in event is played
 Make it pretty (dark background)
+Fade in scoreboard one row at a time
+X - prompt for BP cups 
+X - don't let a team be now_playing twice
+X - scoreboard accounts for simple tiebreakers
+Have a testing party
 
 ---- nice to do ----
 Generate brackets page

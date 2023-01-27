@@ -150,7 +150,7 @@ module Olympics
           rank: 1,
           points: 1,
           teams: [@team_A, @team_B],
-          tiebreaker_message: "AAAA owns tiebreaker on H2H"
+          tiebreaker_message: "AAAA own tiebreaker on H2H"
         })
         expect(rankings[1]).to eq({rank: 3, points: 0, teams: [@team_C]})
       end
@@ -168,7 +168,7 @@ module Olympics
           rank: 1,
           points: 1,
           teams: [@team_B, @team_A],
-          tiebreaker_message: "BBBB owns tiebreaker on H2H"
+          tiebreaker_message: "BBBB own tiebreaker on H2H"
         })
       end
 
@@ -185,7 +185,7 @@ module Olympics
           rank: 1,
           points: 1,
           teams: [@team_A, @team_B],
-          tiebreaker_message: "AAAA owns tiebreaker on H2H"
+          tiebreaker_message: "AAAA own tiebreaker on H2H"
         })
       end
 
@@ -205,7 +205,7 @@ module Olympics
           rank: 1,
           points: 1,
           teams: [@team_B, @team_A],
-          tiebreaker_message: "BBBB owns tiebreaker on BP cups"
+          tiebreaker_message: "BBBB own tiebreaker on BP cups 3 to 0"
         })
       end
 
@@ -225,7 +225,28 @@ module Olympics
           rank: 1,
           points: 1,
           teams: [@team_A, @team_B],
-          tiebreaker_message: "AAAA owns tiebreaker on BP cups"
+          tiebreaker_message: "AAAA own tiebreaker on BP cups 3 to 0"
+        })
+      end
+
+      it "reports if two teams are still tied" do
+        FactoryBot.create(:olympics_match, :beer_pong,
+                          team_1: @team_A,
+                          winning_team: @team_A,
+                          bp_cups_remaining: 3)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B,
+                          winning_team: @team_B,
+                          bp_cups_remaining: 3)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(2)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_A, @team_B],
+          tiebreaker_message: "tied on both criteria"
         })
       end
     end

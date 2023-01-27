@@ -2,13 +2,11 @@ require "rails_helper.rb"
 require "csv"
 
 describe Olympics::MatchService do
-  before do
-    @team_1 = FactoryBot.create(:olympics_team, number: 3)
-    @team_2 = FactoryBot.create(:olympics_team, number: 5)
-  end
-
   describe "import_from_file" do
     it "creates a new match" do
+      team_A = FactoryBot.create(:olympics_team, number: 3)
+      team_B = FactoryBot.create(:olympics_team, number: 5)
+
       temp_file = Tempfile.new(["test_matchups", ".csv"])
       CSV.open(temp_file.path, "w") do |csv|
         csv << [17, 3, 5, "beer_pong"]
@@ -20,8 +18,8 @@ describe Olympics::MatchService do
 
       match = Olympics::Match.last!
       expect(match.bout_number).to eq(17)
-      expect(match.team_1.id).to eq(@team_1.id)
-      expect(match.team_2.id).to eq(@team_2.id)
+      expect(match.team_1.id).to eq(team_A.id)
+      expect(match.team_2.id).to eq(team_B.id)
       expect(match.event).to eq(Olympics::Match::Events::BEER_PONG)
     end
   end
@@ -80,6 +78,34 @@ describe Olympics::MatchService do
         expect(match_1.now_playing).to be false
         expect(match_2.now_playing).to be true
         expect(match_3.now_playing).to be true
+      end
+
+      it "chooses the next match to play that doesn't have currently playing teams" do
+        team_A = FactoryBot.create(:olympics_team)
+        team_B = FactoryBot.create(:olympics_team)
+        team_C = FactoryBot.create(:olympics_team)
+        team_D = FactoryBot.create(:olympics_team)
+        team_E = FactoryBot.create(:olympics_team)
+        match_1 = FactoryBot.create(:olympics_match, :now_playing, team_1: team_A, team_2: team_B)
+        match_2 = FactoryBot.create(:olympics_match, :now_playing, team_1: team_C, team_2: team_D)
+        match_3 = FactoryBot.create(:olympics_match, now_playing: false, team_1: team_A, team_2: team_D)
+        match_4 = FactoryBot.create(:olympics_match, now_playing: false, team_1: team_B, team_2: team_C)
+        match_5 = FactoryBot.create(:olympics_match, now_playing: false, team_1: team_A, team_2: team_E)
+
+        result = Olympics::MatchService.update(match_1, winning_team_id: team_A.id)
+        expect(result).to eq(true)
+
+        match_1.reload
+        match_2.reload
+        match_3.reload
+        match_4.reload
+        match_5.reload
+
+        expect(match_1.now_playing).to be false
+        expect(match_2.now_playing).to be true
+        expect(match_3.now_playing).to be false
+        expect(match_4.now_playing).to be false
+        expect(match_5.now_playing).to be true
       end
 
       it "doesn't use matches that have been won" do

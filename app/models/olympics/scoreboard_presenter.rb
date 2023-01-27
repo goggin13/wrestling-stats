@@ -29,6 +29,30 @@ module Olympics
         .all
     end
 
+    def tiebreaker_message(t1, t2)
+
+      if t1.wins_over(t2) > t2.wins_over(t1)
+        teams = [t1, t2]
+      elsif t2.wins_over(t1) > t1.wins_over(t2)
+        teams = [t2, t1]
+      elsif t1.bp_cups > t2.bp_cups
+        teams = [t1, t2]
+      elsif t2.bp_cups > t1.bp_cups
+        teams = [t2, t1]
+      else
+        teams = [t1, t2].sort_by(&:number)
+        tiebreaker_message = "tied on both criteria: <br/> #{t1.wins_over(t2)}-#{t2.wins_over(t1)}<br/> BP cups: #{t1.bp_cups} to #{t2.bp_cups}"
+      end
+
+      tiebreaker_message = "#{teams[0].name} <br/>"
+      tiebreaker_message += "#{teams[0].wins_over(teams[1])}-#{teams[1].wins_over(teams[0])} <br/>"
+      if t1.wins_over(t2) == t2.wins_over(t1)
+        tiebreaker_message += "BP cups: #{teams[0].bp_cups} to #{teams[1].bp_cups}"
+      end
+
+      [teams, tiebreaker_message]
+    end
+
     def rankings
       rankings = []
 
@@ -51,21 +75,9 @@ module Olympics
         tiebreaker_message = nil
 
         if teams.length == 2
-          t1 = teams[0]
-          t2 = teams[1]
+          teams, tiebreaker_message = tiebreaker_message(teams[0], teams[1])
 
           # puts "t1(#{t1.name}): #{t1.bp_cups}, t2(#{t2.name}): #{t2.bp_cups}"
-          if t1.wins_over(t2) > t2.wins_over(t1)
-            tiebreaker_message = "#{t1.name} owns tiebreaker on H2H"
-          elsif t2.wins_over(t1) > t1.wins_over(t2)
-            teams = [t2, t1]
-            tiebreaker_message = "#{t2.name} owns tiebreaker on H2H"
-          elsif t1.bp_cups > t2.bp_cups
-            tiebreaker_message = "#{t1.name} owns tiebreaker on BP cups"
-          elsif t2.bp_cups > t1.bp_cups
-            teams = [t2, t1]
-            tiebreaker_message = "#{t2.name} owns tiebreaker on BP cups"
-          end
         end
 
         if teams.length > 0
