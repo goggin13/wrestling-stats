@@ -25,7 +25,7 @@ describe Olympics::MatchService do
   end
 
   describe "update" do
-    describe "updating winner_id" do
+    describe "updating winner_id and advancing now_playing" do
       it "sets the matches now_playing to false on success" do
         match_1 = FactoryBot.create(:olympics_match, :now_playing)
         Olympics::MatchService.update(match_1, winning_team_id: match_1.team_1.id)
@@ -148,6 +148,36 @@ describe Olympics::MatchService do
         match_1.reload
 
         expect(match_1.bp_cups_remaining).to eq(0)
+      end
+
+      it "doesn't advance a match from a new event" do
+        match_1 = FactoryBot.create(:olympics_match, :beer_pong, :now_playing)
+        match_2 = FactoryBot.create(:olympics_match, :beer_pong, :now_playing)
+        match_3 = FactoryBot.create(:olympics_match, :flip_cup, now_playing: false)
+        Olympics::MatchService.update(match_1, winning_team_id: match_1.team_1.id)
+
+        match_1.reload
+        match_2.reload
+        match_3.reload
+
+        expect(match_1.now_playing).to be false
+        expect(match_2.now_playing).to be true
+        expect(match_3.now_playing).to be false
+      end
+
+      it "advances two matches from the next event when an event finishes" do
+        match_1 = FactoryBot.create(:olympics_match, :beer_pong, :now_playing)
+        match_2 = FactoryBot.create(:olympics_match, :flip_cup, now_playing: false)
+        match_3 = FactoryBot.create(:olympics_match, :flip_cup, now_playing: false)
+        Olympics::MatchService.update(match_1, winning_team_id: match_1.team_1.id)
+
+        match_1.reload
+        match_2.reload
+        match_3.reload
+
+        expect(match_1.now_playing).to be false
+        expect(match_2.now_playing).to be true
+        expect(match_3.now_playing).to be true
       end
     end
   end

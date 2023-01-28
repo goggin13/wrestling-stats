@@ -6,9 +6,11 @@ class Olympics::Match < ApplicationRecord
   validates_presence_of :bout_number
 
   module Events
-    BEER_PONG = "beer_pong"
-    FLIP_CUP = "flip_cup"
-    QUARTERS = "quarters"
-    DRINK_BALL = "drink_ball"
+    EVENTS = [
+      BEER_PONG = "beer_pong",
+      FLIP_CUP = "flip_cup",
+      QUARTERS = "quarters",
+      DRINK_BALL = "drink_ball",
+    ]
   end
 end

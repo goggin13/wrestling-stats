@@ -42,21 +42,28 @@ module Olympics
         .map { |match| [match.team_1.id, match.team_2.id] }
         .flatten
 
-      next_match_query = Match.where("not now_playing")
+      unplayed_events = Match.where("winning_team_id is null").map(&:event).uniq
+
+      remaining_events = unplayed_events.sort_by do |e|
+        Olympics::Match::Events::EVENTS.index(e)
+      end
+
+      next_event = remaining_events.first
+
+      next_match_query = Match
         .where("winning_team_id is null")
+        .where("event = ?", next_event)
         .order("bout_number asc")
 
-      if currently_playing_team_ids.length > 0
+      if !currently_playing_team_ids.empty?
         next_match_query = next_match_query
           .where("team_1_id not in (?)", currently_playing_team_ids)
           .where("team_2_id not in (?)", currently_playing_team_ids)
       end
 
-      next_match = next_match_query.first
-
-      if next_match.present?
-        next_match.update_attribute(:now_playing, true)
-      end
+      next_match_query
+        .first(2)
+        .each { |m| m.update_attribute(:now_playing, true) }
     end
   end
 end
