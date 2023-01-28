@@ -222,6 +222,60 @@ module Olympics
         expect(rankings[1]).to eq({rank: 2, points: 1, teams: [@team_B]})
         expect(rankings[2]).to eq({ rank: 3, points: 0, teams: [@team_C]})
       end
+
+      it "handles a cyclic better_than relationship" do
+        # A beats B, B beats C, C beats A
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A, team_2: @team_B,
+                          winning_team: @team_A)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B, team_2: @team_C,
+                          winning_team: @team_B)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A, team_2: @team_C,
+                          winning_team: @team_C)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(1)
+        expect(rankings[0]).to eq({
+          rank: 1,
+          points: 1,
+          teams: [@team_A, @team_B, @team_C]
+        })
+      end
+
+      it "handles a cyclic better_than relationship in the middle of a winning and losing team" do
+        # A beats B, B beats C, C beats A
+        # D beats E
+        team_D = FactoryBot.create(:olympics_team, name: "DDDD")
+        team_E = FactoryBot.create(:olympics_team, name: "EEEE")
+
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A, team_2: @team_B,
+                          winning_team: @team_A)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_B, team_2: @team_C,
+                          winning_team: @team_B)
+        FactoryBot.create(:olympics_match,
+                          team_1: @team_A, team_2: @team_C,
+                          winning_team: @team_C)
+        FactoryBot.create(:olympics_match,
+                          team_1: team_D, team_2: team_E,
+                          winning_team: team_D,
+                          bp_cups_remaining: 2)
+
+        rankings = ScoreboardPresenter.new.rankings
+
+        expect(rankings.length).to eq(3)
+        expect(rankings[0]).to eq({rank: 1, points: 1, teams: [team_D]})
+        expect(rankings[1]).to eq({
+          rank: 2,
+          points: 1,
+          teams: [@team_A, @team_B, @team_C]
+        })
+        expect(rankings[2]).to eq({rank: 5, points: 0, teams: [team_E]})
+      end
     end
   end
 end

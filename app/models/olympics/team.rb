@@ -50,4 +50,10 @@ class Olympics::Team < ApplicationRecord
       (self.wins_over(other_team) > other_team.wins_over(self)) ||
       (self.bp_cups > other_team.bp_cups)
   end
+
+  def better_than_all_of?(other_teams)
+    other_teams.all? do |other_team|
+      self.better_than?(other_team)
+    end
+  end
 end

@@ -66,13 +66,14 @@ module Olympics
       while i < ranked_teams.length do
         current_team = ranked_teams[i]
         current_teams << current_team
-        next_team = ranked_teams[i + 1]
+        next_teams = ranked_teams[i + 1..]
 
-        if next_team.nil? || current_team.better_than?(next_team)
+        if next_teams.empty? ||
+            current_teams.all? { |t| t.better_than_all_of?(next_teams) }
           rankings << {
             rank: current_ranking,
             points: current_team.points,
-            teams: current_teams
+            teams: current_teams.sort_by(&:name)
           }
 
           current_ranking += current_teams.length

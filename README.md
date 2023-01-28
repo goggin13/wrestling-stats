@@ -51,21 +51,13 @@ RAILS_ENV=test bundle exec rspec
 
 #### ToDo
 ---- Must do ----
-Work on tiebreaking logic and displaying it is a fucking mess
-- tiebreaker algo
-  - is there one team that is better than the rest?
-      - pull them out and put them at the top
-      - repeat
-  - is there one team that is worse than the rest?
-      - pull them out and put them at the bottom
-      - repeat
-
 Advance teams by event until last game in event is played
 Make it pretty (dark background)
-Fade in scoreboard one row at a time
 X - prompt for BP cups 
 X - don't let a team be now_playing twice
 X - scoreboard accounts for simple tiebreakers
+X - Work on tiebreaking logic and displaying it is a fucking mess
+X - Fade in scoreboard one row at a time
 Have a testing party
 
 ---- nice to do ----
