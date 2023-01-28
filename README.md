@@ -51,11 +51,14 @@ RAILS_ENV=test bundle exec rspec
 
 #### ToDo
 ---- Must do ----
-Work on tiebreaking and displaying
+Work on tiebreaking logic and displaying it is a fucking mess
 - tiebreaker algo
   - is there one team that is better than the rest?
-  - pull them out and put them at the top
-  - repeat
+      - pull them out and put them at the top
+      - repeat
+  - is there one team that is worse than the rest?
+      - pull them out and put them at the bottom
+      - repeat
 
 Advance teams by event until last game in event is played
 Make it pretty (dark background)
@@ -68,6 +71,7 @@ Have a testing party
 ---- nice to do ----
 Generate brackets page
 E2E testing
+Team Colors
 
 #### tables
 teams

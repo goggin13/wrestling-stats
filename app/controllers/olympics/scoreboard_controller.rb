@@ -18,6 +18,10 @@ class Olympics::ScoreboardController < Olympics::ApplicationController
     respond_to { |format| format.js }
   end
 
+  def fetch_tiebreaker
+    respond_to { |format| format.js }
+  end
+
   def fetch_latest_updated_at
     render json: {
       last_updated_at: Olympics::Match.order("updated_at DESC").first.updated_at.to_i

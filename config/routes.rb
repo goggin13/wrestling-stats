@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     get "/fetch_now_playing" => 'scoreboard#fetch_now_playing', as: 'fetch_now_playing'
     get "/fetch_on_deck" => 'scoreboard#fetch_on_deck'
     get "/fetch_rankings" => 'scoreboard#fetch_rankings'
+    get "/fetch_tiebreaker" => 'scoreboard#fetch_tiebreaker'
     get "/fetch_latest_updated_at" => 'scoreboard#fetch_latest_updated_at'
   end
 

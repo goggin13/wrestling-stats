@@ -3,7 +3,6 @@
 import "controllers"
 
 $(document).ready(function () {
-  console.log("Ready");
   check_for_updates();
   manage_bp_form();
 });
@@ -12,9 +11,7 @@ function check_for_updates () {
   var last_updated_at = 0;
 
   var poll = function () {
-    console.log("Polling");
     $.get("/olympics/fetch_latest_updated_at", function (data) {
-      console.log("mine: ", last_updated_at, "server: ", data.last_updated_at);
       if (data.last_updated_at > last_updated_at) {
         if (last_updated_at > 0) {
           update_scoreboard();
@@ -32,6 +29,7 @@ function update_scoreboard() {
   $.get("/olympics/fetch_now_playing.js");
   $.get("/olympics/fetch_on_deck.js");
   $.get("/olympics/fetch_rankings.js");
+  $.get("/olympics/fetch_tiebreaker.js");
 };
 
 function manage_bp_form () {

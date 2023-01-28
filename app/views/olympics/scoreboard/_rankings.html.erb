@@ -13,10 +13,6 @@
         <% place[:teams].each do |team| %>
           <%= team.name %><br/>
         <% end %>
-
-        <% if place[:tiebreaker_message].present? %>
-          (<%= place[:tiebreaker_message] %>)
-        <% end %>
       </td>
     </tr>
   <% end %>

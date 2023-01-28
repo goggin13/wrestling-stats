@@ -1,3 +1,22 @@
 $("#rankings").fadeOut(1500, function () {
-  $(this).html("<%= escape_javascript(render partial: 'rankings', locals: { presenter: @presenter } ) %>").fadeIn(500);
+  let html = "<%= escape_javascript(
+    render partial: 'rankings', locals: { presenter: @presenter } ) %>" 
+
+  $(this).html(html);
+  $(this).find("tr").hide();
+
+  $(this).show();
+  $(this).find("tr").first().show();
+
+  let delay = 500;
+  let trs = $(this).find("tr").get().reverse();
+  $.each(trs, function (_, tr) {
+
+    let fadeInTr = function (row, delay) {
+      setTimeout(function () { $(row).fadeIn(1500) }, delay); 
+    };
+
+    fadeInTr(tr, delay);
+    delay += 2000;
+  });
 });

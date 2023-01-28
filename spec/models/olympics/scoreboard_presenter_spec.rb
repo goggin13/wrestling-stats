@@ -98,21 +98,14 @@ module Olympics
     end
   end
 
-  # [
-  #   {
-  #     rank: 1,
-  #     points: 5,
-  #     teams: [],
-  #   }
-  # ]
-  describe "rankings" do
+  describe "rankings-new" do
     before do
       @team_A = FactoryBot.create(:olympics_team, name: "AAAA")
       @team_B = FactoryBot.create(:olympics_team, name: "BBBB")
       @team_C = FactoryBot.create(:olympics_team, name: "CCCC")
     end
 
-    it "returns a hash of places to teams" do
+    it "returns 3 teams sorted by points" do
       FactoryBot.create(:olympics_match,
                         team_1: @team_A, team_2: @team_B, winning_team: @team_A)
       FactoryBot.create(:olympics_match,
@@ -128,6 +121,85 @@ module Olympics
       expect(rankings[2]).to eq({rank: 3, points: 0, teams: [@team_C]})
     end
 
+    it "returns a 2 way tie for first" do
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_A, team_2: @team_B,
+                        winning_team: @team_A)
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_A, team_2: @team_B,
+                        winning_team: @team_B)
+
+      rankings = ScoreboardPresenter.new.rankings
+
+      expect(rankings.length).to eq(2)
+      expect(rankings[0][:teams]).to eq([@team_A, @team_B])
+      expect(rankings[1][:teams]).to eq([@team_C])
+
+      expect(rankings[0]).to eq({rank: 1, points: 1, teams: [@team_A, @team_B]})
+      expect(rankings[1]).to eq({rank: 3, points: 0, teams: [@team_C]})
+    end
+
+    it "returns a 3 way tie" do
+      rankings = ScoreboardPresenter.new.rankings
+
+      expect(rankings[0]).to eq({rank: 1, points: 0, teams: [@team_A, @team_B, @team_C]})
+    end
+  end
+
+  # [
+  #   {
+  #     rank: 1,
+  #     points: 5,
+  #     teams: [],
+  #   }
+  # ]
+  describe "rankings" do
+    before do
+      @team_A = FactoryBot.create(:olympics_team, name: "AAAA")
+      @team_B = FactoryBot.create(:olympics_team, name: "BBBB")
+      @team_C = FactoryBot.create(:olympics_team, name: "CCCC")
+    end
+
+    it "returns 3 teams sorted by points" do
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_A, team_2: @team_B, winning_team: @team_A)
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_A, team_2: @team_C, winning_team: @team_A)
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_B, team_2: @team_C, winning_team: @team_B)
+
+      rankings = ScoreboardPresenter.new.rankings
+
+      expect(rankings.length).to eq(3)
+      expect(rankings[0]).to eq({rank: 1, points: 2, teams: [@team_A]})
+      expect(rankings[1]).to eq({rank: 2, points: 1, teams: [@team_B]})
+      expect(rankings[2]).to eq({rank: 3, points: 0, teams: [@team_C]})
+    end
+
+    it "returns a 2 way tie for first" do
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_A, team_2: @team_B,
+                        winning_team: @team_A)
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_A, team_2: @team_B,
+                        winning_team: @team_B)
+
+      rankings = ScoreboardPresenter.new.rankings
+
+      expect(rankings.length).to eq(2)
+      expect(rankings[0][:teams]).to eq([@team_A, @team_B])
+      expect(rankings[1][:teams]).to eq([@team_C])
+
+      expect(rankings[0]).to eq({rank: 1, points: 1, teams: [@team_A, @team_B]})
+      expect(rankings[1]).to eq({rank: 3, points: 0, teams: [@team_C]})
+    end
+
+    it "returns a 3 way tie" do
+      rankings = ScoreboardPresenter.new.rankings
+
+      expect(rankings[0]).to eq({rank: 1, points: 0, teams: [@team_A, @team_B, @team_C]})
+    end
+
     it "manages nil winning_ids" do
       FactoryBot.create(:olympics_match, team_1: @team_A, team_2: @team_B)
 
@@ -137,7 +209,7 @@ module Olympics
     end
 
     describe "ties" do
-      it "includes tied teams" do
+      it "sorts two teams tied on points" do
         FactoryBot.create(:olympics_match,
                           team_1: @team_A, team_2: @team_B, winning_team: @team_A)
         FactoryBot.create(:olympics_match,
@@ -145,109 +217,10 @@ module Olympics
 
         rankings = ScoreboardPresenter.new.rankings
 
-        expect(rankings.length).to eq(2)
-        expect(rankings[0]).to eq({
-          rank: 1,
-          points: 1,
-          teams: [@team_A, @team_B],
-          tiebreaker_message: "AAAA own tiebreaker on H2H"
-        })
-        expect(rankings[1]).to eq({rank: 3, points: 0, teams: [@team_C]})
-      end
-
-      it "sorts 2 tied teams by head to head" do
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_B, team_2: @team_A, winning_team: @team_B)
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_A, team_2: @team_C, winning_team: @team_A)
-
-        rankings = ScoreboardPresenter.new.rankings
-
-        expect(rankings.length).to eq(2)
-        expect(rankings[0]).to eq({
-          rank: 1,
-          points: 1,
-          teams: [@team_B, @team_A],
-          tiebreaker_message: "BBBB own tiebreaker on H2H"
-        })
-      end
-
-      it "sorts 2 tied teams by head to head" do
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_B, team_2: @team_A, winning_team: @team_A)
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_B, team_2: @team_C, winning_team: @team_B)
-
-        rankings = ScoreboardPresenter.new.rankings
-
-        expect(rankings.length).to eq(2)
-        expect(rankings[0]).to eq({
-          rank: 1,
-          points: 1,
-          teams: [@team_A, @team_B],
-          tiebreaker_message: "AAAA own tiebreaker on H2H"
-        })
-      end
-
-      it "returns a tie breaker message for two teams with the same BP cups" do
-        FactoryBot.create(:olympics_match, :beer_pong,
-                          team_1: @team_B,
-                          winning_team: @team_B,
-                          bp_cups_remaining: 3)
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_A,
-                          winning_team: @team_A)
-
-        rankings = ScoreboardPresenter.new.rankings
-
-        expect(rankings.length).to eq(2)
-        expect(rankings[0]).to eq({
-          rank: 1,
-          points: 1,
-          teams: [@team_B, @team_A],
-          tiebreaker_message: "BBBB own tiebreaker on BP cups 3 to 0"
-        })
-      end
-
-      it "sorts 2 tied teams by BP cups" do
-        FactoryBot.create(:olympics_match, :beer_pong,
-                          team_1: @team_A,
-                          winning_team: @team_A,
-                          bp_cups_remaining: 3)
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_B,
-                          winning_team: @team_B)
-
-        rankings = ScoreboardPresenter.new.rankings
-
-        expect(rankings.length).to eq(2)
-        expect(rankings[0]).to eq({
-          rank: 1,
-          points: 1,
-          teams: [@team_A, @team_B],
-          tiebreaker_message: "AAAA own tiebreaker on BP cups 3 to 0"
-        })
-      end
-
-      it "reports if two teams are still tied" do
-        FactoryBot.create(:olympics_match, :beer_pong,
-                          team_1: @team_A,
-                          winning_team: @team_A,
-                          bp_cups_remaining: 3)
-        FactoryBot.create(:olympics_match,
-                          team_1: @team_B,
-                          winning_team: @team_B,
-                          bp_cups_remaining: 3)
-
-        rankings = ScoreboardPresenter.new.rankings
-
-        expect(rankings.length).to eq(2)
-        expect(rankings[0]).to eq({
-          rank: 1,
-          points: 1,
-          teams: [@team_A, @team_B],
-          tiebreaker_message: "tied on both criteria"
-        })
+        expect(rankings.length).to eq(3)
+        expect(rankings[0]).to eq({ rank: 1, points: 1, teams: [@team_A]})
+        expect(rankings[1]).to eq({rank: 2, points: 1, teams: [@team_B]})
+        expect(rankings[2]).to eq({ rank: 3, points: 0, teams: [@team_C]})
       end
     end
   end

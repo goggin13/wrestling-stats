@@ -38,4 +38,16 @@ class Olympics::Team < ApplicationRecord
 
     winning_cups - losing_cups
   end
+
+  def points
+    Olympics::Match
+      .where("winning_team_id = ?", self.id)
+      .count
+  end
+
+  def better_than?(other_team)
+    (self.points > other_team.points) ||
+      (self.wins_over(other_team) > other_team.wins_over(self)) ||
+      (self.bp_cups > other_team.bp_cups)
+  end
 end

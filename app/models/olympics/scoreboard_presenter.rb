@@ -30,70 +30,56 @@ module Olympics
     end
 
     def tiebreaker_message(t1, t2)
+      tiebreaker_message = ""
 
-      if t1.wins_over(t2) > t2.wins_over(t1)
-        teams = [t1, t2]
-      elsif t2.wins_over(t1) > t1.wins_over(t2)
-        teams = [t2, t1]
-      elsif t1.bp_cups > t2.bp_cups
-        teams = [t1, t2]
-      elsif t2.bp_cups > t1.bp_cups
-        teams = [t2, t1]
+      if t1.better_than?(t2)
+        tiebreaker_message += "#{t1.name} <br/>"
+      elsif t2.better_than?(t1)
+        tiebreaker_message += "#{t2.name} <br/>"
       else
-        teams = [t1, t2].sort_by(&:number)
-        tiebreaker_message = "tied on both criteria: <br/> #{t1.wins_over(t2)}-#{t2.wins_over(t1)}<br/> BP cups: #{t1.bp_cups} to #{t2.bp_cups}"
+        tiebreaker_message = "tie<br/>"
       end
 
-      tiebreaker_message = "#{teams[0].name} <br/>"
-      tiebreaker_message += "#{teams[0].wins_over(teams[1])}-#{teams[1].wins_over(teams[0])} <br/>"
+      tiebreaker_message += "#{t1.wins_over(t2)}-#{t2.wins_over(t1)} <br/>"
       if t1.wins_over(t2) == t2.wins_over(t1)
-        tiebreaker_message += "BP cups: #{teams[0].bp_cups} to #{teams[1].bp_cups}"
+        tiebreaker_message += "BP cups: #{t1.bp_cups} to #{t2.bp_cups}"
       end
 
-      [teams, tiebreaker_message]
+      tiebreaker_message
     end
 
     def rankings
-      rankings = []
-
-      points_by_team = Match.group(:winning_team_id).size
-      points_by_team.delete(nil)
-      Team.all.map(&:id).each do |team_id|
-        unless points_by_team.keys.include?(team_id)
-          points_by_team[team_id] = 0
+      ranked_teams = Team.all.sort do |a,b|
+        if a.better_than?(b)
+          -1
+        elsif b.better_than?(a)
+          1
+        else
+          0
         end
       end
 
+      i = 0
+      rankings = []
+      current_ranking = 1
+      current_teams = []
+      while i < ranked_teams.length do
+        current_team = ranked_teams[i]
+        current_teams << current_team
+        next_team = ranked_teams[i + 1]
 
-      rank = 1
-      Team.count.times do
-        next if points_by_team.length == 0
-
-        # [points, [[:team_id, points], [:team_id, points]]]
-        highest_scorers = points_by_team.group_by { |_, pts| pts }.max
-        teams = highest_scorers[1].map { |tuple| Team.find(tuple[0]) }
-        tiebreaker_message = nil
-
-        if teams.length == 2
-          teams, tiebreaker_message = tiebreaker_message(teams[0], teams[1])
-
-          # puts "t1(#{t1.name}): #{t1.bp_cups}, t2(#{t2.name}): #{t2.bp_cups}"
-        end
-
-        if teams.length > 0
+        if next_team.nil? || current_team.better_than?(next_team)
           rankings << {
-            rank: rank,
-            points: highest_scorers[0],
-            teams: teams,
+            rank: current_ranking,
+            points: current_team.points,
+            teams: current_teams
           }
 
-          if tiebreaker_message
-            rankings.last[:tiebreaker_message] = tiebreaker_message
-          end
-
-          teams.each { |team| points_by_team.delete(team.id) }
-          rank += teams.length
+          current_ranking += current_teams.length
+          current_teams = []
         end
+
+        i += 1
       end
 
       rankings
