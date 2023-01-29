@@ -1,6 +1,12 @@
 class Olympics::ScoreboardController < Olympics::ApplicationController
   before_action :_set_presenter
-  skip_before_action :authenticate_admin!
+  skip_before_action :authenticate_admin!, except: [:generate_form, :generate_brackets]
+
+  def generate_form
+  end
+
+  def generate_brackets
+  end
 
   def scoreboard
     render layout: "olympics/scoreboard"

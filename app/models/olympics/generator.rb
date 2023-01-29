@@ -1,73 +1,38 @@
 require 'csv'
-NUM_TEAMS = 5
-TEAMS = (1..NUM_TEAMS).to_a
-EVENTS = [:beer_pong, :flip_cup, :quarters, :drink_ball]
-EXPECTED_GAME_COUNT = NUM_TEAMS * EVENTS.length
 
-class Game
-  attr_accessor :event, :team_1, :team_2
+class Olympics::Generator
+  attr_accessor :teams, :games
 
-  def initialize(team_1, team_2, event=nil)
-    @event = event
-    @team_1 = team_1 < team_2 ? team_1 : team_2
-    @team_2 = team_1 < team_2 ? team_2 : team_1
-  end
+  def self.generate_matchups(number_of_teams)
+    teams = (1..number_of_teams).to_a
+    generator = Olympics::Generator.new(teams)
 
-  def to_s
-    "#{team_1} #{team_2} : #{event}"
-  end
+    success = false
+    1000.times do |i|
+      next if success
 
-  def contains?(team)
-    team_1 == team || team_2 == team
-  end
+      puts "Attempt #{i}"
+      if generator.randomize_teams!
+        success = true
+        puts "\tSuccess"
+      end
+    end
 
-  def teams
-    [team_1, team_2]
-  end
-
-  def other_team(team)
-    if team_1 == team
-      team_2
-    elsif team_2 == team
-      team_1
-    else
-      raise "other_team(#{team}) called, game does not contain #{team}"
+    if success
+      puts generator
+      generator.write_to_file
     end
   end
 
-  def ==(other_game)
-    return false if other_game.nil?
-
-    teams = [team_1, team_2].sort
-    other_teams = [other_game.team_1, other_game.team_2].sort
-
-    teams == other_teams && event == other_game.event
-  end
-
-  def eql?(other)
-    self == other
-  end
-
-  def hash
-    to_s.hash
-  end
-
-  def dup
-    Game.new(team_1, team_2, event)
-  end
-end
-
-class Olympics
-  attr_accessor :teams, :games
-
   def initialize(teams)
     @teams = teams
+    @num_teams = teams.length
     reset_games!
   end
 
   def sort_within_event(event_games)
     return event_games if event_games.nil?
-    return event_games unless event_games.length == NUM_TEAMS
+    return event_games unless event_games.length == @num_teams
 
     first_game = event_games.shift
     second_game = event_games.find do |game|
@@ -75,7 +40,7 @@ class Olympics
     end
     event_games.delete(second_game)
 
-    next_team = (TEAMS - (first_game.teams + second_game.teams)).first
+    next_team = (@teams - (first_game.teams + second_game.teams)).first
     third_game = event_games.find do |game|
       game.contains?(next_team)
     end
@@ -87,13 +52,13 @@ class Olympics
   def to_s
     output = "*" * 80
     output += "\nOlympics"
-    output += "\n\tteams: #{NUM_TEAMS}"
-    output += "\n\tevents: #{EVENTS.length}"
+    output += "\n\tteams: #{@num_teams}"
+    output += "\n\tevents: #{Olympics::Match::Events::EVENTS.length}"
     output += "\n\tgames: #{@games.length}\n"
     output += "*" * 80
     output += "\n\n"
     grouped =  @games.group_by(&:event)
-    EVENTS.each do |event|
+    Olympics::Match::Events::EVENTS.each do |event|
       event_matches = sort_within_event(grouped[event])
       (event_matches || []).each do |game|
         output += "#{game}\n"
@@ -140,15 +105,15 @@ class Olympics
   def valid?
     validation_errors = []
 
-    EVENTS.each do |event|
+    Olympics::Match::Events::EVENTS.each do |event|
       count = game_count(event)
-      if count > NUM_TEAMS
+      if count > @num_teams
         validation_errors << "\tvalidation failure: There are #{count} #{event} games"
       end
     end
 
-    TEAMS.each do |team|
-      EVENTS.each do |event|
+    @teams.each do |team|
+      Olympics::Match::Events::EVENTS.each do |event|
         count = event_count_for_team(team, event)
         if count > 2
           validation_errors << "\tvalidation failure: Team #{team} has #{count} #{event} games"
@@ -165,9 +130,9 @@ class Olympics
       end
     end
 
-    if games.length == EXPECTED_GAME_COUNT
-      TEAMS.each do |team|
-        TEAMS.each do |opponent|
+    if games.length == @num_teams * Olympics::Match::Events::EVENTS.length
+      @teams.each do |team|
+        @teams.each do |opponent|
           next if team > opponent
 
           unless @games.any? { |g| g.contains?(team) && g.contains?(opponent) }
@@ -204,10 +169,10 @@ class Olympics
     [1,2].each do |event_count_goal|
       next if failed
 
-      EVENTS.each do |event|
+      Olympics::Match::Events::EVENTS.each do |event|
         next if failed
 
-        TEAMS.shuffle.each do |team|
+        @teams.shuffle.each do |team|
           next if failed
 
           existing_event_count = event_count_for_team(team, event)
@@ -232,7 +197,7 @@ class Olympics
     bout_number = 0
     CSV.open("matchups.csv", "w") do |csv|
       grouped =  @games.group_by(&:event)
-      EVENTS.each do |event|
+      Olympics::Match::Events::EVENTS.each do |event|
         event_matches = sort_within_event(grouped[event])
         event_matches.each do |game|
           csv << [bout_number += 1, game.team_1, game.team_2, game.event]
@@ -240,22 +205,57 @@ class Olympics
       end
     end
   end
-end
 
-olympics = Olympics.new(TEAMS)
+  class Game
+    attr_accessor :event, :team_1, :team_2
 
-success = false
-1000.times do |i|
-  next if success
+    def initialize(team_1, team_2, event=nil)
+      @event = event
+      @team_1 = team_1 < team_2 ? team_1 : team_2
+      @team_2 = team_1 < team_2 ? team_2 : team_1
+    end
 
-  puts "Attempt #{i}"
-  if olympics.randomize_teams!
-    success = true
-    puts "\tSuccess"
+    def to_s
+      "#{team_1} #{team_2} : #{event}"
+    end
+
+    def contains?(team)
+      team_1 == team || team_2 == team
+    end
+
+    def teams
+      [team_1, team_2]
+    end
+
+    def other_team(team)
+      if team_1 == team
+        team_2
+      elsif team_2 == team
+        team_1
+      else
+        raise "other_team(#{team}) called, game does not contain #{team}"
+      end
+    end
+
+    def ==(other_game)
+      return false if other_game.nil?
+
+      teams = [team_1, team_2].sort
+      other_teams = [other_game.team_1, other_game.team_2].sort
+
+      teams == other_teams && event == other_game.event
+    end
+
+    def eql?(other)
+      self == other
+    end
+
+    def hash
+      to_s.hash
+    end
+
+    def dup
+      Game.new(team_1, team_2, event)
+    end
   end
-end
-
-if success
-  puts olympics
-  olympics.write_to_file
 end

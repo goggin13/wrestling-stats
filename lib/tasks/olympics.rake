@@ -4,4 +4,9 @@ namespace :olympics do
   task :import_matches, [:path] => :environment do |t, args|
     Olympics::MatchService.import_from_file(args.path)
   end
+
+  desc "Generate brackets"
+  task :generate, [:num_teams] => :environment do |t, args|
+    Olympics::Generator.generate_matchups(args.num_teams.to_i)
+  end
 end

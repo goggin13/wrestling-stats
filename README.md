@@ -51,8 +51,8 @@ RAILS_ENV=test bundle exec rspec
 
 #### ToDo
 ---- Must do ----
-Advance teams by event until last game in event is played
 Make it pretty (dark background)
+X - Advance teams by event until last game in event is played
 X - prompt for BP cups 
 X - don't let a team be now_playing twice
 X - scoreboard accounts for simple tiebreakers

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     resources :matches, only: [:index, :update]
 
     get "/scoreboard", to: "scoreboard#scoreboard"
+    get "/generate_brackets", to: "scoreboard#generate_form"
+    post "/generate_brackets", to: "scoreboard#generate_brackets"
     get "/fetch_now_playing" => 'scoreboard#fetch_now_playing', as: 'fetch_now_playing'
     get "/fetch_on_deck" => 'scoreboard#fetch_on_deck'
     get "/fetch_rankings" => 'scoreboard#fetch_rankings'
