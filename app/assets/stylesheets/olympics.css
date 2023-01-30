@@ -4,10 +4,12 @@
 
 .right {
   float: right;
+  clear: right;
 }
 
 .left {
   float: left;
+  clear: left;
 }
 
 .clear {
@@ -33,19 +35,27 @@
 .olympic_match {
   text-align: center;
   clear: both;
+  display:flex;
+  display: flex;
+  margin-bottom: 14px;
+  border: thin dashed darkgray;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .olympic_match_panel {
   float: left;
   width: 33%;
+  display:inline-block;
+  vertical-align:middle;
+  border-radius: 10px;
+  font-size: 1.25em;
 }
 
-.olympic_match .winner {
-  color: green;
-}
-
-.olympic_match .loser {
-  color: gray;
+.olympic_match_panel.winner {
+  background-image: url("olympics/medal.png");
+  background-size: 25px;
+  background-repeat: no-repeat;
 }
 
 #rankings table {
@@ -74,7 +84,19 @@
   height: 150px;
 }
 
-.scoreboard_team_name {
-  border: thin solid black;
+.scoreboard_team_name div {
+  padding: 10px;
+}
+
+.matchup_team_name {
+  padding: 10px;
+}
+
+.olympic_match_panel {
+  display: flex;
   width: 50%;
+  min-height: 100px;
+  margin: auto;
+  align-items:center;
+  justify-content:center;
 }

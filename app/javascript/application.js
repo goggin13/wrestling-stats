@@ -9,14 +9,22 @@ $(document).ready(function () {
 
 function check_for_updates () {
   var last_updated_at = 0;
+  var completed_games = -1;
 
   var poll = function () {
     $.get("/olympics/fetch_latest_updated_at", function (data) {
       if (data.last_updated_at > last_updated_at) {
         if (last_updated_at > 0) {
-          update_scoreboard();
+          update_now_playing();
         }
         last_updated_at = data.last_updated_at;
+      }
+
+      if (data.completed_games != completed_games) {
+        if (completed_games > -1) {
+          update_scoreboard();
+        }
+        completed_games = data.completed_games;
       }
     });
   };
@@ -24,12 +32,20 @@ function check_for_updates () {
   setInterval(poll, 1000);
 };
 
+function update_now_playing() {
+  console.log("update now playing!");
+  $("#now_playing").fadeOut();
+  $("#on_deck").fadeOut();
+  // now playing will also update on deck
+  $.get("/olympics/fetch_now_playing.js");
+}
+
 function update_scoreboard() {
   console.log("update scoreboard!");
-  $.get("/olympics/fetch_now_playing.js");
-  $.get("/olympics/fetch_on_deck.js");
   $.get("/olympics/fetch_rankings.js");
-  $.get("/olympics/fetch_tiebreaker.js");
+
+  // scoreboard will fade in tiebreaker when it's done with the rows
+  $("#tiebreaker").fadeOut();
 };
 
 function manage_bp_form () {
@@ -42,12 +58,4 @@ function manage_bp_form () {
       $(this).find("input[name='olympics_match[bp_cups_remaining]']").val(bp_cups);
     }
   });
-  // for .match_form.beer_pong submit buttons
-  // on click
-    // popup dialog : how many cups remaining?
-    // if ! valid response
-      // return false
-    // else
-      // set bp_cups_remaining to response
-      // return true
 };

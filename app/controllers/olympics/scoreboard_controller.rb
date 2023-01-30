@@ -33,7 +33,8 @@ class Olympics::ScoreboardController < Olympics::ApplicationController
 
   def fetch_latest_updated_at
     render json: {
-      last_updated_at: Olympics::Match.order("updated_at DESC").first.updated_at.to_i
+      last_updated_at: Olympics::Match.order("updated_at DESC").first.updated_at.to_i,
+      completed_games: Olympics::Match.where("winning_team_id is not null").count
     }
   end
 

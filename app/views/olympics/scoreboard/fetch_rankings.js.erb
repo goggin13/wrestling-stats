@@ -4,19 +4,24 @@ $("#rankings").fadeOut(1500, function () {
 
   $(this).html(html);
   $(this).find("tr").hide();
-
   $(this).show();
-  $(this).find("tr").first().show();
 
   let delay = 500;
   let trs = $(this).find("tr").get().reverse();
-  $.each(trs, function (_, tr) {
-
-    let fadeInTr = function (row, delay) {
-      setTimeout(function () { $(row).fadeIn(1500) }, delay); 
+  $.each(trs, function (i, tr) {
+    
+    let fadeInTr = function (row, delay, finished) {
+      setTimeout(function () { 
+        $(row).fadeIn(1500);
+        
+        if (finished) {
+          $.get("/olympics/fetch_tiebreaker.js");
+        }
+      }, delay); 
     };
 
-    fadeInTr(tr, delay);
+    let lastTr = (i == (trs.length - 1));
+    fadeInTr(tr, delay, lastTr);
     delay += 2000;
   });
 });

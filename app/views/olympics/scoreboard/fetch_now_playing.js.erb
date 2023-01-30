@@ -1,3 +1,7 @@
 $("#now_playing").fadeOut(1500, function () {
-  $(this).html("<%= escape_javascript(render partial: 'now_playing', locals: { presenter: @presenter } ) %>").fadeIn(500);
+  $(this).html("<%= escape_javascript(render partial: 'now_playing', locals: { presenter: @presenter } ) %>").fadeIn(1500);
+
+  setTimeout(function () {
+    $.get("/olympics/fetch_on_deck.js");
+  }, 1500);
 });

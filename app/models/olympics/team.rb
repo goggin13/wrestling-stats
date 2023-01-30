@@ -1,6 +1,14 @@
 class Olympics::Team < ApplicationRecord
   validates_presence_of :name, :number
 
+  COLORS = [
+    "#61d4b3ff",
+    "#fdd365ff",
+    "#fb8d62ff",
+    "#fe86d4ff",
+    "#95a1deff",
+  ]
+
   def self.create_2023_teams
     Olympics::Team.destroy_all
 
@@ -10,10 +18,11 @@ class Olympics::Team < ApplicationRecord
       [3, "Eric & Goggin"],
       [4, "Jake & Olivia"],
       [5, "Erin & Diana & Kelly"]
-    ].each do |team_data|
+    ].each_with_index do |team_data, index|
       Olympics::Team.create!(
         number: team_data[0],
         name: team_data[1],
+        color: COLORS[index]
       )
     end
   end

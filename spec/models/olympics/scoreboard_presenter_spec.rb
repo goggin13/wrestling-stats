@@ -69,36 +69,22 @@ module Olympics
       end
 
       it "returns two matches ordered by bout number" do
-        FactoryBot.create(:olympics_match, bout_number: 3)
+        match_3 = FactoryBot.create(:olympics_match, bout_number: 3)
         match_2 = FactoryBot.create(:olympics_match, bout_number: 2)
         match_1 = FactoryBot.create(:olympics_match, bout_number: 1)
         presenter = ScoreboardPresenter.new
 
         on_deck = presenter.on_deck
 
-        expect(on_deck.length).to eq(2)
+        expect(on_deck.length).to eq(3)
         expect(on_deck[0]).to eq(match_1)
         expect(on_deck[1]).to eq(match_2)
-      end
-
-      it "accepts an offset to show the next two on deck (aka 'in the hole')" do
-        match_1 = FactoryBot.create(:olympics_match, :won, bout_number: 1)
-        match_2 = FactoryBot.create(:olympics_match, bout_number: 2)
-        match_3 = FactoryBot.create(:olympics_match, bout_number: 3)
-        match_4 = FactoryBot.create(:olympics_match, bout_number: 4)
-        match_5 = FactoryBot.create(:olympics_match, bout_number: 5)
-        presenter = ScoreboardPresenter.new
-
-        on_deck = presenter.on_deck(2)
-
-        expect(on_deck.length).to eq(2)
-        expect(on_deck[0]).to eq(match_4)
-        expect(on_deck[1]).to eq(match_5)
+        expect(on_deck[2]).to eq(match_3)
       end
     end
   end
 
-  describe "rankings-new" do
+  describe "rankings" do
     before do
       @team_A = FactoryBot.create(:olympics_team, name: "AAAA")
       @team_B = FactoryBot.create(:olympics_team, name: "BBBB")

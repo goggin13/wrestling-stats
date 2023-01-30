@@ -179,6 +179,37 @@ describe Olympics::MatchService do
         expect(match_2.now_playing).to be true
         expect(match_3.now_playing).to be true
       end
+
+      it "won't put in the same team to play twice" do
+        team_A = FactoryBot.create(:olympics_team)
+        team_B = FactoryBot.create(:olympics_team)
+        team_C = FactoryBot.create(:olympics_team)
+        team_D = FactoryBot.create(:olympics_team)
+        match_1 = FactoryBot.create(:olympics_match,
+                                    :flip_cup, now_playing: true,
+                                    team_1: team_A, team_2: team_B)
+        match_2 = FactoryBot.create(:olympics_match,
+                                    :flip_cup, now_playing: false,
+                                    team_1: team_A, team_2: team_C)
+        match_3 = FactoryBot.create(:olympics_match,
+                                    :flip_cup, now_playing: false,
+                                    team_1: team_A, team_2: team_D)
+        match_4 = FactoryBot.create(:olympics_match,
+                                    :flip_cup, now_playing: false,
+                                    team_1: team_B, team_2: team_D)
+
+        Olympics::MatchService.update(match_1, winning_team_id: match_1.team_1.id)
+
+        match_1.reload
+        match_2.reload
+        match_3.reload
+        match_4.reload
+
+        expect(match_1.now_playing).to be false
+        expect(match_2.now_playing).to be true
+        expect(match_3.now_playing).to be false
+        expect(match_4.now_playing).to be true
+      end
     end
   end
 end

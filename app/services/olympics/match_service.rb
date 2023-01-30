@@ -26,6 +26,7 @@ module Olympics
       if result && changing_winning_team_id
         match.update_attribute(:now_playing, false)
         advance_now_playing!
+        advance_now_playing!
       end
 
       if result && match.winning_team_id.nil?
@@ -61,9 +62,10 @@ module Olympics
           .where("team_2_id not in (?)", currently_playing_team_ids)
       end
 
-      next_match_query
-        .first(2)
-        .each { |m| m.update_attribute(:now_playing, true) }
+      next_match = next_match_query.first
+      if next_match
+        next_match.update_attribute(:now_playing, true)
+      end
     end
   end
 end
