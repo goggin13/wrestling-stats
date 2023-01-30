@@ -29,7 +29,7 @@ function check_for_updates () {
     });
   };
 
-  setInterval(poll, 1000);
+  setInterval(poll, 5000);
 };
 
 function update_now_playing() {

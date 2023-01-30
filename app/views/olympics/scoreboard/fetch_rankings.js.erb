@@ -1,4 +1,4 @@
-$("#rankings").fadeOut(1500, function () {
+$("#rankings").fadeOut(500, function () {
   let html = "<%= escape_javascript(
     render partial: 'rankings', locals: { presenter: @presenter } ) %>" 
 
@@ -22,6 +22,6 @@ $("#rankings").fadeOut(1500, function () {
 
     let lastTr = (i == (trs.length - 1));
     fadeInTr(tr, delay, lastTr);
-    delay += 2000;
+    delay += 1000;
   });
 });

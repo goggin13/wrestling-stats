@@ -51,7 +51,8 @@ RAILS_ENV=test bundle exec rspec
 
 #### ToDo
 ---- Must do ----
-Make it pretty (dark background)
+CORS - prod testing
+X - Make it pretty (dark background)
 X - Advance teams by event until last game in event is played
 X - prompt for BP cups 
 X - don't let a team be now_playing twice
@@ -61,18 +62,11 @@ X - Fade in scoreboard one row at a time
 Have a testing party
 
 ---- nice to do ----
-Generate brackets page
+X - Generate brackets page
 E2E testing
-Team Colors
+X - Team Colors
 
-#### tables
-teams
-name, number
-
-matches
-home_team_id, away_team_id, winner_id, game {ENUM}, bp_cups_remaining
-
-#### homepage
+### Wrestling
 
 scoreboard
 - display tiebreaker data in subdued rows

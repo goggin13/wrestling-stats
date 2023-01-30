@@ -23,7 +23,10 @@
 
   <div>
     <%= form.label :color, style: "display: block" %>
-    <%= form.color_field :color %>
+    <%= form.text_field :color %>
+    <%= with_team_bg_color(team, :p) do %>
+      <%= team.color %>
+    <% end %>
   </div>
 
   <div>

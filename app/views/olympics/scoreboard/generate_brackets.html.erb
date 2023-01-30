@@ -3,17 +3,6 @@
 <% if @success %>
   <p>New Matchups Generated</p>
 
-  <p>
-    <%= link_to "Verify in Excel", 
-          "https://docs.google.com/spreadsheets/d/1EgzblSSW6L-MJtA9tozflRCoKXXdquDymBUFEmX2rX0/edit#gid=671638943",
-          target: :_blank %>
-    
-  </p>
-
-  <p>
-    <%= @generator.to_s.html_safe %>
-  </p>
-
 <% else %>
   <p>Failed to generate new brackets</p>
 <% end %>
@@ -25,3 +14,15 @@
     </div>
   <% end %>
 </div>
+
+<% if @success %>
+  <p>
+    <%= link_to "Verify in Excel",
+          "https://docs.google.com/spreadsheets/d/1EgzblSSW6L-MJtA9tozflRCoKXXdquDymBUFEmX2rX0/edit#gid=671638943",
+          target: :_blank %>
+  </p>
+
+  <p>
+    <%= @generator.to_s.html_safe %>
+  </p>
+<% end %>
