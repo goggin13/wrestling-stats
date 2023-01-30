@@ -1,24 +1,35 @@
-<p>
-  Tiebreaker Criteria
-</p>
+<h1>Tiebreaker Criteria</h1>
 
 <table id="tiebreaker_criteria">
   <tr>
     <th></th>
     <% Olympics::Team.all[1..].each do |team_a| %>
-      <th><%= team_a.name %></th>
+      <%= with_team_bg_color(team_a, :th) do %>
+        <%= team_a.name %>
+      <% end %>
     <% end %>
   </tr>
 
   <% matchups = [] %>
   <% Olympics::Team.all[0...-1].each do |team_a| %>
     <tr>
-      <th><%= team_a.name %></th>
+      <%= with_team_bg_color(team_a, :th) do %>
+        <%= team_a.name %>
+      <% end %>
       <% Olympics::Team.all[1..].each do |team_b| %>
-        <td>
           <% if (team_a != team_b) && !matchups.include?([team_a.id, team_b.id].sort) %>
-            <%= @presenter.tiebreaker_message(team_a, team_b).html_safe %>
+            <% content = @presenter.tiebreaker_message(team_a, team_b).html_safe %>
             <% matchups << [team_a.id, team_b.id].sort %>
+
+            <% if team_a.better_than?(team_b) %>
+              <%= with_team_bg_color(team_a, :td) { content } %>
+            <% elsif team_b.better_than?(team_a) %>
+              <%= with_team_bg_color(team_b, :td) { content } %>
+            <% else %>
+              <td><%= content %></td>
+            <% end %>
+          <% else %>
+            <td></td>
           <% end %>
         </td>
       <% end %>
@@ -26,3 +37,11 @@
   <% end %>
 
 </table>
+
+<p>
+  Tiebreaker Criteria: 
+  1) Head to Head Games
+  2) Beer Pong Cup Differential
+  3) Overtime BP Game
+</p>
+

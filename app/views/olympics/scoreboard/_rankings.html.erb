@@ -1,18 +1,19 @@
+<h1>Standings</h1>
 <table>
-  <tr>
-    <th>Place</th>
-    <th>Points</th>
-    <th>Team</th>
-  </tr>
-
   <% presenter.rankings.each do |place| %>
     <tr>
-      <td><%= place[:rank] %></td>
-      <td><%= place[:points] %></td>
+      <td><%= place[:rank].ordinalize %></td>
       <td>
         <% place[:teams].each do |team| %>
-          <%= team.name %><br/>
+          <div class="scoreboard_team_name">
+            <%= with_team_bg_color(team, :div) do %>
+              <%= team.name %><br/>
+            <% end %>
+          </div>
         <% end %>
+      </td>
+      <td>
+        <%= place[:points] %>
       </td>
     </tr>
   <% end %>

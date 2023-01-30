@@ -3,7 +3,7 @@ class Olympics::TeamsController < Olympics::ApplicationController
 
   # GET /olympics/teams or /olympics/teams.json
   def index
-    @teams = Olympics::Team.all
+    @teams = Olympics::Team.order(:number).all
   end
 
   # GET /olympics/teams/1 or /olympics/teams/1.json
@@ -65,6 +65,6 @@ class Olympics::TeamsController < Olympics::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def team_params
-      params.require(:olympics_team).permit(:name, :number)
+      params.require(:olympics_team).permit(:name, :number, :color)
     end
 end

@@ -54,6 +54,24 @@ RSpec.describe Olympics::Team, type: :model do
       expect(@team_A.better_than?(@team_B)).to eq(false)
     end
 
+    it "returns false if the second team has more points but a head to head win" do
+      FactoryBot.create(:olympics_match, team_1: @team_B, winning_team: @team_B)
+      FactoryBot.create(:olympics_match, team_1: @team_B, winning_team: @team_B)
+      FactoryBot.create(:olympics_match, team_1: @team_B, team_2: @team_A, winning_team: @team_A)
+
+      expect(@team_A.better_than?(@team_B)).to eq(false)
+    end
+
+    it "returns false if the second team has more H2H wins but less BP cups" do
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_B, winning_team: @team_A, bp_cups_remaining: 5)
+      FactoryBot.create(:olympics_match,
+                        team_1: @team_B, team_2: @team_A,
+                        winning_team: @team_B, bp_cups_remaining: 1)
+
+      expect(@team_A.better_than?(@team_B)).to eq(false)
+    end
+
     it "returns false if the second team has the same points" do
       FactoryBot.create(:olympics_match, team_1: @team_A, winning_team: @team_A)
       FactoryBot.create(:olympics_match, team_1: @team_B, winning_team: @team_B)
@@ -69,9 +87,6 @@ RSpec.describe Olympics::Team, type: :model do
     end
 
     describe "tied on points" do
-      before do
-      end
-
       it "returns true if the first team has more head to head wins" do
         FactoryBot.create(:olympics_match,
                           team_1: @team_A, team_2: @team_B, winning_team: @team_A)

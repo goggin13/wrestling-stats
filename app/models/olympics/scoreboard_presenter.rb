@@ -8,18 +8,13 @@ module Olympics
         .all
     end
 
-    def on_deck(offset=0)
+    def on_deck
       Match
         .order(:bout_number => "ASC")
         .where(:winning_team_id => nil)
         .where(:now_playing => false)
-        .offset(offset)
-        .limit(2)
+        .limit(3)
         .all
-    end
-
-    def in_the_hole
-      on_deck(offset(2))
     end
 
     def results
@@ -33,16 +28,13 @@ module Olympics
       tiebreaker_message = ""
 
       if t1.better_than?(t2)
-        tiebreaker_message += "#{t1.name} <br/>"
       elsif t2.better_than?(t1)
-        tiebreaker_message += "#{t2.name} <br/>"
       else
-        tiebreaker_message = "tie<br/>"
       end
 
-      tiebreaker_message += "#{t1.wins_over(t2)}-#{t2.wins_over(t1)} <br/>"
+      tiebreaker_message += "Games: #{t1.wins_over(t2)}-#{t2.wins_over(t1)} <br/>"
       if t1.wins_over(t2) == t2.wins_over(t1)
-        tiebreaker_message += "BP cups: #{t1.bp_cups} to #{t2.bp_cups}"
+        tiebreaker_message += "Cups: #{t1.bp_cups} to #{t2.bp_cups}"
       end
 
       tiebreaker_message

@@ -1,7 +1,5 @@
 <div class="olympic_match">
 
-
-  <p>Match <%= match.bout_number %></p>
   <div class="clear"></div>
   <div class="olympic_match_panel">
 
@@ -16,6 +14,7 @@
       <%= match.team_1.name.gsub("&", "<br/>&<br/>").html_safe %>
     </div>
   </div>
+
   <div class="olympic_match_panel">
     <%= event_logo(match) %>
 

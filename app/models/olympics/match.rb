@@ -13,4 +13,8 @@ class Olympics::Match < ApplicationRecord
       DRINK_BALL = "drink_ball",
     ]
   end
+
+  def to_s
+    "#{team_1} #{team_2} : #{event}"
+  end
 end

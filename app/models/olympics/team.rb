@@ -46,9 +46,12 @@ class Olympics::Team < ApplicationRecord
   end
 
   def better_than?(other_team)
-    (self.points > other_team.points) ||
-      (self.wins_over(other_team) > other_team.wins_over(self)) ||
-      (self.bp_cups > other_team.bp_cups)
+    return true if self.points > other_team.points
+    return false if self.points < other_team.points
+
+    return true if self.wins_over(other_team) > other_team.wins_over(self)
+    return false if self.wins_over(other_team) < other_team.wins_over(self)
+    self.bp_cups > other_team.bp_cups
   end
 
   def better_than_all_of?(other_teams)

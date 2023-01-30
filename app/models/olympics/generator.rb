@@ -3,9 +3,10 @@ require 'csv'
 class Olympics::Generator
   attr_accessor :teams, :games
 
-  def self.generate_matchups(number_of_teams)
-    teams = (1..number_of_teams).to_a
-    generator = Olympics::Generator.new(teams)
+  def self.generate_matchups
+    Olympics::Match.destroy_all
+    team_numbers = (1..Olympics::Team.count).to_a
+    generator = Olympics::Generator.new(team_numbers)
 
     success = false
     1000.times do |i|
@@ -15,12 +16,14 @@ class Olympics::Generator
       if generator.randomize_teams!
         success = true
         puts "\tSuccess"
+        generator.save_teams!
       end
     end
 
     if success
-      puts generator
-      generator.write_to_file
+      generator
+    else
+      nil
     end
   end
 
@@ -49,21 +52,25 @@ class Olympics::Generator
     [first_game, second_game, third_game] + event_games
   end
 
+  def group_games!
+    grouped = @games.group_by(&:event)
+    @games = []
+    Olympics::Match::Events::EVENTS.each do |event|
+      sort_within_event(grouped[event]).each do |match|
+        @games << match
+      end
+    end
+  end
+
   def to_s
-    output = "*" * 80
-    output += "\nOlympics"
-    output += "\n\tteams: #{@num_teams}"
-    output += "\n\tevents: #{Olympics::Match::Events::EVENTS.length}"
-    output += "\n\tgames: #{@games.length}\n"
-    output += "*" * 80
-    output += "\n\n"
+    output = ""
     grouped =  @games.group_by(&:event)
     Olympics::Match::Events::EVENTS.each do |event|
       event_matches = sort_within_event(grouped[event])
       (event_matches || []).each do |game|
-        output += "#{game}\n"
+        output += "#{game}<br/>"
       end
-      output += "\n\n"
+      output += "<br/><br/>"
     end
 
     output
@@ -124,6 +131,7 @@ class Olympics::Generator
     unique_counts = games
       .filter { |g| g.event }
       .group_by { |g| g }.map{ |k, v| [k, v.length] }.to_h
+
     unique_counts.each do |matchup, count|
       if count > 1
         validation_errors << "\tvalidation failure: #{matchup} occurs #{count} times"
@@ -156,7 +164,7 @@ class Olympics::Generator
     teams.each do |team_1|
       teams.each do |team_2|
         if team_1 != team_2
-          @potential_games << Game.new(team_1, team_2)
+          @potential_games << GeneratedMatch.new(team_1, team_2)
         end
       end
     end
@@ -190,23 +198,18 @@ class Olympics::Generator
       end
     end
 
+    unless failed
+      group_games!
+    end
+
     !failed
   end
 
-  def write_to_file
-    bout_number = 0
-    CSV.open("matchups.csv", "w") do |csv|
-      grouped =  @games.group_by(&:event)
-      Olympics::Match::Events::EVENTS.each do |event|
-        event_matches = sort_within_event(grouped[event])
-        event_matches.each do |game|
-          csv << [bout_number += 1, game.team_1, game.team_2, game.event]
-        end
-      end
-    end
+  def save_teams!
+    @games.each { |g| g.save! }
   end
 
-  class Game
+  class GeneratedMatch
     attr_accessor :event, :team_1, :team_2
 
     def initialize(team_1, team_2, event=nil)
@@ -216,7 +219,7 @@ class Olympics::Generator
     end
 
     def to_s
-      "#{team_1} #{team_2} : #{event}"
+      "#{team_1} #{team_2}"
     end
 
     def contains?(team)
@@ -255,7 +258,17 @@ class Olympics::Generator
     end
 
     def dup
-      Game.new(team_1, team_2, event)
+      GeneratedMatch.new(team_1, team_2, event)
+    end
+
+    def save!
+      current_bout_number = Olympics::Match.maximum(:bout_number) || 0
+      Olympics::Match.create!(
+        team_1: Olympics::Team.where(number: team_1).first!,
+        team_2: Olympics::Team.where(number: team_2).first!,
+        bout_number: current_bout_number + 1,
+        event: event
+      )
     end
   end
 end

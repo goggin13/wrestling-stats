@@ -15,11 +15,11 @@
  */
 
 tbody tr:nth-child(odd){
-  background-color: darkgray;
+  /* background-color: darkgray; */
 }
 
 tbody tr:nth-child(even){
-  background-color: lightgray;
+  /* background-color: lightgray; */
 }
 
 td, th {

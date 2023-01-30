@@ -6,7 +6,7 @@ namespace :olympics do
   end
 
   desc "Generate brackets"
-  task :generate, [:num_teams] => :environment do |t, args|
-    Olympics::Generator.generate_matchups(args.num_teams.to_i)
+  task :generate, [] => :environment do |t, args|
+    Olympics::Generator.generate_matchups
   end
 end

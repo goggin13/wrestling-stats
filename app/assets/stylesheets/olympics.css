@@ -1,7 +1,5 @@
 .scoreboard_component {
-  border: thin solid black;
   width: 45%;
-  margin-bottom: 2%;
 }
 
 .right {
@@ -59,6 +57,24 @@
   display: none;
 }
 
+#tiebreaker_criteria {
+  table-layout: fixed ;
+  width: 100%;
+}
+
 #tiebreaker_criteria td {
   text-align: center;
+}
+
+.generated_match {
+  border: thin solid black;
+  width: 19%;
+  float: left;
+  margin: 5px;
+  height: 150px;
+}
+
+.scoreboard_team_name {
+  border: thin solid black;
+  width: 50%;
 }

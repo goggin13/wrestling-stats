@@ -1,5 +1,5 @@
 <div id="<%= dom_id team %>">
-  <p>
+  <%= with_team_color(team, "p") do %>
     <%= team.number %>| <%= team.name %>
-  </p>
+  <% end %>
 </div>

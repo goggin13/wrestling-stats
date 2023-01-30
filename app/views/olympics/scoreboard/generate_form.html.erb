@@ -1,5 +1,9 @@
 <h1>Generate Brackets</h1>
 
+<p>
+  This will destroy all current matches
+</p>
+
 <%= form_with url: olympics_generate_brackets_path, method: :post do |form| %>
   <%= form.submit "Generate" %>
 <% end %>
