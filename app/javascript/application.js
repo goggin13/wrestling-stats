@@ -48,7 +48,7 @@ function update_scoreboard() {
   $("#tiebreaker").fadeOut();
 };
 
-function manage_bp_form () {
+function manage_bp_form() {
   $(".match_form.beer_pong .update_match_form").submit(function (event) {
     let bp_cups = prompt("How many cups were left?");
     if (isNaN(bp_cups) || bp_cups < 1 || bp_cups > 10) {

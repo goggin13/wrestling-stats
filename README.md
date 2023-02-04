@@ -1,4 +1,27 @@
-# README
+# Getting Started in development
+./docker/build_and_tag.sh
+./docker/start_app.sh
+
+In a new pane
+./docker/exec_db.sh
+psql -Upostgres
+psql -Upostgres
+CREATE USER dumbledore login createdb;
+\password dumbdledore
+  <dumbledore_development>
+
+In a new pane
+./docker/exec.sh
+bundle exec rake db:create
+RAILS_ENV=development bin/rails db:migrate 
+RAILS_ENV=development bundle exec rake schedule:ingest
+RAILS_ENV=development bundle exec rake rankings:update
+RAILS_ENV=test bundle exec rspec
+
+# Dumbledore
+- Silo JS and CSS files between apps
+
+# Wrestling
 * Up Next
 Team Logos
 Add links to team pages
@@ -20,38 +43,12 @@ X - Auto-update rankings
 Google Doc for raw schedule:
 https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496Xtkw/edit#gid=0
 
-# Getting Started in development
-./docker/build_and_tag.sh
-./docker/start_app.sh
-
-In a new pane
-./docker/exec_db.sh
-psql -Upostgres
-psql -Upostgres
-CREATE USER dumbledore login createdb;
-\password dumbdledore
-  <dumbledore_development>
-
-In a new pane
-./docker/exec.sh
-bundle exec rake db:create
-RAILS_ENV=development bin/rails db:migrate 
-RAILS_ENV=development bundle exec rake schedule:ingest
-RAILS_ENV=development bundle exec rake rankings:update
-RAILS_ENV=test bundle exec rspec
-
-
-
-
-
-
-
 
 ### LOMD 
 
 #### ToDo
 ---- Must do ----
-CORS - prod testing
+X - CORS - prod testing
 X - Make it pretty (dark background)
 X - Advance teams by event until last game in event is played
 X - prompt for BP cups 
@@ -65,18 +62,3 @@ Have a testing party
 X - Generate brackets page
 E2E testing
 X - Team Colors
-
-### Wrestling
-
-scoreboard
-- display tiebreaker data in subdued rows
-- head-to-head, BP cups
-
-table 1 playing
-table 2 playing
-
-on deck
-second on deck
-in the hole
-
-rotating head-to-head tiebreaker banner

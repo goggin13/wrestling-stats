@@ -6,9 +6,14 @@ class Olympics::ScoreboardController < Olympics::ApplicationController
   end
 
   def generate_brackets
-    @generator = Olympics::Generator.generate_matchups
-    @success = @generator.present?
     @matches = Olympics::Match.order(:bout_number).all
+    if params[:password] == "2314@#!$"
+      @generator = Olympics::Generator.generate_matchups
+      @success = @generator.present?
+    else
+      flash.now[:alert] = "Incorrect password"
+      @success = false
+    end
   end
 
   def scoreboard
