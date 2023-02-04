@@ -22,6 +22,18 @@
   float: left;
 }
 
+@media only screen and (max-width: 480px) {
+  .match_column {
+    width: 100%;
+  }
+}
+
+.match_column input[type="submit"] {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .match_column .match_form {
   border: thin solid black;
   padding: 10px;
