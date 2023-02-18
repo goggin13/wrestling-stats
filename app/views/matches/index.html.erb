@@ -1,11 +1,13 @@
 
 <% if @limit_to_rank > 0 %>
-  <h1>Top 15 Matchups</h1>
-  <%= link_to("All Matches", root_path) %>
+  <h1>Top 15 Matchups (-<%= @lookback_window %> days)</h1>
 <% else %>
-  <h1>All Matchups</h1>
-  <%= link_to("Top 15 only", root_path(limit_to_rank: 15)) %>
+  <h1>All Matchups (-<%= @lookback_window %> days)</h1>
 <% end %>
+
+  <%= link_to("Top 15 only", root_path(limit_to_rank: 15)) %> | 
+  <%= link_to("All Matches", root_path) %> | 
+  <%= link_to("Older Matches", root_path(lookback_window: 7)) %>
 
 <% previous_date = nil %>
 <% @matches.each do |match| %>

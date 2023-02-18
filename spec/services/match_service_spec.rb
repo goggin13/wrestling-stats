@@ -50,5 +50,33 @@ describe WrestlerService do
       result[:away][125].id = @vito.id
       result[:away][149].id = @yianni.id
     end
+
+    it "returns the predicted number of wins for each team" do
+      FactoryBot.create(:wrestler, weight: 125, rank: 2, college: @away)
+      FactoryBot.create(:wrestler, weight: 149, rank: 1, college: @home)
+      result = MatchService.preview(@away, @home)
+      expect(result[:prediction][:home][:wins]).to eq(1)
+      expect(result[:prediction][:away][:wins]).to eq(1)
+      expect(result[:prediction][:up_for_grabs][:wins]).to eq(8)
+    end
+
+    it "returns the predicted number of points for each team" do
+      # away +4
+      FactoryBot.create(:wrestler, weight: 125, rank: 2, college: @away)
+      # away + 3
+      FactoryBot.create(:wrestler, weight: 133, rank: 1, college: @away)
+      FactoryBot.create(:wrestler, weight: 133, rank: 2, college: @home)
+      # home + 4
+      FactoryBot.create(:wrestler, weight: 149, rank: 1, college: @home)
+      result = MatchService.preview(@away, @home)
+
+      expect(result[:prediction][:home][:wins]).to eq(1)
+      expect(result[:prediction][:away][:wins]).to eq(2)
+      expect(result[:prediction][:up_for_grabs][:wins]).to eq(7)
+
+      expect(result[:prediction][:home][:score]).to eq(4)
+      expect(result[:prediction][:away][:score]).to eq(7)
+      expect(result[:prediction][:up_for_grabs][:score]).to eq(21)
+    end
   end
 end

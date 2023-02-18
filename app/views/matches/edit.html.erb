@@ -26,8 +26,14 @@
 
 <p>
   Predicted Score <br/>
-  <%= @away[:college].name %>: <%= @match_preview[:away_score] %>
-  <%= @home[:college].name %>: <%= @match_preview[:home_score] %>
+  <%= @away[:college].name %>: <%= @prediction[:away][:score] %>
+  <%= @home[:college].name %>: <%= @prediction[:home][:score] %>
+  <br/>
+  <%= @prediction[:away][:wins] %> matches to <%= @prediction[:home][:wins] %>
+  <% if @prediction[:up_for_grabs][:wins] > 0 %> 
+    <br/>
+    <%= @prediction[:up_for_grabs][:wins] %> matches up for grabs
+  <% end %>
 </p>
 
 <hr/>
