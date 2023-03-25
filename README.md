@@ -43,6 +43,10 @@ X - Auto-update rankings
 Google Doc for raw schedule:
 https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496Xtkw/edit#gid=0
 
+### Advocate
+automate download or else it can never be prod
+password protect
+deploy
 
 ### LOMD 
 

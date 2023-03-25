@@ -1,0 +1,47 @@
+<% @presenter.dates.each_with_index do |date, i| %>
+  <div class="date" id="<%= date.strftime("%m-%d") %>">
+    <%= date.strftime("%a") %><br/>
+    <%= date.strftime("%-m/%d") %>
+  </div>
+
+  <% if i > 0 && ((i + 1) % 7) == 0 %>
+    <div class="clear"></div>
+  <% end %>
+<% end %>
+
+
+<% @presenter.dates.each_with_index do |date, i| %>
+  <div id="schedule_<%= date.strftime("%m-%d") %>" class="schedule_days hidden">
+    <% shifts = @presenter.shifts_for(date) %>
+    Day <br/>
+    <%= render partial: "shift", locals: {shift: shifts[:day][:us]} %>
+    <% shifts[:day][:rns].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+    <% shifts[:day][:techs].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+
+    Swing <br/>
+    <% shifts[:swing][:rns].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+    <% shifts[:swing][:techs].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+
+    Night <br/>
+    <%= render partial: "shift", locals: {shift: shifts[:night][:us]} %>
+    <% shifts[:night][:rns].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+    <% shifts[:night][:techs].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+
+    Also <br/>
+    <% shifts[:unsorted].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+  </div>
+<% end %>

@@ -5,7 +5,19 @@ import "controllers"
 $(document).ready(function () {
   check_for_updates();
   manage_bp_form();
+  advocate_show_hide();
 });
+
+function advocate_show_hide() {
+  $(".date").click(function() {
+    $(".date").removeClass("selected");
+    $(".schedule_days").hide();
+
+    $(this).addClass("selected");
+    var target = "#schedule_" + $(this).attr("id");
+    $(target).show();
+  });
+};
 
 function check_for_updates () {
   var last_updated_at = 0;

@@ -13,6 +13,10 @@ Rails.application.routes.draw do
     get "/fetch_latest_updated_at" => 'scoreboard#fetch_latest_updated_at'
   end
 
+  namespace :advocate do
+    get "/schedule", to: "schedule#show"
+  end
+
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_scope :user do

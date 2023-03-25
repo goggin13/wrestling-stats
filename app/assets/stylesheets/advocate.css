@@ -1,0 +1,42 @@
+.shift {
+  width: 200px;
+  border: thin solid black;
+  padding: 4px;
+}
+
+.shift.US {
+  background-color: black;
+  color: white;
+}
+
+.shift.LPN,
+.shift.RN-EXT,
+.shift.RN,
+.shift.AGCY {
+  background-color: navy;
+  color: white;
+}
+
+.shift.NCT,
+.shift.TECH {
+  background-color: teal;
+  color: white;
+}
+
+.shift-code {
+  float: right;
+}
+
+.date {
+  width: 40px;
+  float: left;
+  border: thin solid black;
+  text-align: center;
+  cursor: pointer;
+}
+
+.date.selected {
+  border: thin solid red;
+  background: black;
+  color: white;
+}

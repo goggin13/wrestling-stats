@@ -1,0 +1,13 @@
+<% if shift.present? %>
+  <div class="shift <%= shift.employee.role %>">
+    <%= shift.employee.first %> <%= shift.employee.last.first %>
+    
+    <span class="shift-code">
+      <% if shift.start.present? %>
+        (<%= shift.start %>-<%= shift.duration %>)
+      <% else %>
+        <%= shift.raw_shift_code %>
+      <% end %>
+    </span>
+  </div>
+<% end %>
