@@ -24,6 +24,9 @@ class Advocate::Shift < ApplicationRecord
     elsif raw_shift_code =~ /^OC\d\d-\d\d/
       self.start = raw_shift_code[2..3]
       self.duration = raw_shift_code[5..6]
+    elsif raw_shift_code =~ /^CHG\d\d\d\d/
+      self.start = raw_shift_code[3..4]
+      self.duration = raw_shift_code[5..6]
     end
   end
 

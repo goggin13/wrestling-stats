@@ -42,6 +42,14 @@ module Advocate
         expect(shift.start).to eq(7)
         expect(shift.duration).to eq(12)
       end
+
+      it "parses CHG1912" do
+        shift = Shift.new(raw_shift_code: "CHG1912")
+        shift.parse_shift_code!
+
+        expect(shift.start).to eq(19)
+        expect(shift.duration).to eq(12)
+      end
     end
   end
 
