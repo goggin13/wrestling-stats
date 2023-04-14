@@ -1,10 +1,78 @@
 class Advocate::SchedulePresenter
+  SKIPPED_EMPLOYEES = [
+    "noreen jacqueline",
+    "semmel alana",
+    "ramirez hector",
+    "reyes mariela"
+  ]
+
   def initialize
     @shifts = Advocate::Shift.all
+    @shifts = @shifts.reject do |shift|
+      SKIPPED_EMPLOYEES.include?(shift.employee.full_name)
+    end
   end
 
   def dates
     Advocate::Shift.select(:date).order("date ASC").map(&:date).uniq
+  end
+
+	def working_on?(date, employee)
+    date = DateTime.parse(date) if date.is_a?(String)
+    @shifts.select do |shift|
+      shift.date == date && shift.employee == employee
+    end.length > 0
+  end
+
+  def timeline(date)
+    date = DateTime.parse(date) if date.is_a?(String)
+    todays_shifts = @shifts.select do |s|
+      s.date == date && s.start.present?
+    end
+
+    results = {}
+    hours = (7..23).to_a + (0..6).to_a
+    (hours).each do |hour|
+      results[hour] = todays_shifts.inject(rn: 0, tech: 0) do |acc, shift|
+        if shift.working_during?(hour)
+          if shift.employee.rn?
+            acc[:rn] += 1
+          elsif shift.employee.tech?
+            acc[:tech] += 1
+          end
+        end
+
+        acc
+      end
+    end
+
+    results.transform_keys do |hour|
+      (hour * 100).to_s.rjust(4, "0")
+    end
+  end
+
+  def shift_count_for_graph(date)
+    timeline = timeline(date).to_a
+    grouped_results = {}
+
+    previous_hour = nil
+    previous_count = nil
+
+    timeline.each do |hour, count|
+      if previous_hour.nil?
+        previous_hour = hour
+        previous_count = count
+      elsif count != previous_count
+        new_key = previous_hour + "-" + hour
+        grouped_results[new_key] = previous_count
+        previous_hour = hour
+        previous_count = count
+      end
+    end
+
+    grouped_results[previous_hour + "-0700"] = previous_count
+
+    grouped_results
   end
 
   def shifts_for(date)
@@ -12,17 +80,17 @@ class Advocate::SchedulePresenter
     todays_shifts = @shifts.select { |s| s.date == date }
 
     day_shifts = todays_shifts.select { |s| s.start.present? && s.start.to_i > 0 && s.start.to_i <= 9 }
-    day_shift_rns = day_shifts.select { |s| ["LPN", "RN", "AGCY"].include?(s.employee.role) }
-    day_shift_techs = day_shifts.select { |s| ["TECH", "NCT"].include?(s.employee.role) }
+    day_shift_rns = day_shifts.select { |s| s.employee.rn? }
+    day_shift_techs = day_shifts.select { |s| s.employee.tech? }
     day_shift_us = day_shifts.find { |s| s.employee.role == "US" }
 
     swing_shifts = todays_shifts.select { |s| s.start.present? && s.start.to_i > 9 && s.start.to_i < 19 }
-    swing_shift_rns = swing_shifts.select { |s| ["LPN", "RN", "AGCY"].include?(s.employee.role) }
-    swing_shift_techs = swing_shifts.select { |s| ["TECH", "NCT"].include?(s.employee.role) }
+    swing_shift_rns = swing_shifts.select { |s| s.employee.rn? }
+    swing_shift_techs = swing_shifts.select { |s| s.employee.tech? }
 
     night_shifts = todays_shifts.select { |s| s.start.to_i >= 18 }
-    night_shift_rns = night_shifts.select { |s| ["LPN", "RN", "AGCY"].include?(s.employee.role) }
-    night_shift_techs = night_shifts.select { |s| ["TECH", "NCT"].include?(s.employee.role) }
+    night_shift_rns = night_shifts.select { |s| s.employee.rn? }
+    night_shift_techs = night_shifts.select { |s| s.employee.tech? }
     night_shift_us = night_shifts.find { |s| s.employee.role == "US" }
 
     unsorted = todays_shifts.select { |s| s.start.nil? }
@@ -35,37 +103,3 @@ class Advocate::SchedulePresenter
     }
   end
 end
-
-# unsorted = shifts.select { |s| s.start.empty? }
-#
-# day_shifts = shifts.select { |s| s.start.present? && s.start.to_i > 0 && s.start.to_i <= 9 }
-# day_shift_RNs = day_shifts.select { |s| ["RN", "AGCY"].include?(s.employee.role) }
-# day_shift_techs = day_shifts.select { |s| s.employee.role == "TECH" }
-# day_shift_us = day_shifts.find { |s| s.employee.role == "US" }
-#
-# swing_shifts = shifts.select { |s| s.start.present? && s.start.to_i > 9 && s.start.to_i < 19 }
-# swing_shift_RNs = swing_shifts.select { |s| ["RN", "AGCY"].include?(s.employee.role) }
-# swing_shift_techs = swing_shifts.select { |s| s.employee.role == "TECH" }
-#
-# night_shifts = shifts.select { |s| s.start.to_i >= 18 }
-# night_shift_RNs = night_shifts.select { |s| ["RN", "AGCY"].include?(s.employee.role) }
-# night_shift_techs = night_shifts.select { |s| s.employee.role == "TECH" }
-# night_shift_us = night_shifts.find { |s| s.employee.role == "US" }
-#
-# puts "Day Shift"
-# puts day_shift_us
-# puts day_shift_RNs
-# puts day_shift_techs
-#
-# puts "\nSwing"
-# puts swing_shift_RNs
-# puts swing_shift_techs
-#
-# puts "\nNight Shift"
-# puts night_shift_us
-# puts night_shift_RNs
-# puts night_shift_techs
-#
-# puts "\nAlso starring"
-# puts unsorted
-# shift = shifts[0]

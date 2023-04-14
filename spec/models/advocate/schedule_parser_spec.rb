@@ -27,7 +27,7 @@ module Advocate
     it "writes the shifts to the shifts table" do
       expect do
         ScheduleParser.parse!(@file)
-      end.to change(Shift, :count).by 706
+      end.to change(Shift, :count).by 682
 
       shift = Shift.first!
       expect(shift.employee.name).to eq("Abukhaled, Yazen")

@@ -35,6 +35,14 @@ class Advocate::Shift < ApplicationRecord
     end
   end
 
+  def working_during?(hour)
+    if hour >= 7
+      (hour >= start) && hour < (start + duration)
+    else
+      (start + duration > 24) && hour < (start + duration) % 24
+    end
+  end
+
   def to_s
     "[#{date}] #{label} <#{employee.to_s}>   ---  #{raw_shift_code}"
   end

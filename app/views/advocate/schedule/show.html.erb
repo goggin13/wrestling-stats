@@ -1,7 +1,17 @@
+<p>Last updated on .......TODO</p>
+
+<% ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"].each do |day| %>
+  <div class="date header">
+    <%= day %><br/>
+  </div>
+<% end %>
+
+<div class="clear"></div>
+
 <% @presenter.dates.each_with_index do |date, i| %>
-  <div class="date" id="<%= date.strftime("%m-%d") %>">
-    <%= date.strftime("%a") %><br/>
-    <%= date.strftime("%-m/%d") %>
+  <div class="date <%= @presenter.working_on?(date, @current_employee) ? "highlight" : "" %>"
+       id="<%= date.strftime("%m-%d") %>">
+    <%= date.strftime("%-m/%e").gsub(" ", "") %>
   </div>
 
   <% if i > 0 && ((i + 1) % 7) == 0 %>
@@ -9,9 +19,108 @@
   <% end %>
 <% end %>
 
-
 <% @presenter.dates.each_with_index do |date, i| %>
   <div id="schedule_<%= date.strftime("%m-%d") %>" class="schedule_days hidden">
+    <% timeline = @presenter.shift_count_for_graph(date) %>
+    <% hours = @presenter.timeline(date) %>
+
+    <table class="staffing-chart charts-css multiple show-labels line show-primary-axis">
+      <caption> Single Dataset Table </caption> 
+      <thead>
+        <tr>
+          <th scope="col"> Month </th> 
+          <th scope="col"> Progress </th>
+        </tr>
+      </thead> 
+
+      <tbody>
+        <% previous_hour = nil %>
+        <% hours.each_with_index do |(hour, count), index| %>
+          <% rn_size = count[:rn] / 15.0 %>
+          <% tech_size = count[:tech] / 15.0 %>
+          <% show_label = ["0700", "1100", "1500", "1900", "2300", "0300"].include?(hour) %>
+          <% show_rn_data = index == 0 || count[:rn] != hours[previous_hour][:rn] %>
+          <% show_tech_data = index == 0 || count[:tech] != hours[previous_hour][:tech] %>
+          <tr>
+
+            <% if show_label %>
+              <th scope="row"> <%= hour.gsub("0", "") %> </th> 
+            <% end %>
+
+            <% color = rn_size == tech_size ? "cyan" : "navy" %>
+
+            <td style="--color: <%= color %>; --start:<%= rn_size %>; --size: <%= rn_size %>;">
+              <span class="data">
+                <% if show_rn_data %>
+                  <%= count[:rn] %>
+                <% end %>
+              </span>
+            </td>
+
+            <% if rn_size != tech_size %>
+              <td style="--color: teal; --start:<%= tech_size %>; --size: <%= tech_size %>;">
+                <span class="data">
+                  <% if show_tech_data %>
+                    <%= count[:tech] %>
+                  <% end %>
+                </span>
+              </td>
+            <% end %>
+
+            <% previous_hour = hour %>
+            <!-- <td style="--color: teal; --start:<%= index/24.0 %>; --size: <%= count[:tech] / 15.0 %>;"> -->
+            <!--   <span class="data"> <%= count[:tech] %> </span> -->
+            <!-- </td> -->
+          </tr>
+        <% end %>
+        
+      </tbody>
+
+    <!--   <tbody> -->
+    <!--     <tr> -->
+    <!--       <th scope="row"> Jan </th>  -->
+    <!--       <td style="--start:0; --size:0.3;"> -->
+    <!--         <span class="data"> 30 </span> -->
+    <!--       </td> -->
+    <!--     </tr> -->
+    <!--     <tr> -->
+    <!--       <th scope="row"> Feb </th>  -->
+    <!--       <td style="--start:0.3; --size:0.5;"> -->
+    <!--         <span class="data"> 50 </span> -->
+    <!--       </td> -->
+    <!--     </tr>  -->
+    <!--     <tr> -->
+    <!--       <th scope="row"> Mar </th>  -->
+    <!--       <td style="--start:0.5; --size:0.8;"> -->
+    <!--         <span class="data"> 80 </span> -->
+    <!--       </td> -->
+    <!--     </tr>  -->
+    <!--     <tr> -->
+    <!--       <th scope="row"> Apr </th>  -->
+    <!--       <td style="--start:0.8; --size:1;"> -->
+    <!--         <span class="data"> 100 </span> -->
+    <!--       </td> -->
+    <!--     </tr>  -->
+    <!--   </tbody> -->
+    <!-- </table> -->
+    <!--  -->
+
+    <table class="hidden">
+        <tr>
+          <th></th>
+          <th>RNs</th>
+          <th>Techs</th>
+        </tr>
+      <% timeline.each do |hour, shifts|%>
+        <tr>
+          <td><%= hour %></th>
+          <td><%= shifts[:rn] %></td>
+          <td><%= shifts[:tech] %></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <div class="clear"></div>
     <% shifts = @presenter.shifts_for(date) %>
     Day <br/>
     <%= render partial: "shift", locals: {shift: shifts[:day][:us]} %>

@@ -44,4 +44,62 @@ module Advocate
       end
     end
   end
+
+  describe "working_during?" do
+    describe "day" do
+      before do
+        @shift = Shift.new(start: 7, duration: 12)
+      end
+
+      it "is true for the start of a day shift" do
+        expect(@shift.working_during?(7)).to eq(true)
+      end
+
+      it "is true for the middle of a day shift" do
+        expect(@shift.working_during?(10)).to eq(true)
+      end
+
+      it "is false for the end of a day shift" do
+        expect(@shift.working_during?(19)).to eq(false)
+      end
+
+      it "is false for before the shift starts" do
+        expect(@shift.working_during?(5)).to eq(false)
+      end
+
+      it "is false for after the shift ends" do
+        expect(@shift.working_during?(23)).to eq(false)
+      end
+    end
+
+    describe "night" do
+      before do
+        @shift = Shift.new(start: 19, duration: 12)
+      end
+
+      it "is true for the start of a night shift" do
+        expect(@shift.working_during?(19)).to eq(true)
+      end
+
+      it "is true for the middle of a night shift" do
+        expect(@shift.working_during?(23)).to eq(true)
+      end
+
+      it "is true for the middle of a night shift after midnight" do
+        expect(@shift.working_during?(6)).to eq(true)
+      end
+
+      it "is false for the end of a night shift" do
+        expect(@shift.working_during?(7)).to eq(false)
+      end
+
+      it "is false for before the shift starts" do
+        expect(@shift.working_during?(18)).to eq(false)
+      end
+
+      it "is false for after the shift ends" do
+        expect(@shift.working_during?(8)).to eq(false)
+      end
+    end
+  end
 end

@@ -3,13 +3,15 @@
 import "controllers"
 
 $(document).ready(function () {
-  check_for_updates();
+  if ($("#rankings").length > 0) {
+    check_for_updates();
+  }
   manage_bp_form();
   advocate_show_hide();
 });
 
 function advocate_show_hide() {
-  $(".date").click(function() {
+  $(".date:not(.header)").click(function() {
     $(".date").removeClass("selected");
     $(".schedule_days").hide();
 

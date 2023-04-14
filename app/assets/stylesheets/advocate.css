@@ -32,11 +32,34 @@
   float: left;
   border: thin solid black;
   text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.date:not(.header) {
   cursor: pointer;
 }
 
-.date.selected {
-  border: thin solid red;
-  background: black;
+.date.selected, .date.highlight.selected {
+  background: purple;
   color: white;
+  font-weight: bolder;
+}
+
+.date.header {
+  background: lavender;
+  font-weight: bolder;
+}
+
+.date.highlight {
+  background: lightblue;
+}
+
+.staffing-chart.line {
+  height: 200px;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: lightgray;
+  border: medium solid black;
+	float: left;
 }

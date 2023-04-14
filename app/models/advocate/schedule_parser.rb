@@ -58,19 +58,17 @@ class Advocate::ScheduleParser
       tr.css("td").each_with_index do |td, date_index|
         date = @dates[date_index]
         raw_shift_code = td.text
-        if raw_shift_code != ""
-          @shifts[date] ||= []
-          # puts "#{date} - #{employee.try(:last)} #{raw_shift_code}"
-          # if employee.nil?
-          #   puts raw_shift_code, date, employee
-          #   debugger
-          # end
-          @shifts[date] << Advocate::Shift.create_from_raw_shift_code(
-            raw_shift_code,
-            date,
-            employee,
-          )
-        end
+        next if raw_shift_code == ""
+        next if raw_shift_code.include?("PTO")
+        next if raw_shift_code.include?("CLED")
+
+        raw_shift_code = raw_shift_code.gsub("¤", "")
+        @shifts[date] ||= []
+        @shifts[date] << Advocate::Shift.create_from_raw_shift_code(
+          raw_shift_code,
+          date,
+          employee,
+        )
       end
     end
   end

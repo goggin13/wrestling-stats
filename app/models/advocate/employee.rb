@@ -11,6 +11,18 @@ class Advocate::Employee < ApplicationRecord
     )
   end
 
+  def rn?
+    ["LPN", "RN", "AGCY"].include?(role)
+  end
+
+  def tech?
+    ["TECH", "NCT"].include?(role)
+  end
+
+  def full_name
+    "#{last.downcase} #{first.downcase}"
+  end
+
   def to_s
     "#{name}:#{role}"
   end

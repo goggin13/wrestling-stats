@@ -16,6 +16,7 @@ bundle exec rake db:create
 RAILS_ENV=development bin/rails db:migrate 
 RAILS_ENV=development bundle exec rake schedule:ingest
 RAILS_ENV=development bundle exec rake rankings:update
+RAILS_ENV=development bundle exec rake advocate:import_schedule[spec/download_fixtures/advocate/schedule_3_31.html] 
 RAILS_ENV=test bundle exec rspec
 
 # Dumbledore
@@ -43,10 +44,12 @@ X - Auto-update rankings
 Google Doc for raw schedule:
 https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496Xtkw/edit#gid=0
 
-### Advocate
+### Advocate PreProd
 automate download or else it can never be prod
+make graph / timeline of numbers
 password protect
 deploy
+monitoring/alerting for dumbledore
 
 ### LOMD 
 
