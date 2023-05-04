@@ -1,5 +1,4 @@
 class Advocate::Shift < ApplicationRecord
-  self.table_name = "advocate_shifts"
   belongs_to :employee, class_name: "Advocate::Employee"
 
   def self.create_from_raw_shift_code(raw_shift_code, date, employee)

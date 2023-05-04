@@ -1,5 +1,4 @@
 class Advocate::Employee < ApplicationRecord
-  self.table_name = "advocate_employees"
 
   def self.create_from_full_name(name, role)
     last, first = name.split(", ")
