@@ -29,7 +29,9 @@
 <% end %>
 
 <% Etoh::Drink.order("consumed_at DESC").all.each do |drink| %>
-  Drink logged <%= drink.consumed_at.strftime("%H:%M") %>
-  <%= link_to("[ X ]", etoh_delete_drink_path(id: drink.id), class: "delete_drink") %>
+  <div>
+    <span>Drink logged <%= drink.consumed_at.strftime("%H:%M") %></span>
+    <%= link_to("[ X ]", etoh_delete_drink_path(id: drink.id), class: "delete_drink") %>
+  </div>
 <br/>
 <% end %>

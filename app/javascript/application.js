@@ -79,6 +79,7 @@ function manage_bp_form() {
 
 function initialize_etoh() {
   $(".delete_drink").click(function () {
-    return confirm("are you sure?");
+    var text = $(this).prev("span").text();
+    return confirm("Really delete '" + text + "'?");
   });
 }

@@ -16,6 +16,9 @@ body#etoh {
 
 #etoh input[type=submit] {
   border-radius: 5px;
-  padding: 6px;
+  padding: 15px;
   margin: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
