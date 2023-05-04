@@ -8,6 +8,9 @@ $(document).ready(function () {
   }
   manage_bp_form();
   advocate_show_hide();
+  if ($("#etoh").length > 0) {
+    initialize_etoh();
+  }
 });
 
 function advocate_show_hide() {
@@ -73,3 +76,9 @@ function manage_bp_form() {
     }
   });
 };
+
+function initialize_etoh() {
+  $(".delete_drink").click(function () {
+    return confirm("are you sure?");
+  });
+}

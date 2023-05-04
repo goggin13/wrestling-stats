@@ -17,6 +17,12 @@ Rails.application.routes.draw do
     get "/schedule", to: "schedule#show"
   end
 
+  namespace :etoh do
+    get "/drinks", to: "drinks#index"
+    post "/drinks", to: "drinks#create"
+    get "/delete_drink", to: "drinks#destroy"
+  end
+
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_scope :user do

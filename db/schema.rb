@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_24_204620) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_04_184643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_204620) do
     t.integer "dual_rank"
     t.integer "tournament_rank"
     t.string "url"
+  end
+
+  create_table "etoh_drinks", force: :cascade do |t|
+    t.datetime "consumed_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
+    t.integer "oz", default: 12
+    t.integer "abv", default: 5
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "matches", force: :cascade do |t|

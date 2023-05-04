@@ -1,0 +1,35 @@
+<h1><%= Time.now.strftime("%H:%M") %></h1>
+
+<%= @presenter.current_drinks %> drinks in 
+<%= pluralize(@presenter.session_length.round(1), "hour") %>
+<br/>
+<%= pluralize(@presenter.drinks_remaining, "drinks") %> remaining
+
+<div id="fuel_bar">
+  <% (1..5).to_a.each do |i| %>
+    <% if i <= @presenter.drinks_remaining %>
+      <div class="cell full"></div>
+    <% else %>
+      <div class="cell"></div>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="clear"></div>
+
+<% [0, -15, -30, -45, -60].each do |minutes| %>
+  <%= form_with(url: etoh_drinks_path, model: @drink) do |form| %>
+    <%= form.hidden_field :consumed_at, value: minutes %>
+    <% if minutes == 0 %>
+      <%= form.submit "Drank drink" %>
+    <% else %>
+      <%= form.submit "Drank drink (#{minutes}m)" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% Etoh::Drink.order("consumed_at DESC").all.each do |drink| %>
+  Drink logged <%= drink.consumed_at.strftime("%H:%M") %>
+  <%= link_to("[ X ]", etoh_delete_drink_path(id: drink.id), class: "delete_drink") %>
+<br/>
+<% end %>
