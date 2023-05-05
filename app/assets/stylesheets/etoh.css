@@ -22,3 +22,7 @@ body#etoh {
   -moz-appearance: none;
   appearance: none;
 }
+
+#etoh .metabolized {
+  text-decoration: line-through;
+}

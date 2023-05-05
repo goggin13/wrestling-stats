@@ -99,5 +99,6 @@ function initialize_etoh() {
     var text = $(this).prev("span").text();
     return confirm("Really delete '" + text + "'?");
   });
+
   startTime();
 }

@@ -102,6 +102,18 @@ RSpec.describe Etoh::DrinksPresenter, type: :model do
       expect(presenter.recharge_in).to eq(59)
     end
 
+    it "doesn't get confused by an old session" do
+      FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(hours: -13),
+        metabolized_at: Time.now.advance(hours: -12))
+      FactoryBot.create(:etoh_drink,
+                        consumed_at: Time.now.advance(minutes: -31))
+
+      presenter = Etoh::DrinksPresenter.new
+
+      expect(presenter.recharge_in).to eq(29)
+    end
+
     it "is zero for no drinks" do
       presenter = Etoh::DrinksPresenter.new
 
