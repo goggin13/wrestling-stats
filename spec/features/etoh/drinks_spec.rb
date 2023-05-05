@@ -35,19 +35,23 @@ feature "Etoh::Drinks page" do
   end
 
   scenario "viewing previous drinks" do
-    [
-      "2023-05-04 15:00:00",
-      "2023-05-04 15:15:00",
-      "2023-05-04 15:30:00",
-    ].each do |consumed_at|
+    times = [
+      Time.now.advance(minutes: -10),
+      Time.now.advance(minutes: -10),
+      Time.now.advance(minutes: -10),
+    ]
+
+    times.each do |consumed_at|
       FactoryBot.create(:etoh_drink, consumed_at: consumed_at)
     end
 
     sign_in FactoryBot.create(:user, :admin)
     visit "/etoh/drinks"
 
-    expect(page).to have_content("Drink logged 15:30")
-    expect(page).to have_content("Drink logged 15:15")
-    expect(page).to have_content("Drink logged 15:00")
+    times.map do |t|
+      t.in_time_zone('US/Central').strftime("%H:%M")
+    end.each do |consumed_at|
+      expect(page).to have_content("Drink logged #{consumed_at}")
+    end
   end
 end
