@@ -54,6 +54,21 @@ RSpec.describe Etoh::Drink, type: :model do
       expect(drink.metabolized_at).to be > expected_time.advance(seconds: -1)
       expect(drink.metabolized_at).to be < expected_time.advance(seconds: 1)
     end
+
+    it "metabolizes multiple old drinks at once" do
+      drinks = (0..9).to_a.map do
+        FactoryBot.create(:etoh_drink,
+          consumed_at: Time.now.advance(hours: -10),
+          metabolized_at: nil)
+      end
+
+      Etoh::Drink.metabolize!
+
+      drinks.each do |drink|
+        drink.reload
+        expect(drink.metabolized_at).to be_present
+      end
+    end
   end
 
   describe "can_metabolize?" do

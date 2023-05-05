@@ -16,6 +16,10 @@ class Etoh::Drink < ApplicationRecord
       last_metabolized_at + 60.minutes
     end
     eligible.update_attribute(:metabolized_at, metabolized_time)
+
+    Rails.logger.info "[METABOLIZE] metabolized #{eligible}"
+
+    metabolize! if can_metabolize?
   end
 
   def self.last_metabolized_at
