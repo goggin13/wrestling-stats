@@ -43,7 +43,10 @@ RSpec.describe Etoh::DrinksPresenter, type: :model do
     end
 
     it "returns 5 if a drink was consumed more than an hour ago" do
-      FactoryBot.create(:etoh_drink, consumed_at: Time.now.advance(minutes: -90))
+      FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(minutes: -90),
+        metabolized_at: Time.now.advance(minutes: -30))
+
       presenter = Etoh::DrinksPresenter.new
       expect(presenter.drinks_remaining).to eq(5)
     end
@@ -54,19 +57,55 @@ RSpec.describe Etoh::DrinksPresenter, type: :model do
       expect(presenter.drinks_remaining).to eq(0)
     end
 
-    it "returns the difference between drinks consumed and hours in session + 5" do
-      5.times { FactoryBot.create(:etoh_drink, consumed_at: Time.now.advance(minutes: -125)) }
+    it "returns the difference between limit and metabolized drinks" do
+      FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(minutes: -121),
+        metabolized_at: Time.now.advance(minutes: -61))
+      FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(minutes: -121),
+        metabolized_at: Time.now.advance(minutes: -1))
+
+      3.times { FactoryBot.create(:etoh_drink) }
+
       presenter = Etoh::DrinksPresenter.new
       expect(presenter.drinks_remaining).to eq(2)
     end
 
-    it "is negative" do
-      5.times { FactoryBot.create(:etoh_drink, consumed_at: Time.now.advance(minutes: -125)) }
-      3.times { FactoryBot.create(:etoh_drink, consumed_at: Time.now) }
+    it "can be negative" do
+      8.times { FactoryBot.create(:etoh_drink, consumed_at: Time.now) }
 
       presenter = Etoh::DrinksPresenter.new
 
-      expect(presenter.drinks_remaining).to eq(-1)
+      expect(presenter.drinks_remaining).to eq(-3)
+    end
+  end
+
+  describe "recharge_in" do
+    it "returns the time until next drink can be metabolized" do
+      FactoryBot.create(:etoh_drink,
+                        consumed_at: Time.now.advance(minutes: -30))
+
+      presenter = Etoh::DrinksPresenter.new
+
+      expect(presenter.recharge_in).to eq(30)
+    end
+
+    it "returns the time until next drink can be metabolized" do
+      FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(minutes: -61),
+        metabolized_at: Time.now.advance(minutes: -1))
+      FactoryBot.create(:etoh_drink,
+                        consumed_at: Time.now.advance(minutes: -61))
+
+      presenter = Etoh::DrinksPresenter.new
+
+      expect(presenter.recharge_in).to eq(59)
+    end
+
+    it "is zero for no drinks" do
+      presenter = Etoh::DrinksPresenter.new
+
+      expect(presenter.recharge_in).to eq(0)
     end
   end
 end

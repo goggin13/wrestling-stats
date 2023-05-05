@@ -1,5 +1,6 @@
 class Etoh::DrinksController < Etoh::ApplicationController
   def index
+    Etoh::Drink.metabolize!
     @drink = Etoh::Drink.new
     @presenter = Etoh::DrinksPresenter.new
   end

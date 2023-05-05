@@ -1,4 +1,4 @@
-<h1><%= Time.now.strftime("%H:%M") %></h1>
+<h1 id="clock"></h1>
 
 <%= @presenter.current_drinks %> drinks in 
 <%= pluralize(@presenter.session_length.round(1), "hour") %>
@@ -6,7 +6,7 @@
 <%= pluralize(@presenter.drinks_remaining, "drinks") %> remaining
 
 <div id="fuel_bar">
-  <% (1..5).to_a.each do |i| %>
+  <% (1..Etoh::DrinksPresenter::LIMIT).to_a.each do |i| %>
     <% if i <= @presenter.drinks_remaining %>
       <div class="cell full"></div>
     <% else %>
@@ -16,6 +16,7 @@
 </div>
 
 <div class="clear"></div>
+Recharge in <%= @presenter.recharge_in %>m
 
 <% [0, -15, -30, -45, -60].each do |minutes| %>
   <%= form_with(url: etoh_drinks_path, model: @drink) do |form| %>
@@ -28,10 +29,14 @@
   <% end %>
 <% end %>
 
-<% Etoh::Drink.order("consumed_at DESC").all.each do |drink| %>
+<% @presenter.drinks.each do |drink| %>
   <div>
-    <span>Drink logged <%= drink.consumed_at.strftime("%H:%M") %></span>
+    <span>Drink logged <%= drink.consumed_at.in_time_zone('US/Central').strftime("%H:%M") %></span>
     <%= link_to("[ X ]", etoh_delete_drink_path(id: drink.id), class: "delete_drink") %>
+
+    <% if drink.metabolized? %>
+      <%= drink.metabolized_at.in_time_zone('US/Central').strftime("%H:%M") %>
+    <% end %>
   </div>
 <br/>
 <% end %>

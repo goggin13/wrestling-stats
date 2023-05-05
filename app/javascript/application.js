@@ -77,9 +77,27 @@ function manage_bp_form() {
   });
 };
 
+// ETOH
+function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = zeroPad(m);
+  s = zeroPad(s);
+  document.getElementById("clock").innerHTML =  h + ":" + m + ":" + s;
+  setTimeout(startTime, 1000);
+}
+
+function zeroPad(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
+
 function initialize_etoh() {
   $(".delete_drink").click(function () {
     var text = $(this).prev("span").text();
     return confirm("Really delete '" + text + "'?");
   });
+  startTime();
 }
