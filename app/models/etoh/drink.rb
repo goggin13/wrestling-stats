@@ -13,7 +13,10 @@ class Etoh::Drink < ApplicationRecord
     metabolized_time = if last_metabolized_at == 0
       eligible.consumed_at + 60.minutes
     else
-      last_metabolized_at + 60.minutes
+      [
+        last_metabolized_at + 60.minutes,
+        eligible.consumed_at + 60.minutes
+      ].max
     end
     eligible.update_attribute(:metabolized_at, metabolized_time)
 

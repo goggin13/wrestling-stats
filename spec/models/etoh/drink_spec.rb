@@ -69,6 +69,22 @@ RSpec.describe Etoh::Drink, type: :model do
         expect(drink.metabolized_at).to be_present
       end
     end
+
+    it "sets metabolized_at based on last_metabolized_at or consumed_at as appropriate" do
+      FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(hours: -10),
+        metabolized_at: Time.now.advance(hours: -9))
+      drink = FactoryBot.create(:etoh_drink,
+        consumed_at: Time.now.advance(minutes: -121))
+
+      Etoh::Drink.metabolize!
+
+      expected_time = Time.now.advance(minutes: -61)
+      drink.reload
+      expect(drink.metabolized_at).to be_present
+      expect(drink.metabolized_at).to be > expected_time.advance(seconds: -1)
+      expect(drink.metabolized_at).to be < expected_time.advance(seconds: 1)
+    end
   end
 
   describe "can_metabolize?" do
