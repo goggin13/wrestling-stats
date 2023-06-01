@@ -26,6 +26,21 @@ class Advocate::Shift < ApplicationRecord
     elsif raw_shift_code =~ /^CHG\d\d\d\d/
       self.start = raw_shift_code[3..4]
       self.duration = raw_shift_code[5..6]
+    elsif raw_shift_code == "[PREC]"
+      parse_preceptor_shift!
+    end
+  end
+
+  def parse_preceptor_shift!
+    if employee.first == "Emma"
+      self.start = 7
+      self.duration = 12
+    elsif employee.first == "Stephany"
+      self.start = 7
+      self.duration = 12
+    elsif employee.first == "Yvonne"
+      self.start = 19
+      self.duration = 12
     end
   end
 

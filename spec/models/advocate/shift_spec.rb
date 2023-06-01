@@ -50,6 +50,15 @@ module Advocate
         expect(shift.start).to eq(19)
         expect(shift.duration).to eq(12)
       end
+
+      it "parses emma as a preceptor 7-12" do
+        employee = FactoryBot.create(:advocate_employee, first: "Emma")
+        shift = Shift.new(raw_shift_code: "[PREC]", employee: employee)
+        shift.parse_shift_code!
+
+        expect(shift.start).to eq(7)
+        expect(shift.duration).to eq(12)
+      end
     end
   end
 
