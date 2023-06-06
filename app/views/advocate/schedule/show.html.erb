@@ -121,33 +121,40 @@
     </table>
 
     <div class="clear"></div>
-    <% shifts = @presenter.shifts_for(date) %>
-    Day <br/>
-    <%= render partial: "shift", locals: {shift: shifts[:day][:us]} %>
-    <% shifts[:day][:rns].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
-    <% shifts[:day][:techs].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
+    <div class="shift_block">
+      <% shifts = @presenter.shifts_for(date) %>
+      Day <br/>
+      <%= render partial: "shift", locals: {shift: shifts[:day][:us]} %>
+      <% shifts[:day][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:day][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+    </div>
 
-    Swing <br/>
-    <% shifts[:swing][:rns].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
-    <% shifts[:swing][:techs].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
+    <div class="shift_block">
+      Swing <br/>
+      <% shifts[:swing][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:swing][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+    </div>
 
-    Night <br/>
-    <%= render partial: "shift", locals: {shift: shifts[:night][:us]} %>
-    <% shifts[:night][:rns].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
-    <% shifts[:night][:techs].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
+    <div class="shift_block">
+      Night <br/>
+      <%= render partial: "shift", locals: {shift: shifts[:night][:us]} %>
+      <% shifts[:night][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:night][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+    </div>
 
+    <div class="clear"></div>
     Also <br/>
     <% shifts[:unsorted].each do |shift| %>
       <%= render partial: "shift", locals: {shift: shift} %>
