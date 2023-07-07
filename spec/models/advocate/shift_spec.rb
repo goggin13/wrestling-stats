@@ -35,6 +35,14 @@ module Advocate
         expect(shift.duration).to eq(8)
       end
 
+      it "parses EX07-08" do
+        shift = Shift.new(raw_shift_code: "EX07-08")
+        shift.parse_shift_code!
+
+        expect(shift.start).to eq(7)
+        expect(shift.duration).to eq(8)
+      end
+
       it "parses OC07-12" do
         shift = Shift.new(raw_shift_code: "OC07-12")
         shift.parse_shift_code!
@@ -57,6 +65,15 @@ module Advocate
         shift.parse_shift_code!
 
         expect(shift.start).to eq(7)
+        expect(shift.duration).to eq(12)
+      end
+
+      it "parses yazen as a charge 19-12" do
+        employee = FactoryBot.create(:advocate_employee, first: "Yazen")
+        shift = Shift.new(raw_shift_code: "[CHG]", employee: employee)
+        shift.parse_shift_code!
+
+        expect(shift.start).to eq(19)
         expect(shift.duration).to eq(12)
       end
     end
