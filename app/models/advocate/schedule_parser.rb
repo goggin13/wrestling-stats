@@ -3,8 +3,6 @@ class Advocate::ScheduleParser
 
   def self.parse!(file_path)
     parser = new(file_path)
-    # Advocate::Employee.destroy_all
-    # Advocate::Shift.destroy_all
     parser.parse!
   end
 
