@@ -16,6 +16,23 @@ module Advocate
         expect(shift.duration).to eq(12)
         expect(shift.date).to eq(DateTime.parse("3/19"))
       end
+
+      it "modifies an existing shift" do
+        shift = FactoryBot.create(:advocate_shift,
+                          start: 7, duration: 12, date: "2022-01-18",
+                          employee: @employee)
+        expect do
+          Shift.create_from_raw_shift_code("07-08", "2022-01-18", @employee)
+        end.to change(Shift, :count).by(0)
+
+        shift.reload
+
+        expect(shift.raw_shift_code).to eq("07-08")
+        expect(shift.employee_id).to eq(@employee.id)
+        expect(shift.start).to eq(7)
+        expect(shift.duration).to eq(8)
+        expect(shift.date).to eq(DateTime.parse("2022-01-18"))
+      end
     end
 
     describe "parse_shift_code!" do
@@ -71,6 +88,15 @@ module Advocate
       it "parses yazen as a charge 19-12" do
         employee = FactoryBot.create(:advocate_employee, first: "Yazen")
         shift = Shift.new(raw_shift_code: "[CHG]", employee: employee)
+        shift.parse_shift_code!
+
+        expect(shift.start).to eq(19)
+        expect(shift.duration).to eq(12)
+      end
+
+      it "parses Erin as a triage 19-12" do
+        employee = FactoryBot.create(:advocate_employee, first: "Erin")
+        shift = Shift.new(raw_shift_code: "[TRIAGE]", employee: employee)
         shift.parse_shift_code!
 
         expect(shift.start).to eq(19)

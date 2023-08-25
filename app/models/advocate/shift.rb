@@ -2,11 +2,16 @@ class Advocate::Shift < ApplicationRecord
   belongs_to :employee, class_name: "Advocate::Employee"
 
   def self.create_from_raw_shift_code(raw_shift_code, date, employee)
-    shift = Advocate::Shift.new(
-      raw_shift_code: raw_shift_code,
-      employee: employee,
-      date: DateTime.parse(date),
-    )
+    date = DateTime.parse(date)
+    shift = Advocate::Shift.where(date: date, employee: employee).first
+
+    if shift.present?
+      shift.raw_shift_code = raw_shift_code
+    else
+      shift = Advocate::Shift.new(
+        raw_shift_code: raw_shift_code, employee: employee, date: date
+      )
+    end
     shift.parse_shift_code!
     shift.save!
 
@@ -57,6 +62,9 @@ class Advocate::Shift < ApplicationRecord
       self.start = 19
       self.duration = 12
     elsif employee.first == "Gabrielle"
+      self.start = 19
+      self.duration = 12
+    elsif employee.first == "Erin"
       self.start = 19
       self.duration = 12
     end
