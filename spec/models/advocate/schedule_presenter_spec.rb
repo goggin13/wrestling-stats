@@ -126,36 +126,36 @@ module Advocate
       it "returns nurses/techs sorted by timeline" do
         timeline = @presenter.timeline("3/21")
 
-        expect(timeline["0700"]).to eq({rn: 5, tech: 6})
-        expect(timeline["0800"]).to eq({rn: 5, tech: 6})
+        expect(timeline["0700"]).to include({rns: 5, techs: 6})
+        expect(timeline["0800"]).to include({rns: 5, techs: 6})
 
-        expect(timeline["0900"]).to eq({rn: 6, tech: 6})
-        expect(timeline["1000"]).to eq({rn: 6, tech: 6})
+        expect(timeline["0900"]).to include({rns: 6, techs: 6})
+        expect(timeline["1000"]).to include({rns: 6, techs: 6})
 
-        expect(timeline["1100"]).to eq({rn: 7, tech: 7})
-        expect(timeline["1200"]).to eq({rn: 7, tech: 7})
-        expect(timeline["1300"]).to eq({rn: 7, tech: 7})
-        expect(timeline["1400"]).to eq({rn: 7, tech: 7})
+        expect(timeline["1100"]).to include({rns: 7, techs: 7})
+        expect(timeline["1200"]).to include({rns: 7, techs: 7})
+        expect(timeline["1300"]).to include({rns: 7, techs: 7})
+        expect(timeline["1400"]).to include({rns: 7, techs: 7})
 
-        expect(timeline["1500"]).to eq({rn: 10, tech: 6})
-        expect(timeline["1600"]).to eq({rn: 10, tech: 6})
-        expect(timeline["1700"]).to eq({rn: 10, tech: 6})
-        expect(timeline["1800"]).to eq({rn: 10, tech: 6})
+        expect(timeline["1500"]).to include({rns: 10, techs: 6})
+        expect(timeline["1600"]).to include({rns: 10, techs: 6})
+        expect(timeline["1700"]).to include({rns: 10, techs: 6})
+        expect(timeline["1800"]).to include({rns: 10, techs: 6})
 
-        expect(timeline["1900"]).to eq({rn: 8, tech: 4})
-        expect(timeline["2000"]).to eq({rn: 8, tech: 4})
-        expect(timeline["2100"]).to eq({rn: 8, tech: 4})
-        expect(timeline["2200"]).to eq({rn: 8, tech: 4})
+        expect(timeline["1900"]).to include({rns: 8, techs: 4})
+        expect(timeline["2000"]).to include({rns: 8, techs: 4})
+        expect(timeline["2100"]).to include({rns: 8, techs: 4})
+        expect(timeline["2200"]).to include({rns: 8, techs: 4})
 
-        expect(timeline["2300"]).to eq({rn: 7, tech: 3})
-        expect(timeline["0000"]).to eq({rn: 7, tech: 3})
-        expect(timeline["0100"]).to eq({rn: 7, tech: 3})
-        expect(timeline["0200"]).to eq({rn: 7, tech: 3})
+        expect(timeline["2300"]).to include({rns: 7, techs: 3})
+        expect(timeline["0000"]).to include({rns: 7, techs: 3})
+        expect(timeline["0100"]).to include({rns: 7, techs: 3})
+        expect(timeline["0200"]).to include({rns: 7, techs: 3})
 
-        expect(timeline["0300"]).to eq({rn: 5, tech: 3})
-        expect(timeline["0300"]).to eq({rn: 5, tech: 3})
-        expect(timeline["0500"]).to eq({rn: 5, tech: 3})
-        expect(timeline["0600"]).to eq({rn: 5, tech: 3})
+        expect(timeline["0300"]).to include({rns: 5, techs: 3})
+        expect(timeline["0300"]).to include({rns: 5, techs: 3})
+        expect(timeline["0500"]).to include({rns: 5, techs: 3})
+        expect(timeline["0600"]).to include({rns: 5, techs: 3})
       end
     end
 
@@ -163,13 +163,13 @@ module Advocate
       it "returns nurses/techs sorted by timeline in groups" do
         timeline = @presenter.shift_count_for_graph("3/21")
 
-        expect(timeline["0700-0900"]).to eq({rn: 5, tech: 6})
-        expect(timeline["0900-1100"]).to eq({rn: 6, tech: 6})
-        expect(timeline["1100-1500"]).to eq({rn: 7, tech: 7})
-        expect(timeline["1500-1900"]).to eq({rn: 10, tech: 6})
-        expect(timeline["1900-2300"]).to eq({rn: 8, tech: 4})
-        expect(timeline["2300-0300"]).to eq({rn: 7, tech: 3})
-        expect(timeline["0300-0700"]).to eq({rn: 5, tech: 3})
+        expect(timeline["0700-0900"]).to include({rns: 5, techs: 6})
+        expect(timeline["0900-1100"]).to include({rns: 6, techs: 6})
+        expect(timeline["1100-1500"]).to include({rns: 7, techs: 7})
+        expect(timeline["1500-1900"]).to include({rns: 10, techs: 6})
+        expect(timeline["1900-2300"]).to include({rns: 8, techs: 4})
+        expect(timeline["2300-0300"]).to include({rns: 7, techs: 3})
+        expect(timeline["0300-0700"]).to include({rns: 5, techs: 3})
       end
     end
 #

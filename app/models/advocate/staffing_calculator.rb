@@ -39,14 +39,18 @@ class Advocate::StaffingCalculator
       results[hour][:rn_pct] = (actual_rns / goal_rns.to_f * 100).round(2)
     end
 
-    results.transform_keys do |hour|
-      (hour * 100).to_s.rjust(4, "0")
-    end
+    results
   end
 
   def write_records
     counts.each do |hour, results|
-
+      Advocate::StaffingHour.create!(
+        date: @day,
+        hour: hour,
+        rns: results[:rns],
+        rn_pct: results[:rn_pct],
+        techs: results[:techs]
+      )
     end
   end
 end

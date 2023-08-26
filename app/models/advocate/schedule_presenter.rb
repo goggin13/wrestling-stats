@@ -20,28 +20,11 @@ class Advocate::SchedulePresenter
 
   def timeline(date)
     date = DateTime.parse(date) if date.is_a?(String)
-    todays_shifts = @shifts.select do |s|
-      s.date == date && s.start.present?
-    end
-
-    results = {}
-    hours = (7..23).to_a + (0..6).to_a
-    (hours).each do |hour|
-      results[hour] = todays_shifts.inject(rn: 0, tech: 0) do |acc, shift|
-        if shift.working_during?(hour)
-          if shift.employee.rn?
-            acc[:rn] += 1
-          elsif shift.employee.tech?
-            acc[:tech] += 1
-          end
-        end
-
-        acc
-      end
-    end
-
-    results.transform_keys do |hour|
-      (hour * 100).to_s.rjust(4, "0")
+    Advocate::StaffingCalculator
+      .new(date)
+      .counts
+      .transform_keys do |hour|
+        (hour * 100).to_s.rjust(4, "0")
     end
   end
 
