@@ -6,6 +6,9 @@ class Advocate::ScheduleController < Advocate::ApplicationController
   end
 
   def index
-    @shifts = Advocate::Shift.all.order(date: :ASC, start: :ASC)
+    @shifts = Advocate::Shift
+      .where(date: @start_date..@end_date)
+      .order(date: :ASC, start: :ASC)
+      .all
   end
 end

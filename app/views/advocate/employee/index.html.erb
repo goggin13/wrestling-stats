@@ -1,11 +1,9 @@
-<h1>Staff Population</h1>
+<%= render partial: "date_display", locals: {
+  prev_page: advocate_employees_path(end_date: @end_date - 28.days),
+  next_page: advocate_employees_path(end_date: @end_date + 28.days),
+} %>
 
-<p>
-Showing from <%= @start_date %> to <%= @end_date %>
-<br/>
-  <%= link_to("Prev", advocate_employees_path(end_date: @end_date - 28.days)) %>
-  <%= link_to("Next", advocate_employees_path(end_date: @end_date + 28.days)) %>
-</p>
+<h1>Staff Population</h1>
 
 <table>
   <tr>

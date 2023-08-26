@@ -1,11 +1,10 @@
 class Advocate::SchedulePresenter
 
   def initialize(start_date, end_date)
-    Rails.logger.info "Presenting #{start_date}-#{end_date}"
-    # @shifts = Advocate::Shift.where(date: @start_date..@end_date).all
-    @shifts = Advocate::Shift.all
+    Rails.logger.info "[INFO] Presenting #{start_date}-#{end_date}"
+    @shifts = Advocate::Shift.where(date: start_date..end_date).all
 
-    Rails.logger.info "Presenting #{dates}"
+    Rails.logger.info "[INFO] Presenting #{dates}"
   end
 
   def dates

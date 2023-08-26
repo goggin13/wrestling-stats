@@ -7,8 +7,11 @@ namespace :advocate do
 
   desc "Rebuild all Advocate Data"
   task :rebuild, [] => :environment do |t, args|
+    puts "deleting employees, shifts"
     Advocate::Employee.destroy_all
     Advocate::Shift.destroy_all
+    puts "\tdone"
+
     Dir.glob("spec/download_fixtures/advocate/archive/*.html") do |file|
       puts file
       Advocate::ScheduleParser.parse!(file)

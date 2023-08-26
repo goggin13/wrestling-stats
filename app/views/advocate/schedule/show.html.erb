@@ -1,11 +1,9 @@
-<p>Last updated on .......TODO</p>
+<%= render partial: "advocate/employee/date_display", locals:{
+  prev_page: advocate_schedule_path(end_date: @end_date - 28.days),
+  next_page: advocate_schedule_path(end_date: @end_date + 28.days),
+} %>
 
-<p>
-Showing from <%= @start_date %> to <%= @end_date %>
-<br/>
-  <%= link_to("Prev", advocate_schedule_path(end_date: @end_date - 28.days)) %>
-</p>
-
+<h1>Schedule</h1>
 
 <% ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"].each do |day| %>
   <div class="date header">

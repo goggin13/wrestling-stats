@@ -1,3 +1,10 @@
+<%= render partial: "advocate/employee/date_display", locals:{
+  prev_page: advocate_shifts_path(end_date: @end_date - 28.days),
+  next_page: advocate_shifts_path(end_date: @end_date + 28.days),
+} %>
+
+<h1> All Shifts</h1>
+
 <table>
   <% @shifts.all.each do |shift| %>
     <tr>
