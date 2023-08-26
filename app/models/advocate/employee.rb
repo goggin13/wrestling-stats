@@ -11,6 +11,8 @@ class Advocate::Employee < ApplicationRecord
 
   def self.create_from_full_name(name, role)
     last, first = name.split(", ")
+    role = "RN" if role == "LPN"
+    role = "AGCY" if role == "AGCY-INT"
     Advocate::Employee.find_or_create_by!(
       name: name,
       role: role,
@@ -25,6 +27,8 @@ class Advocate::Employee < ApplicationRecord
       .select(:start, "COUNT(*)")
       .order(count: :desc)
       .group(:start)
+
+    return if counts.length == 0
 
     self.shift_label = case counts[0].start
       when 7..9

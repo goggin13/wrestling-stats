@@ -1,0 +1,56 @@
+<h1>Staff Population</h1>
+
+<p>
+Showing from <%= @start_date %> to <%= @end_date %>
+<br/>
+  <%= link_to("Prev", advocate_employees_path(end_date: @end_date - 28.days)) %>
+  <%= link_to("Next", advocate_employees_path(end_date: @end_date + 28.days)) %>
+</p>
+
+<table>
+  <tr>
+    <th></th>
+    <% Advocate::Employee::ShiftLabels::ALL.each do |shift_label| %>
+      <th><%= shift_label.titlecase %></th>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Staff</th>
+    <% Advocate::Employee::ShiftLabels::ALL.each do |shift_label| %>
+      <td><%= @staff_counts["RN"][shift_label] %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Agency</th>
+    <% Advocate::Employee::ShiftLabels::ALL.each do |shift_label| %>
+      <td><%= @staff_counts["AGCY"][shift_label] || 0 %></td>
+    <% end %>
+  </tr>
+
+</table>
+
+<h1>By Hour</h1>
+<p>
+Out of <%= @hours_breakdown[:total] %> staff hours
+<br/>
+Staff RNs: 
+<%= number_to_percentage(@hours_breakdown[:staff] / @hours_breakdown[:total].to_f * 100) %> 
+<br/>
+Agency RNs:
+<%= number_to_percentage(@hours_breakdown[:agency] / @hours_breakdown[:total].to_f * 100) %> 
+</p>
+
+
+Full Time Employees
+<ul>
+  <% @presenter.rns.each do |rn| %>
+    <li>
+      <%= rn.role == "RN" ? "Staff" : "Agency" %>
+      <%= rn.shift_label %>
+      <%= rn.name %> 
+      (<%= rn.shifts.where(date: @start_date..@end_date).count %>)
+    </li>
+  <% end %>
+</ul>

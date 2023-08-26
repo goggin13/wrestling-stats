@@ -8,21 +8,23 @@ module Advocate
 
     describe "create_from_raw_shift_code" do
       it "creates a new shift" do
-        shift = Shift.create_from_raw_shift_code("07-12", "03/19", @employee)
+        date = Date.new(2023, 3, 19)
+        shift = Shift.create_from_raw_shift_code("07-12", date, @employee)
         expect(shift.id).to be_present
         expect(shift.raw_shift_code).to eq("07-12")
         expect(shift.employee_id).to eq(@employee.id)
         expect(shift.start).to eq(7)
         expect(shift.duration).to eq(12)
-        expect(shift.date).to eq(DateTime.parse("3/19"))
+        expect(shift.date).to eq(date)
       end
 
       it "modifies an existing shift" do
+        date = Date.new(2023, 3, 19)
         shift = FactoryBot.create(:advocate_shift,
-                          start: 7, duration: 12, date: "2022-01-18",
+                          start: 7, duration: 12, date: date,
                           employee: @employee)
         expect do
-          Shift.create_from_raw_shift_code("07-08", "2022-01-18", @employee)
+          Shift.create_from_raw_shift_code("07-08", date, @employee)
         end.to change(Shift, :count).by(0)
 
         shift.reload
@@ -31,7 +33,7 @@ module Advocate
         expect(shift.employee_id).to eq(@employee.id)
         expect(shift.start).to eq(7)
         expect(shift.duration).to eq(8)
-        expect(shift.date).to eq(DateTime.parse("2022-01-18"))
+        expect(shift.date).to eq(date)
       end
     end
 

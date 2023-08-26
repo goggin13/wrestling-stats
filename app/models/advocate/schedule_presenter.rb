@@ -1,20 +1,15 @@
 class Advocate::SchedulePresenter
-  SKIPPED_EMPLOYEES = [
-    "noreen jacqueline",
-    "semmel alana",
-    "ramirez hector",
-    "reyes mariela"
-  ]
 
-  def initialize
+  def initialize(start_date, end_date)
+    Rails.logger.info "Presenting #{start_date}-#{end_date}"
+    # @shifts = Advocate::Shift.where(date: @start_date..@end_date).all
     @shifts = Advocate::Shift.all
-    @shifts = @shifts.reject do |shift|
-      SKIPPED_EMPLOYEES.include?(shift.employee.full_name)
-    end
+
+    Rails.logger.info "Presenting #{dates}"
   end
 
   def dates
-    Advocate::Shift.select(:date).order("date ASC").map(&:date).uniq
+    @shifts.map(&:date).sort.uniq
   end
 
 	def working_on?(date, employee)

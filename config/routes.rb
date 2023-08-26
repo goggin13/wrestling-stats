@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   namespace :advocate do
     get "/schedule", to: "schedule#show"
+    get "/shifts", to: "schedule#index"
+    get "/employees", to: "employee#index"
   end
 
   namespace :etoh do

@@ -1,5 +1,6 @@
 class Advocate::ScheduleParser
-  attr_accessor :dates, :employees
+  attr_accessor :dates, :employees, :start_year, :end_year
+  IGNORED_SHIFTS = ["PTO", "CLED", "UNV", "ABS", "BEREV", "SWTCH", "SICK"]
 
   def self.parse!(file_path)
     parser = new(file_path)
@@ -8,6 +9,9 @@ class Advocate::ScheduleParser
 
   def initialize(file_path)
     @doc = Nokogiri::HTML(File.read(file_path))
+    regex_results = file_path.match(/.*schedule_(?<start>\d\d\d\d).*#(?<end>\d\d\d\d)/)
+    @start_year = regex_results["start"]
+    @end_year = regex_results["end"]
   end
 
   def get(date)
@@ -16,9 +20,16 @@ class Advocate::ScheduleParser
 
   def parse!
     parse_dates!
+    delete_current_shifts_in_range!
     parse_employees!
     parse_shifts!
-    Advocate::Employee.all { |e| e.update_shift_label! }
+    Advocate::Employee.all.each { |e| e.update_shift_label! }
+  end
+
+  def delete_current_shifts_in_range!
+    Advocate::Shift
+      .where("date >= ? AND date <= ?", @dates.first, @dates.last)
+      .destroy_all
   end
 
   def parse_employees!
@@ -55,11 +66,14 @@ class Advocate::ScheduleParser
       employee = employees[employee_index]
 
       tr.css("td").each_with_index do |td, date_index|
+        if td.attr("title").present?
+          next if td.attr("title").downcase.include?("[alternate]")
+        end
+
         date = @dates[date_index]
         raw_shift_code = td.text
         next if raw_shift_code == ""
-        next if raw_shift_code.include?("PTO")
-        next if raw_shift_code.include?("CLED")
+        next if IGNORED_SHIFTS.any? { |label| raw_shift_code.include?(label) }
 
         raw_shift_code = raw_shift_code.gsub("¤", "")
         @shifts[date] ||= []
@@ -73,9 +87,22 @@ class Advocate::ScheduleParser
   end
 
   def parse_dates!
+    # a series of strings mm/dd
     @dates = @doc
       .css("#formContentPlaceHolder_myScheduleTable tr.noTop")
       .css(".data")
       .map { |n| n.text }
+
+    # add year to end of date string and parse
+    # account for files that cross a year boundary
+    @dates = dates.map do |date_string|
+      date_string = if @start_year != @end_year && date_string[0..1] == "01"
+        "#{date_string}/#{@end_year}"
+      else
+        "#{date_string}/#{@start_year}"
+      end
+
+      Date.strptime(date_string, "%m/%d/%Y")
+    end
   end
 end

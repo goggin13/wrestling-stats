@@ -1,5 +1,12 @@
 <p>Last updated on .......TODO</p>
 
+<p>
+Showing from <%= @start_date %> to <%= @end_date %>
+<br/>
+  <%= link_to("Prev", advocate_schedule_path(end_date: @end_date - 28.days)) %>
+</p>
+
+
 <% ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"].each do |day| %>
   <div class="date header">
     <%= day %><br/>

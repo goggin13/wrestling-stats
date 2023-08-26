@@ -2,7 +2,6 @@ class Advocate::Shift < ApplicationRecord
   belongs_to :employee, class_name: "Advocate::Employee"
 
   def self.create_from_raw_shift_code(raw_shift_code, date, employee)
-    date = DateTime.parse(date)
     shift = Advocate::Shift.where(date: date, employee: employee).first
 
     if shift.present?
@@ -38,6 +37,8 @@ class Advocate::Shift < ApplicationRecord
       parse_charge_triage_shift!
     elsif raw_shift_code == "[PREC]"
       parse_preceptor_shift!
+    else
+      # puts "Unknown shift code: #{raw_shift_code}"
     end
   end
 
@@ -66,6 +67,15 @@ class Advocate::Shift < ApplicationRecord
       self.duration = 12
     elsif employee.first == "Erin"
       self.start = 19
+      self.duration = 12
+    elsif employee.first == "Veronica"
+      self.start = 7
+      self.duration = 8
+    elsif employee.first == "Katherine"
+      self.start = 19
+      self.duration = 12
+    elsif employee.first == "Robert patrick"
+      self.start = 7
       self.duration = 12
     end
   end
