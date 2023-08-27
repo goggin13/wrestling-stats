@@ -1,3 +1,7 @@
+<% content_for :title do %>
+  Employee Counts
+<% end %>
+
 <%= render partial: "date_display", locals: {
   prev_page: advocate_employees_path(end_date: @end_date - 28.days),
   next_page: advocate_employees_path(end_date: @end_date + 28.days),

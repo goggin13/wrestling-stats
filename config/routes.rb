@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get "/schedule", to: "schedule#show"
     get "/shifts", to: "schedule#index"
     get "/employees", to: "employee#index"
+    get "/staffing_data", to: "schedule#staffing_data"
   end
 
   namespace :etoh do

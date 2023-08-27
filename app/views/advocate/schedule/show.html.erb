@@ -1,3 +1,7 @@
+<% content_for :title do %>
+  Shift List
+<% end %>
+
 <%= render partial: "advocate/employee/date_display", locals:{
   prev_page: advocate_schedule_path(end_date: @end_date - 28.days),
   next_page: advocate_schedule_path(end_date: @end_date + 28.days),
@@ -41,11 +45,11 @@
       <tbody>
         <% previous_hour = nil %>
         <% hours.each_with_index do |(hour, count), index| %>
-          <% rn_size = count[:rn] / 15.0 %>
-          <% tech_size = count[:tech] / 15.0 %>
+          <% rn_size = count[:rns] / 15.0 %>
+          <% tech_size = count[:techs] / 15.0 %>
           <% show_label = ["0700", "1100", "1500", "1900", "2300", "0300"].include?(hour) %>
-          <% show_rn_data = index == 0 || count[:rn] != hours[previous_hour][:rn] %>
-          <% show_tech_data = index == 0 || count[:tech] != hours[previous_hour][:tech] %>
+          <% show_rn_data = index == 0 || count[:rns] != hours[previous_hour][:rns] %>
+          <% show_tech_data = index == 0 || count[:techs] != hours[previous_hour][:techs] %>
           <tr>
 
             <% if show_label %>
@@ -57,7 +61,7 @@
             <td style="--color: <%= color %>; --start:<%= rn_size %>; --size: <%= rn_size %>;">
               <span class="data">
                 <% if show_rn_data %>
-                  <%= count[:rn] %>
+                  <%= count[:rns] %>
                 <% end %>
               </span>
             </td>
@@ -66,15 +70,15 @@
               <td style="--color: teal; --start:<%= tech_size %>; --size: <%= tech_size %>;">
                 <span class="data">
                   <% if show_tech_data %>
-                    <%= count[:tech] %>
+                    <%= count[:techs] %>
                   <% end %>
                 </span>
               </td>
             <% end %>
 
             <% previous_hour = hour %>
-            <!-- <td style="--color: teal; --start:<%= index/24.0 %>; --size: <%= count[:tech] / 15.0 %>;"> -->
-            <!--   <span class="data"> <%= count[:tech] %> </span> -->
+            <!-- <td style="--color: teal; --start:<%= index/24.0 %>; --size: <%= count[:techs] / 15.0 %>;"> -->
+            <!--   <span class="data"> <%= count[:techs] %> </span> -->
             <!-- </td> -->
           </tr>
         <% end %>
@@ -119,8 +123,8 @@
       <% timeline.each do |hour, shifts|%>
         <tr>
           <td><%= hour %></th>
-          <td><%= shifts[:rn] %></td>
-          <td><%= shifts[:tech] %></td>
+          <td><%= shifts[:rns] %></td>
+          <td><%= shifts[:techs] %></td>
         </tr>
       <% end %>
     </table>

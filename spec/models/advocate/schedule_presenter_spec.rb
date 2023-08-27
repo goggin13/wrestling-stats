@@ -197,7 +197,7 @@ module Advocate
 #
 # Swing
 # Hall, Annalise 15-12
-# Noreen OC15-08  - Skipped!
+# Noreen OC15-08  - maybe a real shift?  maybe not?
 # Sreepathy 15-12
 # Teresi 11-08
 #

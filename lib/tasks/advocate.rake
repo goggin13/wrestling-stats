@@ -8,8 +8,9 @@ namespace :advocate do
   desc "Rebuild all Advocate Data"
   task :rebuild, [] => :environment do |t, args|
     puts "deleting employees, shifts"
-    Advocate::Employee.destroy_all
-    Advocate::Shift.destroy_all
+    Advocate::Employee.delete_all
+    Advocate::Shift.delete_all
+    Advocate::StaffingHour.delete_all
     puts "\tdone"
 
     Dir.glob("spec/download_fixtures/advocate/archive/*.html") do |file|
@@ -17,5 +18,12 @@ namespace :advocate do
       Advocate::ScheduleParser.parse!(file)
       puts "\tdone"
     end
+
+    Advocate::StaffingCalculator.rebuild_staffing_hours
+  end
+
+  desc "Rebuild staffing hours table from all dates"
+  task :rebuild_staffing_hours , [] => :environment do |t, args|
+    Advocate::StaffingCalculator.rebuild_staffing_hours
   end
 end

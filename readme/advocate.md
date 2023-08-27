@@ -1,6 +1,9 @@
 ### Advocate PreProd
 
-Schedule Parser assumes current year
+#ToDo
+Don't hardcode names for triage, charge, preceptor
+Assign hours based on employees normal shift times
+
 
 RAILS_ENV=development bundle exec rake advocate:import_schedule[spec/download_fixtures/advocate/schedule_6_26.html]
 

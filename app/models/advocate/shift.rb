@@ -77,6 +77,9 @@ class Advocate::Shift < ApplicationRecord
     elsif employee.first == "Robert patrick"
       self.start = 7
       self.duration = 12
+    elsif employee.first == "Khalid"
+      self.start = 7
+      self.duration = 12
     end
   end
 

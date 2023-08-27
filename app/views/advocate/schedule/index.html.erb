@@ -1,3 +1,7 @@
+<% content_for :title do %>
+  Schedule Browser
+<% end %>
+
 <%= render partial: "advocate/employee/date_display", locals:{
   prev_page: advocate_shifts_path(end_date: @end_date - 28.days),
   next_page: advocate_shifts_path(end_date: @end_date + 28.days),

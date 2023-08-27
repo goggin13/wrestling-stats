@@ -67,3 +67,14 @@
 .shift_block {
   float: left;
 }
+
+.rn_pct_10 { background: red; }
+.rn_pct_20 { background: red; }
+.rn_pct_30 { background: red; }
+.rn_pct_40 { background: salmon; }
+.rn_pct_50 { background: salmon; }
+.rn_pct_60 { background: lightyellow; }
+.rn_pct_70 { background: lightyellow; }
+.rn_pct_80 { background: lightyellow; }
+.rn_pct_90 { background: lightgreen; }
+.rn_pct_100 { background: lightgreen; }

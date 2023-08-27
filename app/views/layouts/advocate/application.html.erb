@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Schedule</title>
+    <title><%= yield :title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -18,6 +18,8 @@
     <%= link_to("Schedule", advocate_schedule_path(end_date: @end_date)) %>
     <%= link_to("Employees", advocate_employees_path(end_date: @end_date)) %>
     <%= link_to("Shifts", advocate_shifts_path(end_date: @end_date)) %>
+    <%= link_to("Staffing Data", advocate_staffing_data_path(end_date: @end_date)) %>
+
     <%= yield %>
 
   </body>

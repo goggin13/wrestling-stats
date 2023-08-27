@@ -8,6 +8,14 @@ class Advocate::StaffingCalculator
     3 => 8, 4 => 8, 5 => 8, 6 => 8
   }
 
+  GOAL_RN_BUCKET_LABELS = {
+    "0700-0900": 7,
+    "0900-1100": 8,
+    "1100-2300": 10,
+    "2300-0300": 9,
+    "0300-0700": 8,
+  }
+
   def initialize(day)
     @day = day
     @shifts = Advocate::Shift
@@ -51,6 +59,15 @@ class Advocate::StaffingCalculator
         rn_pct: results[:rn_pct],
         techs: results[:techs]
       )
+    end
+  end
+
+  def self.rebuild_staffing_hours
+    start_day = Advocate::Shift.minimum(:date)
+    end_day = Advocate::Shift.maximum(:date)
+    (start_day..end_day).each do |day|
+      puts "processing #{day}"
+      Advocate::StaffingCalculator.new(day).write_records
     end
   end
 end
