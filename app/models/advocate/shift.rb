@@ -33,7 +33,7 @@ class Advocate::Shift < ApplicationRecord
     elsif raw_shift_code =~ /^CHG\d\d\d\d/
       self.start = raw_shift_code[3..4]
       self.duration = raw_shift_code[5..6]
-    elsif raw_shift_code == "[CHG]" || raw_shift_code == "[TRIAGE]"
+    elsif raw_shift_code == "[CHG]" || raw_shift_code == "[TRIAGE]" || raw_shift_code == "[$CHG]"
       parse_charge_triage_shift!
     elsif raw_shift_code == "[PREC]"
       parse_preceptor_shift!

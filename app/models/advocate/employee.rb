@@ -12,6 +12,9 @@ class Advocate::Employee < ApplicationRecord
   def self.create_from_full_name(name, role)
     last, first = name.split(", ")
     role = "RN" if role == "LPN"
+    role = "RN" if role == "RNR"
+    role = "RN" if role == "RN-EXT"
+    role = "RN" if role == "RN-LEAD"
     role = "AGCY" if role == "AGCY-INT"
     Advocate::Employee.find_or_create_by!(
       name: name,
