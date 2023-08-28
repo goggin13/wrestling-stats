@@ -9,18 +9,12 @@
 
 <h1>Staffing Percentages</h1>
 
-<p>
-  <b>100% Thresholds</b>
-  <% Advocate::StaffingCalculator::GOAL_RN_BUCKET_LABELS.each do |bucket, goal| %>
-    <br/><%= bucket %>: <%= goal %>
-  <% end %>
-</p>
 
-
+<%= @start_date %> to <%= @end_date %>
 <table>
   <tr>
-    <th>PCT</th>
-    <th># of hours</th>
+    <th>% Staffed</th>
+    <th># of Hours</th>
   </tr>
   <% @histogram.each do |row| %>
     <tr>
@@ -29,6 +23,13 @@
     </tr>
   <% end %>
 </table>
+
+<p>
+  <b>100% Thresholds</b>
+  <% Advocate::StaffingCalculator::GOAL_RN_BUCKET_LABELS.each do |bucket, goal| %>
+    <br/><%= bucket %>: <%= goal %>
+  <% end %>
+</p>
 
 <table>
   <tr>
@@ -39,11 +40,11 @@
   </tr>
   <% @staffing_hours.each do |date, staffing_hours| %>
     <tr>
-      <th><%= date %></th>
+      <th><%= date.strftime("%m/%d") %></th>
       <% Advocate::StaffingHour::ALL_HOUR_LABELS.each do |hour, _| %>
         <% staffing_hour = staffing_hours.find { |s| s.hour == hour } %>
-        <td class="rn_pct_<%= [staffing_hour.rn_pct.floor(-1), 100].min %>">
-          <%= staffing_hour.rn_pct %>%
+        <td class="rn_pct rn_pct_<%= [staffing_hour.rn_pct.floor(-1), 100].min %>">
+          <%= staffing_hour.rn_pct.to_int %>
         </td>
       <% end %>
     </tr>

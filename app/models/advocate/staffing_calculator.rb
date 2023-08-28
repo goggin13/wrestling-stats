@@ -1,19 +1,20 @@
 class Advocate::StaffingCalculator
   GOAL_RN_STAFF = {
-    7 => 7, 8 => 7,
+    7 => 6, 8 => 6,
     9 => 8, 10 => 8,
-    11 => 10, 12 => 10, 13 => 10, 14 => 10, 15 => 10, 16 => 10, 17 => 10, 18 => 10,
-    19 => 10, 20 => 10, 21 => 10, 22 => 10,
-    23 => 9, 24 => 9, 0 => 9, 1 => 9, 2 => 9,
-    3 => 8, 4 => 8, 5 => 8, 6 => 8
+    11 => 10, 12 => 10, 13 => 10, 14 => 10, 15 => 10, 16 => 10, 17 => 10, 18 => 10, 19 => 10, 20 => 10,
+    21 => 8, 22 => 8,
+    23 => 7, 24 => 7, 0 => 7, 1 => 7, 2 => 7,
+    3 => 6, 4 => 6, 5 => 6, 6 => 6
   }
 
   GOAL_RN_BUCKET_LABELS = {
-    "0700-0900": 7,
+    "0700-0900": 6,
     "0900-1100": 8,
-    "1100-2300": 10,
-    "2300-0300": 9,
-    "0300-0700": 8,
+    "1100-2100": 10,
+    "2100-2300": 8,
+    "2300-0300": 7,
+    "0300-0700": 6,
   }
 
   def initialize(day)
@@ -51,6 +52,7 @@ class Advocate::StaffingCalculator
   end
 
   def write_records
+    Advocate::StaffingHour.where(date: @day).delete_all
     counts.each do |hour, results|
       Advocate::StaffingHour.create!(
         date: @day,
@@ -63,6 +65,7 @@ class Advocate::StaffingCalculator
   end
 
   def self.rebuild_staffing_hours
+    Advocate::StaffingHour.delete_all
     start_day = Advocate::Shift.minimum(:date)
     end_day = Advocate::Shift.maximum(:date)
     (start_day..end_day).each do |day|
