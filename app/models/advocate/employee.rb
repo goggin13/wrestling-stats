@@ -11,15 +11,16 @@ class Advocate::Employee < ApplicationRecord
 
   has_many :shifts, class_name: "Advocate::Shift", foreign_key: "employee_id"
 
-  def self.create_from_full_name(name, role)
-    last, first = name.split(", ")
-    role = "RN" if role == "LPN"
-    role = "RN" if role == "RNR"
-    role = "RN" if role == "RN-EXT"
-    role = "RN" if role == "RN-LEAD"
-    role = "AGCY" if role == "AGCY-INT"
+  def self.create_from_full_name(full_name, role)
+    full_name = full_name.gsub(/[[:space:]]/, " ")
+    last, first = full_name.split(", ")
+    # role = "RN" if role == "LPN"
+    # role = "RN" if role == "RNR"
+    # role = "RN" if role == "RN-EXT"
+    # role = "RN" if role == "RN-LEAD"
+    # role = "AGCY" if role == "AGCY-INT"
     Advocate::Employee.find_or_create_by!(
-      name: name,
+      name: full_name,
       role: role,
       first: first.capitalize,
       last: last.capitalize,
