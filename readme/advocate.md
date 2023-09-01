@@ -12,7 +12,8 @@ Output:
 [X] Histogram of staffing %s
 [ ] Stacked Bar chart of hours by Staff vs Agency
 [X] Current Staffing table (todo: changes from last month)
-[ ] Trendline of staffing numbers, Agcy, FT
+[ ] Trendline of staffing numbers, Agcy, FTEmployee
+[ ] Add techs to all the above
 
 password protect
 deploy
