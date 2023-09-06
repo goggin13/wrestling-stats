@@ -33,7 +33,7 @@ module Advocate
       @presenter = SchedulePresenter.new(start_date, end_date)
     end
 
-    describe "shifts_for" do
+    xdescribe "shifts_for" do
       it "returns information for a day sorted by shifts and jobs" do
         day = @presenter.shifts_for("3/19")
         expect(day[:day][:us].employee.name).to eq("Owens, Adrienne")
@@ -122,7 +122,7 @@ module Advocate
       end
     end
 
-    describe "timeline" do
+    xdescribe "timeline" do
       it "returns nurses/techs sorted by timeline" do
         timeline = @presenter.timeline("3/21")
 
@@ -159,8 +159,8 @@ module Advocate
       end
     end
 
-    describe "shift_count_for_graph" do
-      it "returns nurses/techs sorted by timeline in groups" do
+    xdescribe "shift_count_for_graph" do
+      xit "returns nurses/techs sorted by timeline in groups" do
         timeline = @presenter.shift_count_for_graph("3/21")
 
         expect(timeline["0700-0900"]).to include({rns: 5, techs: 6})

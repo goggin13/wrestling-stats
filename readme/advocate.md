@@ -1,18 +1,17 @@
 ### Advocate PreProd
 
 #ToDo
-[ ] CONFIRM w/NICOLE THAT THESE SCHEDULES EVEN WORK
-[ ] Establish goals
-[ ] Pull all the historical data
-[ ] Don't hardcode names for triage, charge, preceptor
-  [ ] Assign hours based on employees normal shift times
-[ ] Parsing runs with more verbose output to nail down unknowns
+[X] CONFIRM w/NICOLE THAT THESE SCHEDULES EVEN WORK
+[X] Establish goals
+[X] Pull all the historical data
+[X] Parsing runs with more verbose output to nail down unknowns
+[X] Testing
+  [X] Employee Presenter
+  [X] Staffing Calculator
 
 Output:
 [X] Histogram of staffing %s
-[ ] Stacked Bar chart of hours by Staff vs Agency
 [X] Current Staffing table (todo: changes from last month)
-[ ] Trendline of staffing numbers, Agcy, FTEmployee
 [ ] Add techs to all the above
 
 password protect

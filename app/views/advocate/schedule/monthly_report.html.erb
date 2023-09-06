@@ -1,0 +1,110 @@
+<% content_for :title do %>
+  Monthly Report <%= @month %>
+<% end %>
+
+<h1>
+  Median Staffing in <%= @start_date.strftime("%B") %>: <%= @reporter.median_pct %>%
+</h1>
+
+
+<%= render partial: "advocate/employee/date_display", locals:{
+  prev_page: advocate_monthly_report_path(month: @prev_month),
+  next_page: advocate_monthly_report_path(month: @next_month),
+} %>
+
+<div id="staffing_grid_container">
+  <table id="staffing_grid_legend">
+    <tr>
+      <th>Staffing %</th>
+      <% (1..10).to_a.each do |i| %>
+        <td class="rn_pct rn_pct_<%= i * 10 %>">
+          <%= i * 10 %>
+        </td>
+      <% end %>
+    </tr>
+  </table>
+
+  <table id="staffing_grid">
+    <tr>
+      <th></th>
+      <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
+        <th><%= hour_label %></th>
+      <% end %>
+    </tr>
+
+    <tr>
+      <th>Goal RNs</th>
+      <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
+        <td class="rn_pct"><%= @reporter.thresholds[hour] %></td>
+      <% end %>
+    </tr>
+
+    <% @reporter.staffing_grid.each do |day, hours| %>
+      <tr>
+        <th><%= day.strftime("%e-%a") %></th>
+        <% hours.each do |hour, data| %>
+          <td class="rn_pct rn_pct_<%= [data[:pct].floor(-1), 100].min %>">
+            <%= data[:rns] %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<table>
+  <tr>
+    <th></th>
+    <th>Full Time</th>
+    <th>Part Time</th>
+    <th>Agency</th>
+  </tr>
+  <tr>
+    <th>Hours Worked</th>
+    <td>
+      <%= number_to_percentage(@hours_by_status[:full_time] / @hours_by_status[:total].to_f * 100, precision: 0) %>
+    </td>
+    <td>
+      <%= number_to_percentage(@hours_by_status[:part_time] / @hours_by_status[:total].to_f * 100, precision: 0) %>
+    </td>
+    <td>
+      <%= number_to_percentage(@hours_by_status[:agency] / @hours_by_status[:total].to_f * 100, precision: 0) %>
+    </td>
+  </tr>
+</table>
+
+<ul class="employee_list">
+  <li><%= @reporter.full_timers.count %> Full Time</li>
+  <% @reporter.full_timers.each do |employee| %>
+    <li>
+      <%= employee.name %>
+    </li>
+  <% end %>
+</ul>
+
+<ul class="employee_list">
+  <li><%= @reporter.part_timers.count %> Part Time</li>
+  <% @reporter.part_timers.each do |employee| %>
+    <li>
+      <%= employee.name %>
+    </li>
+  <% end %>
+</ul>
+
+<ul class="employee_list">
+  <li><%= @reporter.agency.count %> Agency</li>
+  <% @reporter.agency.each do |employee| %>
+    <li>
+      <%= employee.name %>
+    </li>
+  <% end %>
+</ul>
+
+<ul class="employee_list">
+  <li><%= @reporter.unknown_employees.count %> Unknown</li>
+  <% @reporter.unknown_employees.each do |employee| %>
+    <li>
+      <%= employee.name %>
+    </li>
+  <% end %>
+</ul>

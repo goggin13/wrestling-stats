@@ -4,5 +4,6 @@ FactoryBot.define do
     start { 7 }
     duration { 12 }
     date { "2022-01-18" }
+    employee factory: :advocate_employee
   end
 end

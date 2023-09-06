@@ -15,9 +15,7 @@
 
   <body>
 
-    <%= link_to("Schedule", advocate_schedule_path(end_date: @end_date)) %>
-    <%= link_to("Employees", advocate_employees_path(end_date: @end_date)) %>
-    <%= link_to("Staffing Data", advocate_staffing_data_path(end_date: @end_date)) %>
+    <%= link_to("Monthly Report", advocate_monthly_report_path) %>
 
     <%= yield %>
 

@@ -1,0 +1,136 @@
+require 'rails_helper'
+
+module Advocate
+  RSpec.describe MonthlyReporter, type: :model do
+    CSV_FILE = <<-CSV
+textbox175,textbox3,textbox9,EmployeeName,textbox15,textbox2,CalendarDate,textbox1
+Department: 36102,08/30/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/30/2023,(F),"Daniels, Michelle",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Glover, Gerica",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"Godinez, Donna",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Maciha, Emma",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"peluso riti, stephanie",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"robin, joshua",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"royce, cecil",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Rivera, Amanda",ECT,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Smith, Shannon",ECT,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Owens, Adrienne",US,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"West, Marguerite",ECT,EX11-08,11:00,8.50
+Department: 36102,08/30/2023,,"Goggin, Matthew",RN,11-12,11:00,12.50
+Department: 36102,08/30/2023,(F),"Cain, Lisa",ECT,15-08,15:00,8.50
+Department: 36102,08/30/2023,,"Gordon, Corrin",ACM,15-08,15:00,8.50
+Department: 36102,08/30/2023,(F),"cordero, kenneth",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,(F),"kostryba, khrystyna",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,(F),"Simmons, Marquetta",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,,"WIlliams, Charmakie",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,,"Stachnik, Gabrielle",RN,CHG,19:00,12.50
+Department: 36102,08/30/2023,,"Abukhaled, Yazen",RN,TRIAGE,19:00,12.50
+Department: 36102,08/30/2023,,"Short, Dawnn",ECT,19-12,19:00,12.50
+Department: 36102,08/30/2023,,"Coleman, Leslie",ECT,EX19-12,19:00,12.50
+Department: 36102,08/30/2023,,"Millsap, Cassandra",US,19-12,19:00,12.50
+
+CSV
+
+    before do
+      File.write("tmp/shifts.csv", CSV_FILE)
+      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+    end
+
+    describe "staffing_grid_for_day" do
+      it "returns an map of days to staffing numbers and percentages by hour" do
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        stub_thresholds = {}
+        (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
+        expect(reporter).to receive(:thresholds)
+          .at_least(:once)
+          .and_return(stub_thresholds)
+
+        grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
+
+        # Day shift
+        expect(grid[7]).to eq({rns: 7, pct: 70})
+        expect(grid[8]).to eq({rns: 7, pct: 70})
+        expect(grid[9]).to eq({rns: 7, pct: 70})
+        expect(grid[10]).to eq({rns: 7, pct: 70})
+
+        # Matt comes in
+        expect(grid[11]).to eq({rns: 8, pct: 80})
+        expect(grid[12]).to eq({rns: 8, pct: 80})
+        expect(grid[13]).to eq({rns: 8, pct: 80})
+        expect(grid[14]).to eq({rns: 8, pct: 80})
+
+        # Veronica goes home
+        expect(grid[15]).to eq({rns: 7, pct: 70})
+        expect(grid[16]).to eq({rns: 7, pct: 70})
+        expect(grid[17]).to eq({rns: 7, pct: 70})
+        expect(grid[18]).to eq({rns: 7, pct: 70})
+
+        # Night shift
+        expect(grid[19]).to eq({rns: 6, pct: 60})
+        expect(grid[20]).to eq({rns: 6, pct: 60})
+        expect(grid[21]).to eq({rns: 6, pct: 60})
+        expect(grid[22]).to eq({rns: 6, pct: 60})
+
+        # Matt goes home
+        expect(grid[23]).to eq({rns: 5, pct: 50})
+        expect(grid[0]).to eq({rns: 5, pct: 50})
+        expect(grid[1]).to eq({rns: 5, pct: 50})
+        expect(grid[2]).to eq({rns: 5, pct: 50})
+        expect(grid[3]).to eq({rns: 5, pct: 50})
+        expect(grid[4]).to eq({rns: 5, pct: 50})
+        expect(grid[5]).to eq({rns: 5, pct: 50})
+        expect(grid[6]).to eq({rns: 5, pct: 50})
+      end
+
+      it "uses the calculated thresholds" do
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
+
+        # Day shift
+        expect(grid[7]).to eq({rns: 7, pct: 117})
+      end
+    end
+
+    describe "hours_by_employee_status" do
+      it "returns a hash of hours worked" do
+        # edwards, veronica (FullTime) : 8
+        # glover, gerica (FullTime) : 12
+        # maciha, emma (FullTime) : 12
+        # goggin, matthew (FullTime) : 12
+        # williams, charmakie (FullTime) : 12
+        # stachnik, gabrielle (FullTime) : 12
+        # abukhaled, yazen (FullTime) : 12
+        #
+        # daniels, michelle (PartTime) : 12
+        #
+        # peluso riti, stephanie (Agency) : 12
+        # robin, joshua (Agency) : 12
+        # royce, cecil (Agency) : 12
+        # cordero, kenneth (Agency) : 12
+        # kostryba, khrystyna (Agency) : 12
+
+        full_time = [8,12,12,12,12,12,12].sum
+        part_time = [12].sum
+        agency = [12,12,12,12,12].sum
+        total = full_time + part_time + agency
+
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        expect(reporter.hours_by_employee_status).to eq({
+          total: total,
+          full_time: full_time,
+          part_time: part_time,
+          agency: agency,
+        })
+      end
+    end
+
+    describe "employees_by_type" do
+      it "lists a breakdown of advocate vs agency employees" do
+
+      end
+    end
+  end
+end

@@ -1,5 +1,6 @@
 class Advocate::Employee < ApplicationRecord
   REQUIRED_SHIFTS_FOR_FULL_TIME = 8
+  EMPLOYEE_STATUS_FILE_PATH = "spec/download_fixtures/advocate/employees.yml"
 
   module ShiftLabels
     ALL = [
@@ -9,21 +10,30 @@ class Advocate::Employee < ApplicationRecord
     ]
   end
 
+  module Status
+    ALL = [
+      FULL_TIME = "FullTime",
+      PART_TIME = "PartTime",
+      AGENCY = "Agency",
+      UNKNOWN = "Unknown",
+    ]
+  end
+
   has_many :shifts, class_name: "Advocate::Shift", foreign_key: "employee_id"
 
-  def self.create_from_full_name(full_name, role)
-    full_name = full_name.gsub(/[[:space:]]/, " ")
+  def self.update_shift_labels
+    all.each { |e| e.update_shift_label! }
+  end
+
+  def self.create_from_full_name(full_name, role, status)
     last, first = full_name.split(", ")
-    # role = "RN" if role == "LPN"
-    # role = "RN" if role == "RNR"
-    # role = "RN" if role == "RN-EXT"
-    # role = "RN" if role == "RN-LEAD"
-    # role = "AGCY" if role == "AGCY-INT"
+    role = "RN" if role == "LPN"
     Advocate::Employee.find_or_create_by!(
-      name: full_name,
+      name: full_name.downcase,
       role: role,
-      first: first.capitalize,
-      last: last.capitalize,
+      status: status,
+      first: first.downcase,
+      last: last.downcase,
     )
   end
 

@@ -1,6 +1,5 @@
 <p>
-Showing from <%= @start_date %> to <%= @end_date %>
-<br/>
   <%= link_to("Prev", prev_page) %> | 
+  <%= @start_date.strftime("%B") %> |
   <%= link_to("Next", next_page) %>
 </p>

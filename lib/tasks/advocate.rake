@@ -10,37 +10,16 @@ namespace :advocate do
     puts "deleting employees, shifts"
     Advocate::Employee.delete_all
     Advocate::Shift.delete_all
-    Advocate::StaffingHour.delete_all
     puts "\tdone"
 
     Dir.glob("spec/download_fixtures/advocate/csv/*.csv") do |file|
       puts file
-      Advocate::CsvScheduleParser.parse(file)
+      Advocate::CsvScheduleParser.parse(file, "spec/download_fixtures/advocate/employees.yml")
       puts "\tdone"
     end
 
-    Advocate::StaffingCalculator.rebuild_staffing_hours
-  end
-
-  desc "Rebuild all Advocate Data"
-  task :rebuild_old, [] => :environment do |t, args|
-    puts "deleting employees, shifts"
-    Advocate::Employee.delete_all
-    Advocate::Shift.delete_all
-    Advocate::StaffingHour.delete_all
+    puts "Updating staffing labels"
+    Advocate::Employee.update_shift_labels
     puts "\tdone"
-
-    Dir.glob("spec/download_fixtures/advocate/archive/*.html") do |file|
-      puts file
-      Advocate::ScheduleParser.parse!(file)
-      puts "\tdone"
-    end
-
-    Advocate::StaffingCalculator.rebuild_staffing_hours
-  end
-
-  desc "Rebuild staffing hours table from all dates"
-  task :rebuild_staffing_hours , [] => :environment do |t, args|
-    Advocate::StaffingCalculator.rebuild_staffing_hours
   end
 end

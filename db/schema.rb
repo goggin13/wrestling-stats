@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_26_214219) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_06_034917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_214219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "shift_label"
+    t.string "status"
   end
 
   create_table "advocate_shifts", force: :cascade do |t|
@@ -58,16 +59,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_214219) do
     t.integer "duration"
     t.integer "employee_id", null: false
     t.string "raw_shift_code", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "advocate_staffing_hours", force: :cascade do |t|
-    t.date "date", null: false
-    t.integer "hour", null: false
-    t.integer "rns", null: false
-    t.integer "techs"
-    t.float "rn_pct"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
