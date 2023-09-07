@@ -15,7 +15,7 @@ class Advocate::ScheduleController < Advocate::ApplicationController
   end
 
   def show
-    @current_employee = Advocate::Employee.where(first: "Matthew", last: "Goggin").first!
+    @current_employee = Advocate::Employee.where(first: "matthew", last: "goggin").first!
     @presenter = Advocate::SchedulePresenter.new(@start_date, @end_date)
   end
 end

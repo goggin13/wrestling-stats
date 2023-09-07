@@ -1,13 +1,9 @@
 ### Advocate PreProd
 
 #ToDo
-[X] CONFIRM w/NICOLE THAT THESE SCHEDULES EVEN WORK
-[X] Establish goals
-[X] Pull all the historical data
-[X] Parsing runs with more verbose output to nail down unknowns
-[X] Testing
-  [X] Employee Presenter
-  [X] Staffing Calculator
+[ ] Make schedule browser work for RNs
+[ ] Review all code, sanity check test coverage, rm unused code
+[ ] Add techs
 
 Output:
 [X] Histogram of staffing %s

@@ -20,12 +20,14 @@ class Advocate::SchedulePresenter
 
   def timeline(date)
     date = DateTime.parse(date) if date.is_a?(String)
-    Advocate::StaffingCalculator
-      .new(date)
-      .counts
-      .transform_keys do |hour|
-        (hour * 100).to_s.rjust(4, "0")
-    end
+    # Advocate::StaffingCalculator
+    #   .new(date)
+    #   .counts
+    #   .transform_keys do |hour|
+    #     (hour * 100).to_s.rjust(4, "0")
+    # end
+
+    []
   end
 
   def shift_count_for_graph(date)

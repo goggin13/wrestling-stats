@@ -2,9 +2,9 @@
   Shift List
 <% end %>
 
-<%= render partial: "advocate/employee/date_display", locals:{
-  prev_page: advocate_schedule_path(end_date: @end_date - 28.days),
-  next_page: advocate_schedule_path(end_date: @end_date + 28.days),
+<%= render partial: "date_display", locals:{
+  prev_page: advocate_schedule_path(month: @prev_month),
+  next_page: advocate_schedule_path(month: @next_month),
 } %>
 
 <h1>Schedule</h1>
