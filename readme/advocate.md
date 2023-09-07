@@ -3,6 +3,7 @@
 #ToDo
 [ ] Make schedule browser work for RNs
 [ ] Review all code, sanity check test coverage, rm unused code
+[ ] Add people on orientation
 [ ] Add techs
 
 Output:

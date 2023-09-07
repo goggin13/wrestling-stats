@@ -31,6 +31,18 @@ Department: 36102,08/30/2023,,"Millsap, Cassandra",US,19-12,19:00,12.50
 
 CSV
 
+    CSV_FILE_ONE_EMPLOYEE_PER_WEEKDAY = <<-CSV
+textbox175,textbox3,textbox9,EmployeeName,textbox15,textbox2,CalendarDate,textbox1
+Department: 36102,08/14/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/15/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/16/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/17/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/18/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/19/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/20/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+
+CSV
+
     before do
       File.write("tmp/shifts.csv", CSV_FILE)
       CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
@@ -82,6 +94,44 @@ CSV
         expect(grid[5]).to eq({rns: 5, pct: 50})
         expect(grid[6]).to eq({rns: 5, pct: 50})
       end
+
+      it "returns uses weekend and weekday percentage thresholds" do
+        File.write("tmp/shifts.csv", CSV_FILE_ONE_EMPLOYEE_PER_WEEKDAY)
+        CsvScheduleParser.parse(
+          "tmp/shifts.csv",
+          Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH
+        )
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        stub_thresholds = {}
+        (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
+        expect(reporter).to receive(:thresholds)
+          .at_least(:once)
+          .and_return(stub_thresholds)
+
+        stub_weekend_thresholds = {}
+        (0..30).each { |h| stub_weekend_thresholds[h % 24] = 20.0 }
+        expect(reporter).to receive(:weekend_thresholds)
+          .at_least(:once)
+          .and_return(stub_weekend_thresholds)
+
+        mon = reporter.staffing_grid[Date.new(2023, 8, 14)]
+        tue = reporter.staffing_grid[Date.new(2023, 8, 15)]
+        wed = reporter.staffing_grid[Date.new(2023, 8, 16)]
+        thu = reporter.staffing_grid[Date.new(2023, 8, 17)]
+        fri = reporter.staffing_grid[Date.new(2023, 8, 18)]
+        sat = reporter.staffing_grid[Date.new(2023, 8, 19)]
+        sun = reporter.staffing_grid[Date.new(2023, 8, 20)]
+
+        expect(mon[9][:pct]).to eq(10)
+        expect(tue[9][:pct]).to eq(10)
+        expect(wed[9][:pct]).to eq(10)
+        expect(thu[9][:pct]).to eq(10)
+        expect(fri[9][:pct]).to eq(5)
+        expect(sat[9][:pct]).to eq(5)
+        expect(sun[9][:pct]).to eq(5)
+      end
+
 
       it "uses the calculated thresholds" do
         reporter = MonthlyReporter.new(Date.new(2023, 8))

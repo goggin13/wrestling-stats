@@ -2,7 +2,7 @@ desc "Advocate Tasks"
 namespace :advocate do
   desc "import schedule"
   task :import_schedule, [:path] => :environment do |t, args|
-    Advocate::ScheduleParser.parse!(args.path)
+    Advocate::CsvScheduleParser.parse(args.path, "spec/download_fixtures/advocate/employees.yml")
   end
 
   desc "Rebuild all Advocate Data"
@@ -17,9 +17,5 @@ namespace :advocate do
       Advocate::CsvScheduleParser.parse(file, "spec/download_fixtures/advocate/employees.yml")
       puts "\tdone"
     end
-
-    puts "Updating staffing labels"
-    Advocate::Employee.update_shift_labels
-    puts "\tdone"
   end
 end

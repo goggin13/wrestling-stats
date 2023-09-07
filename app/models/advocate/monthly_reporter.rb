@@ -12,6 +12,15 @@ class Advocate::MonthlyReporter
       .reject { |s| s.employee.status == Advocate::Employee::Status::UNKNOWN }
   end
 
+  def threshold_for(date, hour)
+    # Fri, Sat, Sun
+    if [5, 6, 0].include?(date.wday)
+      weekend_thresholds[hour].to_f
+    else
+      thresholds[hour].to_f
+    end
+  end
+
   # D0700-0900  6
   # D0900-1100  Fr-Sun: 7, 8
   # D1100-1300  Fr-Sun: 9, 10
@@ -33,6 +42,18 @@ class Advocate::MonthlyReporter
     (21...24).to_a.each { |h| @_thresholds[h] = 7 }
     (0...3).to_a.each { |h| @_thresholds[h] = 7 }
     (3...7).to_a.each { |h| @_thresholds[h] = 5 }
+
+    @_thresholds
+  end
+
+  def weekend_thresholds
+    return @_weekend_thresholds if defined?(@_weekend_thresholds)
+
+    @_weekend_thresholds = thresholds.dup
+
+    (9...11).to_a.each { |h| @_weekend_thresholds[h] = 7 }
+    (11...19).to_a.each { |h| @_weekend_thresholds[h] = 9 }
+    (3...7).to_a.each { |h| @_weekend_thresholds[h] = 6 }
 
     @_thresholds
   end
@@ -75,7 +96,8 @@ class Advocate::MonthlyReporter
       (starting_hour...ending_hour).each do |hour|
         hour = hour % 24
         @_staffing_grid[shift.date][hour][:rns] += 1
-        pct = @_staffing_grid[shift.date][hour][:rns] / thresholds[hour].to_f
+        threshold = threshold_for(shift.date, hour)
+        pct = @_staffing_grid[shift.date][hour][:rns] / threshold
         @_staffing_grid[shift.date][hour][:pct] = (pct.round(2) * 100).to_i
       end
     end
