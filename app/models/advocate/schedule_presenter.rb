@@ -1,10 +1,19 @@
 class Advocate::SchedulePresenter
 
   def initialize(start_date, end_date)
-    Rails.logger.info "[INFO] Presenting #{start_date}-#{end_date}"
-    @shifts = Advocate::Shift.where(date: start_date..end_date).all
+    @start_date = start_date
+    @end_date = end_date
+    @monthly_reporter = Advocate::MonthlyReporter.new(start_date)
 
-    Rails.logger.info "[INFO] Presenting #{dates}"
+    while start_date.wday != 0
+      start_date = start_date - 1.day
+    end
+
+    @shifts = Advocate::Shift
+      .where(date: start_date..end_date).all
+      .reject { |s| s.employee.status == Advocate::Employee::Status::UNKNOWN }
+
+    Rails.logger.info "[INFO] Presenting #{start_date}-#{end_date}"
   end
 
   def dates
@@ -12,72 +21,47 @@ class Advocate::SchedulePresenter
   end
 
 	def working_on?(date, employee)
-    date = DateTime.parse(date) if date.is_a?(String)
     @shifts.select do |shift|
       shift.date == date && shift.employee == employee
     end.length > 0
   end
 
   def timeline(date)
-    date = DateTime.parse(date) if date.is_a?(String)
-    # Advocate::StaffingCalculator
-    #   .new(date)
-    #   .counts
-    #   .transform_keys do |hour|
-    #     (hour * 100).to_s.rjust(4, "0")
-    # end
+    return [] unless @monthly_reporter.staffing_grid.has_key?(date)
 
-    []
-  end
-
-  def shift_count_for_graph(date)
-    timeline = timeline(date).to_a
-    grouped_results = {}
-
-    previous_hour = nil
-    previous_count = nil
-
-    timeline.each do |hour, count|
-      if previous_hour.nil?
-        previous_hour = hour
-        previous_count = count
-      elsif count != previous_count
-        new_key = previous_hour + "-" + hour
-        grouped_results[new_key] = previous_count
-        previous_hour = hour
-        previous_count = count
-      end
+    @monthly_reporter.staffing_grid[date]
+      .transform_keys do |hour|
+        (hour * 100).to_s.rjust(4, "0")
     end
-
-    grouped_results[previous_hour + "-0700"] = previous_count
-
-    grouped_results
   end
 
   def shifts_for(date)
-    date = DateTime.parse(date) if date.is_a?(String)
     todays_shifts = @shifts.select { |s| s.date == date }
 
     day_shifts = todays_shifts.select { |s| s.start.present? && s.start.to_i > 0 && s.start.to_i <= 9 }
     day_shift_rns = day_shifts.select { |s| s.employee.rn? }
-    day_shift_techs = day_shifts.select { |s| s.employee.tech? }
-    day_shift_us = day_shifts.find { |s| s.employee.role == "US" }
+    # day_shift_techs = day_shifts.select { |s| s.employee.tech? }
+    # day_shift_us = day_shifts.find { |s| s.employee.role == "US" }
 
     swing_shifts = todays_shifts.select { |s| s.start.present? && s.start.to_i > 9 && s.start.to_i < 19 }
     swing_shift_rns = swing_shifts.select { |s| s.employee.rn? }
-    swing_shift_techs = swing_shifts.select { |s| s.employee.tech? }
+    # swing_shift_techs = swing_shifts.select { |s| s.employee.tech? }
 
     night_shifts = todays_shifts.select { |s| s.start.to_i >= 18 }
     night_shift_rns = night_shifts.select { |s| s.employee.rn? }
-    night_shift_techs = night_shifts.select { |s| s.employee.tech? }
-    night_shift_us = night_shifts.find { |s| s.employee.role == "US" }
+    # night_shift_techs = night_shifts.select { |s| s.employee.tech? }
+    # night_shift_us = night_shifts.find { |s| s.employee.role == "US" }
 
-    unsorted = todays_shifts.select { |s| s.start.nil? }
+    unsorted = Advocate::Shift
+      .joins(:employee)
+      .where("advocate_shifts.date" => date)
+      .where("advocate_employees.status" => Advocate::Employee::Status::UNKNOWN)
+      .all
 
     {
-      day: { us: day_shift_us, rns: day_shift_rns, techs: day_shift_techs },
-      swing: { rns: swing_shift_rns, techs: swing_shift_techs },
-      night: { us: night_shift_us, rns: night_shift_rns, techs: night_shift_techs },
+      day: { us: [], rns: day_shift_rns, techs: [] },
+      swing: { rns: swing_shift_rns, techs: [] },
+      night: { us: [], rns: night_shift_rns, techs: [] },
       unsorted: unsorted
     }
   end

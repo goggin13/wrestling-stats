@@ -1,6 +1,7 @@
 class Advocate::Shift < ApplicationRecord
   belongs_to :employee, class_name: "Advocate::Employee"
 
+
   def self.create_from_raw_shift_code(raw_shift_code, date, employee)
     shift = Advocate::Shift.where(date: date, employee: employee).first
 

@@ -1,0 +1,140 @@
+<% content_for :title do %>
+  Shift List
+<% end %>
+
+<%= render partial: "date_display", locals:{
+  prev_page: advocate_schedule_path(month: @prev_month),
+  next_page: advocate_schedule_path(month: @next_month),
+} %>
+
+<h1>Schedule</h1>
+
+<% ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"].each do |day| %>
+  <div class="date header">
+    <%= day %><br/>
+  </div>
+<% end %>
+
+<div class="clear"></div>
+
+<% @presenter.dates.each_with_index do |date, i| %>
+  <div class="date <%= @presenter.working_on?(date, @current_employee) ? "highlight" : "" %>"
+       id="<%= date.strftime("%m-%d") %>">
+    <%= date.strftime("%-m/%e").gsub(" ", "") %>
+  </div>
+
+  <% if i > 0 && ((i + 1) % 7) == 0 %>
+    <div class="clear"></div>
+  <% end %>
+<% end %>
+
+<% @presenter.dates.each_with_index do |date, i| %>
+  <div id="schedule_<%= date.strftime("%m-%d") %>" class="schedule_days hidden">
+    <%# <% timeline = @presenter.shift_count_for_graph(date) %>
+    <% hours = @presenter.timeline(date) %>
+
+    <!-- <table class="staffing-chart charts-css multiple show-labels line show-primary-axis"> -->
+    <!--   <caption> Single Dataset Table </caption>  -->
+    <!--   <thead> -->
+    <!--     <tr> -->
+    <!--       <th scope="col"> Month </th>  -->
+    <!--       <th scope="col"> Progress </th> -->
+    <!--     </tr> -->
+    <!--   </thead>  -->
+    <!--  -->
+    <!--   <tbody> -->
+    <!--     <% previous_hour = nil %> -->
+    <!--     <% hours.each_with_index do |(hour, count), index| %> -->
+    <!--       <% rn_size = count[:rns] / 15.0 %> -->
+    <!--       <% tech_size = count[:techs] / 15.0 %> -->
+    <!--       <% show_label = ["0700", "1100", "1500", "1900", "2300", "0300"].include?(hour) %> -->
+    <!--       <% show_rn_data = index == 0 || count[:rns] != hours[previous_hour][:rns] %> -->
+    <!--       <% show_tech_data = index == 0 || count[:techs] != hours[previous_hour][:techs] %> -->
+    <!--       <tr> -->
+    <!--  -->
+    <!--         <% if show_label %> -->
+    <!--           <th scope="row"> <%= hour.gsub("0", "") %> </th>  -->
+    <!--         <% end %> -->
+    <!--  -->
+    <!--         <% color = rn_size == tech_size ? "cyan" : "navy" %> -->
+    <!--  -->
+    <!--         <td style="--color: <%= color %>; --start:<%= rn_size %>; --size: <%= rn_size %>;"> -->
+    <!--           <span class="data"> -->
+    <!--             <% if show_rn_data %> -->
+    <!--               <%= count[:rns] %> -->
+    <!--             <% end %> -->
+    <!--           </span> -->
+    <!--         </td> -->
+    <!--  -->
+    <!--         <% if rn_size != tech_size %> -->
+    <!--           <td style="--color: teal; --start:<%= tech_size %>; --size: <%= tech_size %>;"> -->
+    <!--             <span class="data"> -->
+    <!--               <% if show_tech_data %> -->
+    <!--                 <%= count[:techs] %> -->
+    <!--               <% end %> -->
+    <!--             </span> -->
+    <!--           </td> -->
+    <!--         <% end %> -->
+    <!--  -->
+    <!--         <% previous_hour = hour %> -->
+    <!--       </tr> -->
+    <!--     <% end %> -->
+    <!--      -->
+    <!--   </tbody> -->
+
+    <!-- <table class="hidden"> -->
+    <!--     <tr> -->
+    <!--       <th></th> -->
+    <!--       <th>RNs</th> -->
+    <!--       <th>Techs</th> -->
+    <!--     </tr> -->
+    <!--   <% timeline.each do |hour, shifts|%> -->
+    <!--     <tr> -->
+    <!--       <td><%= hour %></th> -->
+    <!--       <td><%= shifts[:rns] %></td> -->
+    <!--       <td><%= shifts[:techs] %></td> -->
+    <!--     </tr> -->
+    <!--   <% end %> -->
+    <!-- </table> -->
+
+    <div class="clear"></div>
+    <div class="shift_block">
+      <% shifts = @presenter.shifts_for(date) %>
+      Day <br/>
+      <%= render partial: "shift", locals: {shift: shifts[:day][:us]} %>
+      <% shifts[:day][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:day][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+    </div>
+
+    <div class="shift_block">
+      Swing <br/>
+      <% shifts[:swing][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:swing][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+    </div>
+
+    <div class="shift_block">
+      Night <br/>
+      <%= render partial: "shift", locals: {shift: shifts[:night][:us]} %>
+      <% shifts[:night][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:night][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+    </div>
+
+    <div class="clear"></div>
+    Also <br/>
+    <% shifts[:unsorted].each do |shift| %>
+      <%= render partial: "shift", locals: {shift: shift} %>
+    <% end %>
+  </div>
+<% end %>

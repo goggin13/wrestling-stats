@@ -30,103 +30,23 @@
 
 <% @presenter.dates.each_with_index do |date, i| %>
   <div id="schedule_<%= date.strftime("%m-%d") %>" class="schedule_days hidden">
-    <% timeline = @presenter.shift_count_for_graph(date) %>
-    <% hours = @presenter.timeline(date) %>
+    <% timeline = @presenter.timeline(date) %>
 
-    <table class="staffing-chart charts-css multiple show-labels line show-primary-axis">
-      <caption> Single Dataset Table </caption> 
-      <thead>
-        <tr>
-          <th scope="col"> Month </th> 
-          <th scope="col"> Progress </th>
-        </tr>
-      </thead> 
-
-      <tbody>
-        <% previous_hour = nil %>
-        <% hours.each_with_index do |(hour, count), index| %>
-          <% rn_size = count[:rns] / 15.0 %>
-          <% tech_size = count[:techs] / 15.0 %>
-          <% show_label = ["0700", "1100", "1500", "1900", "2300", "0300"].include?(hour) %>
-          <% show_rn_data = index == 0 || count[:rns] != hours[previous_hour][:rns] %>
-          <% show_tech_data = index == 0 || count[:techs] != hours[previous_hour][:techs] %>
-          <tr>
-
-            <% if show_label %>
-              <th scope="row"> <%= hour.gsub("0", "") %> </th> 
-            <% end %>
-
-            <% color = rn_size == tech_size ? "cyan" : "navy" %>
-
-            <td style="--color: <%= color %>; --start:<%= rn_size %>; --size: <%= rn_size %>;">
-              <span class="data">
-                <% if show_rn_data %>
-                  <%= count[:rns] %>
-                <% end %>
-              </span>
-            </td>
-
-            <% if rn_size != tech_size %>
-              <td style="--color: teal; --start:<%= tech_size %>; --size: <%= tech_size %>;">
-                <span class="data">
-                  <% if show_tech_data %>
-                    <%= count[:techs] %>
-                  <% end %>
-                </span>
-              </td>
-            <% end %>
-
-            <% previous_hour = hour %>
-            <!-- <td style="--color: teal; --start:<%= index/24.0 %>; --size: <%= count[:techs] / 15.0 %>;"> -->
-            <!--   <span class="data"> <%= count[:techs] %> </span> -->
-            <!-- </td> -->
-          </tr>
-        <% end %>
-        
-      </tbody>
-
-    <!--   <tbody> -->
-    <!--     <tr> -->
-    <!--       <th scope="row"> Jan </th>  -->
-    <!--       <td style="--start:0; --size:0.3;"> -->
-    <!--         <span class="data"> 30 </span> -->
-    <!--       </td> -->
-    <!--     </tr> -->
-    <!--     <tr> -->
-    <!--       <th scope="row"> Feb </th>  -->
-    <!--       <td style="--start:0.3; --size:0.5;"> -->
-    <!--         <span class="data"> 50 </span> -->
-    <!--       </td> -->
-    <!--     </tr>  -->
-    <!--     <tr> -->
-    <!--       <th scope="row"> Mar </th>  -->
-    <!--       <td style="--start:0.5; --size:0.8;"> -->
-    <!--         <span class="data"> 80 </span> -->
-    <!--       </td> -->
-    <!--     </tr>  -->
-    <!--     <tr> -->
-    <!--       <th scope="row"> Apr </th>  -->
-    <!--       <td style="--start:0.8; --size:1;"> -->
-    <!--         <span class="data"> 100 </span> -->
-    <!--       </td> -->
-    <!--     </tr>  -->
-    <!--   </tbody> -->
-    <!-- </table> -->
-    <!--  -->
-
-    <table class="hidden">
+    <table class="clear">
         <tr>
           <th></th>
-          <th>RNs</th>
-          <th>Techs</th>
+          <% timeline.each do |hour_label, _|%>
+            <th><%= hour_label %></th>
+          <% end %>
         </tr>
-      <% timeline.each do |hour, shifts|%>
         <tr>
-          <td><%= hour %></th>
-          <td><%= shifts[:rns] %></td>
-          <td><%= shifts[:techs] %></td>
+          <th>RNs</th>
+          <% timeline.each do |_, hour|%>
+          <td class="rn_pct rn_pct_<%= [hour[:pct].floor(-1), 100].min %>">
+              <%= hour[:rns] %>
+            </td>
+          <% end %>
         </tr>
-      <% end %>
     </table>
 
     <div class="clear"></div>
@@ -137,18 +57,14 @@
       <% shifts[:day][:rns].each do |shift| %>
         <%= render partial: "shift", locals: {shift: shift} %>
       <% end %>
-      <% shifts[:day][:techs].each do |shift| %>
-        <%= render partial: "shift", locals: {shift: shift} %>
-      <% end %>
     </div>
 
     <div class="shift_block">
-      Swing <br/>
-      <% shifts[:swing][:rns].each do |shift| %>
-        <%= render partial: "shift", locals: {shift: shift} %>
-      <% end %>
-      <% shifts[:swing][:techs].each do |shift| %>
-        <%= render partial: "shift", locals: {shift: shift} %>
+      <% if shifts[:swing][:rns].length > 0 %>
+        Swing <br/>
+        <% shifts[:swing][:rns].each do |shift| %>
+          <%= render partial: "shift", locals: {shift: shift} %>
+        <% end %>
       <% end %>
     </div>
 
@@ -158,15 +74,14 @@
       <% shifts[:night][:rns].each do |shift| %>
         <%= render partial: "shift", locals: {shift: shift} %>
       <% end %>
-      <% shifts[:night][:techs].each do |shift| %>
-        <%= render partial: "shift", locals: {shift: shift} %>
-      <% end %>
     </div>
 
     <div class="clear"></div>
-    Also <br/>
-    <% shifts[:unsorted].each do |shift| %>
-      <%= render partial: "shift", locals: {shift: shift} %>
-    <% end %>
+      <% if shifts[:unsorted].length > 0 %>
+        Also <br/>
+        <% shifts[:unsorted].each do |shift| %>
+          <%= render partial: "shift", locals: {shift: shift} %>
+        <% end %>
+      <% end %>
   </div>
 <% end %>
