@@ -59,22 +59,37 @@ class Advocate::MonthlyReporter
   end
 
   def hours_by_employee_status
-    result = {total: 0, full_time: 0, agency: 0, part_time: 0}
+    return @_hours_by_employee_status if defined?(@_hours_by_employee_status)
+
+    result = {
+      total: 0,
+      full_time: {hours: 0, pct: 0},
+      agency: {hours: 0, pct: 0},
+      part_time: {hours: 0, pct: 0},
+    }
+
     @shifts.inject(result) do |acc, shift|
 
       if shift.employee.status == "FullTime"
-        acc[:full_time] += shift.duration
+        acc[:full_time][:hours] += shift.duration
         acc[:total] += shift.duration
       elsif shift.employee.status == "PartTime"
-        acc[:part_time] += shift.duration
+        acc[:part_time][:hours] += shift.duration
         acc[:total] += shift.duration
       elsif shift.employee.status == "Agency"
-        acc[:agency] += shift.duration
+        acc[:agency][:hours] += shift.duration
         acc[:total] += shift.duration
       end
 
       acc
     end
+
+    [:full_time, :part_time, :agency].each do |status|
+      next if result[status] == 0
+      result[status][:pct] = (result[status][:hours] / result[:total].to_f * 100).round(2)
+    end
+
+    @_hours_by_employee_status = result
   end
 
   def staffing_grid

@@ -170,19 +170,25 @@ CSV
         # royce, cecil (Agency) : 12
         # cordero, kenneth (Agency) : 12
         # kostryba, khrystyna (Agency) : 12
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
 
         full_time = [8,12,12,12,12,12,12].sum
         part_time = [12].sum
         agency = [12,12,12,12,12].sum
         total = full_time + part_time + agency
 
+        full_time_pct = (full_time / total.to_f * 100).round(2)
+        part_time_pct = (part_time / total.to_f * 100).round(2)
+        agency_pct = (agency / total.to_f * 100).round(2)
+
         reporter = MonthlyReporter.new(Date.new(2023, 8))
 
         expect(reporter.hours_by_employee_status).to eq({
           total: total,
-          full_time: full_time,
-          part_time: part_time,
-          agency: agency,
+          full_time: {hours: full_time, pct: full_time_pct},
+          part_time: {hours: part_time, pct: part_time_pct},
+          agency: {hours: agency, pct: agency_pct},
         })
       end
     end

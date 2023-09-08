@@ -1,0 +1,52 @@
+
+<table>
+  <tr>
+    <th>Staffing Data</th>
+    <% @months.each do |month, _| %>
+      <th><%= month.strftime("%b") %></th>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Median Staffing</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.median_pct %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Full Time Hours</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <%= reporter.hours_by_employee_status[:full_time][:pct] %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Agency Hours</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <%= reporter.hours_by_employee_status[:agency][:pct] %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Part Time Hours</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <%= reporter.hours_by_employee_status[:part_time][:pct] %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Full Time Employees</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <%= reporter.full_timers.count %>
+      </td>
+    <% end %>
+  </tr>
+</table>

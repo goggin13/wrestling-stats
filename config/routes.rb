@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   namespace :advocate do
     get "/schedule", to: "schedule#show"
-    get "/employees", to: "employee#index"
+    get "/aggregate_report", to: "schedule#aggregate_report"
     get "/monthly_report", to: "schedule#monthly_report"
   end
 

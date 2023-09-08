@@ -78,13 +78,13 @@
   <tr>
     <th>Hours Worked</th>
     <td>
-      <%= number_to_percentage(@hours_by_status[:full_time] / @hours_by_status[:total].to_f * 100, precision: 0) %>
+      <%= number_to_percentage(@hours_by_status[:full_time][:pct], precision: 0) %>
     </td>
     <td>
-      <%= number_to_percentage(@hours_by_status[:part_time] / @hours_by_status[:total].to_f * 100, precision: 0) %>
+      <%= number_to_percentage(@hours_by_status[:part_time][:pct], precision: 0) %>
     </td>
     <td>
-      <%= number_to_percentage(@hours_by_status[:agency] / @hours_by_status[:total].to_f * 100, precision: 0) %>
+      <%= number_to_percentage(@hours_by_status[:agency][:pct], precision: 0) %>
     </td>
   </tr>
 </table>
