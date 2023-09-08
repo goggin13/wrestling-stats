@@ -1,6 +1,5 @@
 class Advocate::Employee < ApplicationRecord
-  REQUIRED_SHIFTS_FOR_FULL_TIME = 8
-  EMPLOYEE_STATUS_FILE_PATH = "spec/download_fixtures/advocate/employees.yml"
+  EMPLOYEE_STATUS_FILE_PATH = "advocate_data/employees.yml"
 
   module ShiftLabels
     ALL = [
@@ -56,12 +55,6 @@ class Advocate::Employee < ApplicationRecord
     end
 
     save!
-  end
-
-  def full_time_during?(start_date, end_date)
-    shifts
-      .where(date: start_date..end_date)
-      .count >= REQUIRED_SHIFTS_FOR_FULL_TIME
   end
 
   def rn?

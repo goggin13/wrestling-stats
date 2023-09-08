@@ -2,17 +2,43 @@ require 'rails_helper'
 
 module Advocate
   RSpec.describe SchedulePresenter, type: :model do
+    before do
+      @csv_file = <<-CSV
+textbox175,textbox3,textbox9,EmployeeName,textbox15,textbox2,CalendarDate,textbox1
+Department: 36102,08/30/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/30/2023,(F),"Daniels, Michelle",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Glover, Gerica",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"Godinez, Donna",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Maciha, Emma",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"peluso riti, stephanie",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"robin, joshua",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,(F),"royce, cecil",RN,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Rivera, Amanda",ECT,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Smith, Shannon",ECT,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"Owens, Adrienne",US,07-12,07:00,12.50
+Department: 36102,08/30/2023,,"West, Marguerite",ECT,EX11-08,11:00,8.50
+Department: 36102,08/30/2023,,"Goggin, Matthew",RN,11-12,11:00,12.50
+Department: 36102,08/30/2023,(F),"Cain, Lisa",ECT,15-08,15:00,8.50
+Department: 36102,08/30/2023,,"Gordon, Corrin",ACM,15-08,15:00,8.50
+Department: 36102,08/30/2023,(F),"cordero, kenneth",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,(F),"kostryba, khrystyna",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,(F),"Simmons, Marquetta",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,,"WIlliams, Charmakie",RN,19-12,19:00,12.50
+Department: 36102,08/30/2023,,"Stachnik, Gabrielle",RN,CHG,19:00,12.50
+Department: 36102,08/30/2023,,"Abukhaled, Yazen",RN,TRIAGE,19:00,12.50
+Department: 36102,08/30/2023,,"Short, Dawnn",ECT,19-12,19:00,12.50
+Department: 36102,08/30/2023,,"Coleman, Leslie",ECT,EX19-12,19:00,12.50
+Department: 36102,08/30/2023,,"Millsap, Cassandra",US,19-12,19:00,12.50
 
-    def verify_shifts_contain(shifts, last, role, start, duration, raw_shift_code=nil)
+CSV
+    end
+
+    def verify_shifts_contain(shifts, last, role, start, duration)
       matches = shifts.select do |shift|
         success = shift.employee.last == last &&
           shift.employee.role == role &&
           shift.start == start &&
           shift.duration == duration
-
-        if raw_shift_code
-          success = success && shift.raw_shift_code == raw_shift_code
-        end
 
         success
       end
@@ -26,199 +52,57 @@ module Advocate
     end
 
     before do
-      @file = "spec/download_fixtures/advocate/schedule_2023-03-19#2023-04-15.html"
-      ScheduleParser.parse!(@file)
-      end_date = Advocate::Shift.maximum(:date)
-      start_date = end_date - 27.days
-      @presenter = SchedulePresenter.new(start_date, end_date)
+      File.write("tmp/shifts.csv", @csv_file)
+      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+
+      @presenter = SchedulePresenter.new(Date.new(2023,8,1), Date.new(2023,8,31))
     end
 
-    xdescribe "shifts_for" do
-      it "returns information for a day sorted by shifts and jobs" do
-        day = @presenter.shifts_for("3/19")
-        expect(day[:day][:us].employee.name).to eq("Owens, Adrienne")
-        expect(day[:day][:us].employee.role).to eq("US")
-      end
-
+    describe "shifts_for" do
       it "passes an integration spec" do
-        shifts = @presenter.shifts_for("3/21")
+        shifts = @presenter.shifts_for(Date.new(2023,8,30))
 
-        # Day US + RNs
-        verify_shift(shifts[:day][:us], "Jaksich", "US", 7, 12)
+        # Day RNs
         [
-          ["Cattenhead", "RN", 7, 12],
-          ["Edwards", "RN", 7, 12],
-          ["Jones", "RN", 7, 12],
-          ["Morrar", "RN", 7, 12],
-          ["Taylor", "AGCY", 7, 12],
-          ["Soto", "RN", 9, 10],
+          ["daniels", "RN", 7, 12],
+          ["edwards", "RN", 7, 8],
+          ["glover", "RN", 7, 12],
+          ["maciha", "RN", 7, 12],
+          ["peluso riti", "RN", 7, 12],
+          ["robin", "RN", 7, 12],
+          ["royce", "RN", 7, 12],
         ].each do |args|
           verify_shifts_contain(shifts[:day][:rns], *args)
         end
-        expect(shifts[:day][:rns].length).to eq(6)
-
-        # Day TECHs
-        expect(shifts[:day][:techs].length).to eq(6)
-        [
-          ["Akwei", "NCT", 7, 8],
-          ["Losias", "NCT", 7, 12],
-          ["Plunkett", "TECH", 7, 12],
-          ["Rivera", "TECH", 7, 12],
-          ["Valdez", "TECH", 7, 12],
-          ["Villa", "TECH", 7, 12],
-        ].each do |args|
-          verify_shifts_contain(shifts[:day][:techs], *args)
-        end
+        expect(shifts[:day][:rns].length).to eq(7)
 
         # Swing RNs
         [
-          ["Hall", "AGCY", 15, 12],
-          ["Sreepathy", "RN", 15, 12],
-          ["Teresi", "RN", 11, 8],
-          ["Noreen", "RN", 15, 8],
+          ["goggin", "RN", 11, 12],
         ].each do |args|
           verify_shifts_contain(shifts[:swing][:rns], *args)
         end
-        expect(shifts[:swing][:rns].length).to eq(4)
+        expect(shifts[:swing][:rns].length).to eq(1)
 
-        # Swing TECHs
-        expect(shifts[:swing][:techs].length).to eq(1)
-        verify_shifts_contain(shifts[:swing][:techs], "Smith", "TECH", 11, 12)
-
-        # Night US + RNs
-        verify_shift(shifts[:night][:us], "Washington", "US", 19, 12)
         [
-          ["Abukhaled", "RN", 19, 12],
-          ["Adekunle", "RN", 19, 12],
-          ["Berrios", "RN", 19, 12],
-          ["Stachnik", "RN", 19, 12],
-          ["Thornton", "RN", 19, 12],
+          ["cordero", "RN", 19, 12],
+          ["kostryba", "RN", 19, 12],
+          ["williams", "RN", 19, 12],
+          ["stachnik", "RN", 19, 12],
+          ["abukhaled", "RN", 19, 12],
         ].each do |args|
           verify_shifts_contain(shifts[:night][:rns], *args)
         end
         expect(shifts[:night][:rns].length).to eq(5)
 
-        # Night TECHs
         [
-          ["Johnson", "TECH", 19, 12],
-          ["Yancey", "NCT", 19, 12],
-          ["Coleman", "TECH", 19, 12],
-        ].each do |args|
-          verify_shifts_contain(shifts[:night][:techs], *args)
-        end
-        expect(shifts[:night][:techs].length).to eq(3)
-
-        # Unsorted
-        expect(shifts[:unsorted].length).to eq(5)
-        [
-          ["Goggin", "RN", nil, nil, "[ORF]"],
-          ["Forrest-clark", "NCT", nil, nil, "[$]"],
-          ["Mitchell", "RN", nil, nil, "[$]"],
-          ["Jackson", "TECH", nil, nil, "[ORF]"],
-          ["Williams", "RN", nil, nil, "[ORF]"],
+          ["godinez", "RN", 7, 12],
+          ["simmons", "RN", 19, 12],
         ].each do |args|
           verify_shifts_contain(shifts[:unsorted], *args)
         end
+        expect(shifts[:unsorted].length).to eq(2)
       end
     end
-
-    xdescribe "timeline" do
-      it "returns nurses/techs sorted by timeline" do
-        timeline = @presenter.timeline("3/21")
-
-        expect(timeline["0700"]).to include({rns: 5, techs: 6})
-        expect(timeline["0800"]).to include({rns: 5, techs: 6})
-
-        expect(timeline["0900"]).to include({rns: 6, techs: 6})
-        expect(timeline["1000"]).to include({rns: 6, techs: 6})
-
-        expect(timeline["1100"]).to include({rns: 7, techs: 7})
-        expect(timeline["1200"]).to include({rns: 7, techs: 7})
-        expect(timeline["1300"]).to include({rns: 7, techs: 7})
-        expect(timeline["1400"]).to include({rns: 7, techs: 7})
-
-        expect(timeline["1500"]).to include({rns: 10, techs: 6})
-        expect(timeline["1600"]).to include({rns: 10, techs: 6})
-        expect(timeline["1700"]).to include({rns: 10, techs: 6})
-        expect(timeline["1800"]).to include({rns: 10, techs: 6})
-
-        expect(timeline["1900"]).to include({rns: 8, techs: 4})
-        expect(timeline["2000"]).to include({rns: 8, techs: 4})
-        expect(timeline["2100"]).to include({rns: 8, techs: 4})
-        expect(timeline["2200"]).to include({rns: 8, techs: 4})
-
-        expect(timeline["2300"]).to include({rns: 7, techs: 3})
-        expect(timeline["0000"]).to include({rns: 7, techs: 3})
-        expect(timeline["0100"]).to include({rns: 7, techs: 3})
-        expect(timeline["0200"]).to include({rns: 7, techs: 3})
-
-        expect(timeline["0300"]).to include({rns: 5, techs: 3})
-        expect(timeline["0300"]).to include({rns: 5, techs: 3})
-        expect(timeline["0500"]).to include({rns: 5, techs: 3})
-        expect(timeline["0600"]).to include({rns: 5, techs: 3})
-      end
-    end
-
-    xdescribe "shift_count_for_graph" do
-      xit "returns nurses/techs sorted by timeline in groups" do
-        timeline = @presenter.shift_count_for_graph("3/21")
-
-        expect(timeline["0700-0900"]).to include({rns: 5, techs: 6})
-        expect(timeline["0900-1100"]).to include({rns: 6, techs: 6})
-        expect(timeline["1100-1500"]).to include({rns: 7, techs: 7})
-        expect(timeline["1500-1900"]).to include({rns: 10, techs: 6})
-        expect(timeline["1900-2300"]).to include({rns: 8, techs: 4})
-        expect(timeline["2300-0300"]).to include({rns: 7, techs: 3})
-        expect(timeline["0300-0700"]).to include({rns: 5, techs: 3})
-      end
-    end
-#
-#
-# Other
-
-
-# Day 3/21
-# Sandy 07-12
-# Cattenhead 07-12
-# Michelle D 07-12
-# Edwards V 07-12
-# Jones 0712
-# Morrar 0712
-# Soto 09-10
-# Taylor 07-12
-
-# Akwei 07-08 NCT
-# Losias 0712
-# Plunkett 0712
-# Rivera 0712
-# Valdez 07-12
-# Villa 07-12
-#
-#
-# Swing
-# Hall, Annalise 15-12
-# Noreen OC15-08  - maybe a real shift?  maybe not?
-# Sreepathy 15-12
-# Teresi 11-08
-#
-# Smith 11-12
-#
-# Night
-# US Washington 19-12
-# Yazen 19-12
-# Suliat 19-12
-# Berrios 19-12 LPN
-# Stachnik 19-12
-# Escobar 19-12 (alternate, not counted)
-# Hopkins 19-12 (alternate, not counted)
-# Mingo 19-12 (alternate, not counted)
-# Nevins 19-12 (alternate, not counted)
-# Reyes 19-12 - Skipped!
-# Thornton 19-12
-#
-# Barney 19-12 (NCT) (alternate, not counted)
-# Leslie 19-12
-# Johnson 19-12
-# Yancey 19-12
   end
 end
