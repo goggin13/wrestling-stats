@@ -5,9 +5,9 @@ class Advocate::SchedulePresenter
     @end_date = end_date
     @monthly_reporter = Advocate::MonthlyReporter.new(start_date)
 
-    while start_date.wday != 0
-      start_date = start_date - 1.day
-    end
+    # while start_date.wday != 0
+    #   start_date = start_date - 1.day
+    # end
 
     @shifts = Advocate::Shift
       .where(date: start_date..end_date).all
@@ -17,7 +17,15 @@ class Advocate::SchedulePresenter
   end
 
   def dates
-    @shifts.map(&:date).sort.uniq
+    results = @shifts.map(&:date).uniq
+
+    first_sunday = @start_date
+    while first_sunday.wday != 0
+      first_sunday = first_sunday - 1.day
+      results << first_sunday
+    end
+
+    results.sort
   end
 
 	def working_on?(date, employee)

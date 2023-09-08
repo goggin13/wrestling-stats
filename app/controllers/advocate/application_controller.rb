@@ -10,7 +10,7 @@ class Advocate::ApplicationController < ApplicationController
     end
     @start_date = @month
     @end_date = @month.end_of_month
-    @prev_month = (@start_date - 1.days).beginning_of_month.strftime("%m/%y")
-    @next_month = (@end_date + 1.days).beginning_of_month.strftime("%m/%y")
+    @prev_month = @start_date - 1.days
+    @next_month = @end_date + 1.days
   end
 end

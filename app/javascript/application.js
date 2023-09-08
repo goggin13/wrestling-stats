@@ -14,7 +14,7 @@ $(document).ready(function () {
 });
 
 function advocate_show_hide() {
-  $(".date:not(.header)").click(function() {
+  $(".date.clickable:not(.header)").click(function() {
     $(".date").removeClass("selected");
     $(".schedule_days").hide();
 

@@ -36,8 +36,12 @@
   padding-bottom: 5px;
 }
 
-.date:not(.header) {
+.date.clickable:not(.header) {
   cursor: pointer;
+}
+
+.date.unclickable {
+  background: darkgray;
 }
 
 .date.selected, .date.highlight.selected {
@@ -66,6 +70,12 @@
 
 .shift_block {
   float: left;
+  margin-right: 5px;
+  margin-top: 10px;
+}
+
+.shift_block .header {
+  text-align: center;
 }
 
 .rn_pct { 

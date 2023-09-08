@@ -6,11 +6,11 @@
   Median Staffing in <%= @start_date.strftime("%B") %>: <%= @reporter.median_pct %>%
 </h1>
 
-
-<%= render partial: "date_display", locals:{
-  prev_page: advocate_monthly_report_path(month: @prev_month),
-  next_page: advocate_monthly_report_path(month: @next_month),
-} %>
+<%= link_to(@prev_month.strftime("%B"), 
+            advocate_monthly_report_path(month: @prev_month.strftime("%m/%y"))) %> | 
+... |
+<%= link_to(@next_month.strftime("%B"), 
+            advocate_monthly_report_path(month: @next_month.strftime("%m/%y"))) %>
 
 <div id="staffing_grid_container">
   <table id="staffing_grid_legend">
@@ -117,7 +117,7 @@
 </ul>
 
 <ul class="employee_list">
-  <li><%= @reporter.unknown_employees.count %> Unknown</li>
+  <li><%= @reporter.unknown_employees.count %> Non ED Staff</li>
   <% @reporter.unknown_employees.each do |employee| %>
     <li>
       <%= employee.name %>

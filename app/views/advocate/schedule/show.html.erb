@@ -1,13 +1,16 @@
 <% content_for :title do %>
-  Shift List
+  <%= @start_date.strftime("%B") %> Schedule
 <% end %>
 
-<%= render partial: "date_display", locals:{
-  prev_page: advocate_schedule_path(month: @prev_month),
-  next_page: advocate_schedule_path(month: @next_month),
-} %>
+<h1>
+  <%= @start_date.strftime("%B") %> Schedule
+</h1>
 
-<h1>Schedule</h1>
+<br/>
+<%= link_to(@prev_month.strftime("%B"), advocate_schedule_path(month: @prev_month.strftime("%m/%y"))) %> | 
+... |
+<%= link_to(@next_month.strftime("%B"), advocate_schedule_path(month: @next_month.strftime("%m/%y"))) %>
+<br/>
 
 <% ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"].each do |day| %>
   <div class="date header">
@@ -18,7 +21,8 @@
 <div class="clear"></div>
 
 <% @presenter.dates.each_with_index do |date, i| %>
-  <div class="date <%= @presenter.working_on?(date, @current_employee) ? "highlight" : "" %>"
+  <div class="date <%= @presenter.working_on?(date, @current_employee) ? "highlight" : "" %>
+                   <%= date >= @start_date ? "clickable" : "unclickable" %>"
        id="<%= date.strftime("%m-%d") %>">
     <%= date.strftime("%-m/%e").gsub(" ", "") %>
   </div>
@@ -52,7 +56,9 @@
     <div class="clear"></div>
     <div class="shift_block">
       <% shifts = @presenter.shifts_for(date) %>
-      Day <br/>
+      <div class="header">
+        Day
+      </div>
       <%= render partial: "shift", locals: {shift: shifts[:day][:us]} %>
       <% shifts[:day][:rns].each do |shift| %>
         <%= render partial: "shift", locals: {shift: shift} %>
@@ -61,7 +67,9 @@
 
     <div class="shift_block">
       <% if shifts[:swing][:rns].length > 0 %>
-        Swing <br/>
+        <div class="header">
+          Swing
+        </div>
         <% shifts[:swing][:rns].each do |shift| %>
           <%= render partial: "shift", locals: {shift: shift} %>
         <% end %>
@@ -69,7 +77,9 @@
     </div>
 
     <div class="shift_block">
-      Night <br/>
+      <div class="header">
+        Night
+      </div>
       <%= render partial: "shift", locals: {shift: shifts[:night][:us]} %>
       <% shifts[:night][:rns].each do |shift| %>
         <%= render partial: "shift", locals: {shift: shift} %>
@@ -78,7 +88,9 @@
 
     <div class="clear"></div>
       <% if shifts[:unsorted].length > 0 %>
-        Also <br/>
+        <div class="header">
+          Non ED Staff
+        </div>
         <% shifts[:unsorted].each do |shift| %>
           <%= render partial: "shift", locals: {shift: shift} %>
         <% end %>
