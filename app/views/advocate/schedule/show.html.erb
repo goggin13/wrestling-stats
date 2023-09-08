@@ -24,7 +24,11 @@
   <div class="date <%= @presenter.working_on?(date, @current_employee) ? "highlight" : "" %>
                    <%= date >= @start_date ? "clickable" : "unclickable" %>"
        id="<%= date.strftime("%m-%d") %>">
-    <%= date.strftime("%-m/%e").gsub(" ", "") %>
+    <% if date < @start_date %>
+      <%= date.strftime("%-m/%e").gsub(" ", "") %>
+    <% else %>
+      <%= date.strftime("%e").gsub(" ", "") %>
+    <% end %>
   </div>
 
   <% if i > 0 && ((i + 1) % 7) == 0 %>
