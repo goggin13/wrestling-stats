@@ -43,13 +43,21 @@ Department: 36102,08/20/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
 
 CSV
 
-    before do
-      File.write("tmp/shifts.csv", CSV_FILE)
-      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
-    end
+    CSV_FILE_MEDIAN_TEST = <<-CSV
+textbox175,textbox3,textbox9,EmployeeName,textbox15,textbox2,CalendarDate,textbox1
+Department: 36102,08/14/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/15/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/15/2023,,"Goggin, Matthew",RN,CHGPREC,07:00,8.50
+Department: 36102,08/16/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
+Department: 36102,08/16/2023,,"Goggin, Matthew",RN,CHGPREC,07:00,8.50
+Department: 36102,08/16/2023,,"Cattenhead, Patricia",RN,CHGPREC,07:00,8.50
+
+CSV
 
     describe "staffing_grid_for_day" do
       it "returns an map of days to staffing numbers and percentages by hour" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
         reporter = MonthlyReporter.new(Date.new(2023, 8))
 
         stub_thresholds = {}
@@ -134,6 +142,8 @@ CSV
 
 
       it "uses the calculated thresholds" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
         reporter = MonthlyReporter.new(Date.new(2023, 8))
 
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
@@ -177,9 +187,20 @@ CSV
       end
     end
 
-    describe "employees_by_type" do
+    describe "median" do
       it "lists a breakdown of advocate vs agency employees" do
+        File.write("tmp/shifts.csv", CSV_FILE_MEDIAN_TEST)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
 
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        stub_thresholds = {}
+        (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
+        expect(reporter).to receive(:thresholds)
+          .at_least(:once)
+          .and_return(stub_thresholds)
+
+        expect(reporter.median_pct).to eq(20)
       end
     end
   end
