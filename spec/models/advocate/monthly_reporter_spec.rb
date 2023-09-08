@@ -148,8 +148,24 @@ CSV
 
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
 
-        # Day shift
         expect(grid[7]).to eq({rns: 7, pct: 117})
+      end
+
+      it "ignores ORF shifts" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+        rn = FactoryBot.create(:advocate_employee, role: "RN")
+        FactoryBot.create(:advocate_shift,
+                          employee: rn,
+                          date: Date.new(2023, 8, 30),
+                          start: 7, duration: 12,
+                          raw_shift_code: "ORF")
+
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
+
+        expect(grid[7][:rns]).to eq(7)
       end
     end
 

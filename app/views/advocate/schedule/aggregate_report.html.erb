@@ -1,4 +1,3 @@
-
 <table>
   <tr>
     <th>Staffing Data</th>
@@ -46,6 +45,15 @@
     <% @months.each do |_, reporter| %>
       <td>
         <%= reporter.full_timers.count %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Orientees</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <%= reporter.orientees.count %>
       </td>
     <% end %>
   </tr>

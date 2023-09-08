@@ -9,6 +9,7 @@ class Advocate::MonthlyReporter
     @end_day = month.end_of_month
     @shifts = Advocate::Shift
       .where("date >= ? and date <= ?", @start_day, @end_day)
+      .where.not(raw_shift_code: "ORF")
       .reject { |s| s.employee.status == Advocate::Employee::Status::UNKNOWN }
   end
 
@@ -145,8 +146,21 @@ class Advocate::MonthlyReporter
     employees_by_status(Advocate::Employee::Status::AGENCY)
   end
 
+  def orientees
+    employee_ids = Advocate::Shift
+      .where("date >= ? and date <= ?", @start_day, @end_day)
+      .where(raw_shift_code: "ORF")
+      .map(&:employee_id)
+
+    Advocate::Employee
+      .where(id: employee_ids)
+      .where(status: Advocate::Employee::Status::FULL_TIME)
+      .order(:last)
+      .all
+  end
+
   def unknown_employees
-    employee_ids = @shifts = Advocate::Shift
+    employee_ids = Advocate::Shift
       .where("date >= ? and date <= ?", @start_day, @end_day)
       .map(&:employee_id)
 

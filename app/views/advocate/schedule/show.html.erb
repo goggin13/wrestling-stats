@@ -91,6 +91,18 @@
     </div>
 
     <div class="clear"></div>
+    <div class="shift_block">
+      <% if shifts[:orientees].length > 0 %>
+        <div class="header">
+          Orientees
+        </div>
+        <% shifts[:orientees].each do |shift| %>
+          <%= render partial: "shift", locals: {shift: shift} %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="shift_block">
       <% if shifts[:unsorted].length > 0 %>
         <div class="header">
           Non ED Staff
@@ -99,5 +111,6 @@
           <%= render partial: "shift", locals: {shift: shift} %>
         <% end %>
       <% end %>
+    </div>
   </div>
 <% end %>

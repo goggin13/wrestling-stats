@@ -10,7 +10,14 @@ class Advocate::CsvScheduleParser
 
   def self.parse(path, employee_path)
     parser = new(path, employee_path)
-    parser.parse!
+    parser.delete_existing_shifts!
+    parser.parse_schedule!
+  end
+
+  def self.parse_orientees_from_nonproductive_file!(path, employee_path)
+    parser = new(path, employee_path)
+    parser.delete_existing_orientation_shifts!
+    parser.parse_orientees_from_non_productive_file!
   end
 
   def initialize(path, employee_path)
@@ -38,13 +45,24 @@ class Advocate::CsvScheduleParser
       .destroy_all
   end
 
-  def parse!
-    delete_existing_shifts!
+  def delete_existing_orientation_shifts!
+    Advocate::Shift
+      .where("date >= ? AND date <= ?", @dates.min, @dates.max)
+      .where(raw_shift_code: "ORF")
+      .destroy_all
+  end
+
+  def parse_orientees_from_non_productive_file!
+    parse_schedule! { |shift_code| shift_code != "ORF" }
+  end
+
+  def parse_schedule!
     # Sample Row
     # Department: 36102,08/30/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
     @rows.each do |row|
       _, date, identifier, full_name, role, shift_code, start_time, duration = row
       next unless role == "RN" || role == "LPN"
+      next if block_given? && yield(shift_code)
 
       full_name = full_name.gsub(/[[:space:]]/, " ").downcase
       status = status_for_employee(full_name)

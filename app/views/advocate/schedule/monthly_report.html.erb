@@ -117,6 +117,15 @@
 </ul>
 
 <ul class="employee_list">
+  <li><%= @reporter.orientees.count %> Orientation</li>
+  <% @reporter.orientees.each do |employee| %>
+    <li>
+      <%= employee.name %>
+    </li>
+  <% end %>
+</ul>
+
+<ul class="employee_list">
   <li><%= @reporter.unknown_employees.count %> Non ED Staff</li>
   <% @reporter.unknown_employees.each do |employee| %>
     <li>

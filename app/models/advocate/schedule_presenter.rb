@@ -66,11 +66,17 @@ class Advocate::SchedulePresenter
       .where("advocate_employees.status" => Advocate::Employee::Status::UNKNOWN)
       .all
 
+    orientees = Advocate::Shift
+      .where("advocate_shifts.date" => date)
+      .where(raw_shift_code: "ORF")
+      .all
+
     {
       day: { us: [], rns: day_shift_rns, techs: [] },
       swing: { rns: swing_shift_rns, techs: [] },
       night: { us: [], rns: night_shift_rns, techs: [] },
-      unsorted: unsorted
+      unsorted: unsorted,
+      orientees: orientees
     }
   end
 end
