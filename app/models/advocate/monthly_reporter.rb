@@ -171,6 +171,14 @@ class Advocate::MonthlyReporter
       .all
   end
 
+  def full_time_by_shift_label
+    full_timers.inject({}) do |acc, employee|
+      acc[employee.shift_label] ||= []
+      acc[employee.shift_label] << employee
+      acc
+    end
+  end
+
   def employees_by_status(status)
     employee_ids = @shifts.map(&:employee_id)
     Advocate::Employee

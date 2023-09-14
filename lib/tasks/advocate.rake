@@ -3,6 +3,7 @@ namespace :advocate do
   desc "import schedule"
   task :import_schedule, [:path] => :environment do |t, args|
     Advocate::CsvScheduleParser.parse(args.path, Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+    Advocate::Employee.post_import_data_cleaning
   end
 
   desc "import orientees"
@@ -34,5 +35,7 @@ namespace :advocate do
       )
       puts "\tdone"
     end
+
+    Advocate::Employee.post_import_data_cleaning
   end
 end

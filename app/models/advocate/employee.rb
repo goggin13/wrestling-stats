@@ -36,6 +36,20 @@ class Advocate::Employee < ApplicationRecord
     )
   end
 
+  def self.post_import_processing
+    post_import_data_cleaning
+    update_shift_labels
+  end
+
+  def self.post_import_data_cleaning
+    # Quentin was clocked for a couple shifts prior to orientation.
+    # Leaving these in causes him to be counted as a full time employee prior to
+    # being off orientation
+    Advocate::Employee.where(first: "quentin").first!
+      .shifts.where("date < '9/1/2023'").where.not(raw_shift_code: "ORF")
+      .destroy_all
+  end
+
   def update_shift_label!
     counts = Advocate::Shift
       .where(:employee_id => self.id)
@@ -67,6 +81,10 @@ class Advocate::Employee < ApplicationRecord
 
   def full_name
     "#{last.downcase} #{first.downcase}"
+  end
+
+  def short_name
+    "#{first.capitalize} #{last.upcase[0]}"
   end
 
   def to_s

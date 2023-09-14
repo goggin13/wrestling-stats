@@ -14,6 +14,9 @@ $(document).ready(function () {
 });
 
 function advocate_show_hide() {
+  $("#advocate_aggregate_toggle_extra_data").click(function () {
+    $(".aggregate_extra_data").toggle();
+  });
   $(".date.clickable:not(.header)").click(function() {
     $(".date").removeClass("selected");
     $(".schedule_days").hide();

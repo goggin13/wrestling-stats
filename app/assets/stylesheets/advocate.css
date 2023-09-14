@@ -108,3 +108,11 @@
 #staffing_grid {
   clear: both;
 }
+
+.aggregate_extra_data {
+  display: none;
+}
+
+#advocate_aggregate_toggle_extra_data {
+  cursor: pointer;
+}

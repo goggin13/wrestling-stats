@@ -1,3 +1,15 @@
+<% content_for :title do %>
+  Aggregate Report
+<% end %>
+
+<h1>
+  All Months
+</h1>
+
+<p id="advocate_aggregate_toggle_extra_data">
+  Toggle names
+</p>
+
 <table>
   <tr>
     <th>Staffing Data</th>
@@ -49,11 +61,75 @@
     <% end %>
   </tr>
 
+  <tr class="aggregate_extra_data">
+    <th>Full Time Employees</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <% reporter.full_timers.map(&:short_name).sort.each do |employee| %>
+          <%= employee %><br/>
+        <% end %>
+      </td>
+    <% end %>
+  </tr>
+
+  <% ["DAY", "NIGHT", "SWING"].each do |shift_label| %>
+    <tr>
+      <th><%= shift_label %></th>
+      <% @months.each do |_, reporter| %>
+        <td>
+          <%= reporter.full_time_by_shift_label[shift_label].count %>
+        </td>
+      <% end %>
+    </tr>
+
+    <tr class="aggregate_extra_data">
+      <th><%= shift_label %></th>
+      <% @months.each do |_, reporter| %>
+        <td>
+          <% reporter.full_time_by_shift_label[shift_label].map(&:short_name).sort.each do |employee| %>
+            <%= employee %><br/>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+
   <tr>
     <th>Orientees</th>
     <% @months.each do |_, reporter| %>
       <td>
         <%= reporter.orientees.count %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr class="aggregate_extra_data">
+    <th>Orientees</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <% reporter.orientees.map(&:short_name).sort.each do |orientee| %>
+          <%= orientee %><br/>
+        <% end %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Agency</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <%= reporter.agency.count %>
+      </td>
+    <% end %>
+  </tr>
+
+  <tr class="aggregate_extra_data">
+    <th>Agency</th>
+    <% @months.each do |_, reporter| %>
+      <td>
+        <% reporter.agency.map(&:short_name).sort.each do |name| %>
+          <%= name %><br/>
+        <% end %>
       </td>
     <% end %>
   </tr>
