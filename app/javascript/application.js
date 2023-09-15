@@ -17,6 +17,9 @@ function advocate_show_hide() {
   $("#advocate_aggregate_toggle_extra_data").click(function () {
     $(".aggregate_extra_data").toggle();
   });
+  $("#toggle_copy_paste").click(function () {
+    $("#staffing_grid_container").toggleClass("for_copy_paste");
+  });
   $(".date.clickable:not(.header)").click(function() {
     $(".date").removeClass("selected");
     $(".schedule_days").hide();

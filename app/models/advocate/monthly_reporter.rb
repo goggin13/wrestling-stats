@@ -147,13 +147,16 @@ class Advocate::MonthlyReporter
   end
 
   def orientees
-    employee_ids = Advocate::Shift
+    all_orientee_ids = Advocate::Shift
       .where("date >= ? and date <= ?", @start_day, @end_day)
       .where(raw_shift_code: "ORF")
       .map(&:employee_id)
 
+    full_time_ids = full_timers.map(&:id)
+    orientee_ids = all_orientee_ids - full_time_ids
+
     Advocate::Employee
-      .where(id: employee_ids)
+      .where(id: orientee_ids)
       .where(status: Advocate::Employee::Status::FULL_TIME)
       .order(:last)
       .all

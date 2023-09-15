@@ -102,6 +102,7 @@
 }
 
 #staffing_grid_legend {
+  margin-top: 10px;
   float: right;
 }
 
@@ -115,4 +116,13 @@
 
 #advocate_aggregate_toggle_extra_data {
   cursor: pointer;
+}
+
+.for_copy_paste .hide_for_copy_paste {
+  display: none;
+}
+
+.for_copy_paste td.rn_pct {
+  width: 10px;
+  height: 4px;
 }

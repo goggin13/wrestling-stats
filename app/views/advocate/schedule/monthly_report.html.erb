@@ -2,17 +2,29 @@
   Monthly Report
 <% end %>
 
+<div class="clear"></div>
+<br/>
+
+
+<div id="toggle_copy_paste">
+  Toggle details
+</div>
+
 <h1>
   Median Staffing in <%= @start_date.strftime("%B") %>: <%= @reporter.median_pct %>%
 </h1>
 
-<%= link_to(@prev_month.strftime("%B"), 
-            advocate_monthly_report_path(month: @prev_month.strftime("%m/%y"))) %> | 
-... |
-<%= link_to(@next_month.strftime("%B"), 
-            advocate_monthly_report_path(month: @next_month.strftime("%m/%y"))) %>
 
 <div id="staffing_grid_container">
+
+  <div class="hide_for_copy_paste">
+    <%= link_to(@prev_month.strftime("%B"), 
+                advocate_monthly_report_path(month: @prev_month.strftime("%m/%y"))) %> | 
+    ... |
+    <%= link_to(@next_month.strftime("%B"), 
+                advocate_monthly_report_path(month: @next_month.strftime("%m/%y"))) %>
+  </div>
+
   <table id="staffing_grid_legend">
     <tr>
       <th>Staffing %</th>
@@ -26,13 +38,22 @@
 
   <table id="staffing_grid">
     <tr>
-      <th>Goal RNs</th>
+      <th><div class="hide_for_copy_paste">Goal RNs</div></th>
       <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
-        <th><%= hour_label %></th>
+        <th>
+          <%# <% if hour % 4 == 0 %>
+          <% if false %>
+            <%= hour_label %>
+          <% else %>
+            <div class="hide_for_copy_paste">
+              <%= hour_label %>
+            </div>
+          <% end %>
+        </th>
       <% end %>
     </tr>
 
-    <tr>
+    <tr class="hide_for_copy_paste">
       <th rowspan='2'>
         weekday<hr/>weekend 
       </th>
@@ -43,7 +64,7 @@
         </td>
       <% end %>
     </tr>
-    <tr>
+    <tr class="hide_for_copy_paste">
       <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
         <td class="rn_pct">
           <% weekday, weekend = [@reporter.thresholds[hour], @reporter.weekend_thresholds[hour]] %>
@@ -57,10 +78,16 @@
 
     <% @reporter.staffing_grid.each do |day, hours| %>
       <tr>
-        <th><%= day.strftime("%e-%a") %></th>
+        <th>
+          <div class="hide_for_copy_paste">
+            <%= day.strftime("%e-%a") %>
+          </div>
+        </th>
         <% hours.each do |hour, data| %>
           <td class="rn_pct rn_pct_<%= [data[:pct].floor(-1), 100].min %>">
-            <%= data[:rns] %>
+            <div class="hide_for_copy_paste">
+              <%= data[:rns] %>
+            </div>
           </td>
         <% end %>
       </tr>

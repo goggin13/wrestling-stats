@@ -226,4 +226,19 @@ CSV
       end
     end
   end
+
+  describe "orientees" do
+    it "does not include employees who have a full time shift worked that month" do
+      employee = FactoryBot.create(:advocate_employee, :full_time)
+      date = Date.new(2023, 8, 23)
+      FactoryBot.create(:advocate_shift, employee: employee,
+                        raw_shift_code: "ORF", date: date)
+      FactoryBot.create(:advocate_shift, employee: employee, date: date)
+
+      reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+      expect(reporter.full_timers.map(&:id)).to include(employee.id)
+      expect(reporter.orientees.map(&:id)).to_not include(employee.id)
+    end
+  end
 end
