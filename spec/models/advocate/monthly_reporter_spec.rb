@@ -140,7 +140,6 @@ CSV
         expect(sun[9][:pct]).to eq(5)
       end
 
-
       it "uses the calculated thresholds" do
         File.write("tmp/shifts.csv", CSV_FILE)
         CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
@@ -149,6 +148,72 @@ CSV
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
 
         expect(grid[7]).to eq({rns: 7, pct: 117})
+      end
+
+      it "uses the calculated weekend thresholds" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        thresholds = reporter.weekend_thresholds
+
+        expect(thresholds[7]).to eq(6)
+        expect(thresholds[8]).to eq(6)
+        expect(thresholds[9]).to eq(7)
+        expect(thresholds[10]).to eq(7)
+        expect(thresholds[11]).to eq(9)
+        expect(thresholds[12]).to eq(9)
+        expect(thresholds[13]).to eq(9)
+        expect(thresholds[14]).to eq(9)
+        expect(thresholds[15]).to eq(9)
+        expect(thresholds[16]).to eq(9)
+        expect(thresholds[17]).to eq(9)
+        expect(thresholds[18]).to eq(9)
+        expect(thresholds[19]).to eq(8)
+        expect(thresholds[20]).to eq(8)
+        expect(thresholds[21]).to eq(7)
+        expect(thresholds[22]).to eq(7)
+        expect(thresholds[23]).to eq(7)
+        expect(thresholds[0]).to eq(7)
+        expect(thresholds[1]).to eq(7)
+        expect(thresholds[2]).to eq(7)
+        expect(thresholds[3]).to eq(6)
+        expect(thresholds[4]).to eq(6)
+        expect(thresholds[5]).to eq(6)
+        expect(thresholds[6]).to eq(6)
+      end
+
+      it "uses the calculated weekday thresholds" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        thresholds = reporter.thresholds
+
+        expect(thresholds[7]).to eq(6)
+        expect(thresholds[8]).to eq(6)
+        expect(thresholds[9]).to eq(8)
+        expect(thresholds[10]).to eq(8)
+        expect(thresholds[11]).to eq(10)
+        expect(thresholds[12]).to eq(10)
+        expect(thresholds[13]).to eq(10)
+        expect(thresholds[14]).to eq(10)
+        expect(thresholds[15]).to eq(10)
+        expect(thresholds[16]).to eq(10)
+        expect(thresholds[17]).to eq(10)
+        expect(thresholds[18]).to eq(10)
+        expect(thresholds[19]).to eq(8)
+        expect(thresholds[20]).to eq(8)
+        expect(thresholds[21]).to eq(7)
+        expect(thresholds[22]).to eq(7)
+        expect(thresholds[23]).to eq(7)
+        expect(thresholds[0]).to eq(7)
+        expect(thresholds[1]).to eq(7)
+        expect(thresholds[2]).to eq(7)
+        expect(thresholds[3]).to eq(5)
+        expect(thresholds[4]).to eq(5)
+        expect(thresholds[5]).to eq(5)
+        expect(thresholds[6]).to eq(5)
       end
 
       it "ignores ORF shifts" do

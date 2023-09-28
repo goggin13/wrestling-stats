@@ -56,7 +56,7 @@ class Advocate::MonthlyReporter
     (11...19).to_a.each { |h| @_weekend_thresholds[h] = 9 }
     (3...7).to_a.each { |h| @_weekend_thresholds[h] = 6 }
 
-    @_thresholds
+    @_weekend_thresholds
   end
 
   def hours_by_employee_status
