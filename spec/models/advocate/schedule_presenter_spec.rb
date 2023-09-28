@@ -43,6 +43,7 @@ CSV
         success
       end
 
+      # puts shifts
       # puts "Checking #{last}:#{role} start:#{start} on #{shifts.first.date}"
       expect(matches.length).to eq(1)
     end
@@ -76,6 +77,23 @@ CSV
         end
         expect(shifts[:day][:rns].length).to eq(7)
 
+        # Day Techs
+        [
+          ["rivera", "ECT", 7, 12],
+          ["smith", "ECT", 7, 12],
+        ].each do |args|
+          verify_shifts_contain(shifts[:day][:techs], *args)
+        end
+        expect(shifts[:day][:techs].length).to eq(2)
+
+        # Swing Techs
+        [
+          ["west", "ECT", 11, 8],
+        ].each do |args|
+          verify_shifts_contain(shifts[:swing][:techs], *args)
+        end
+        expect(shifts[:swing][:techs].length).to eq(1)
+
         # Swing RNs
         [
           ["goggin", "RN", 11, 12],
@@ -84,6 +102,7 @@ CSV
         end
         expect(shifts[:swing][:rns].length).to eq(1)
 
+        # Night RNs
         [
           ["cordero", "RN", 19, 12],
           ["kostryba", "RN", 19, 12],
@@ -95,13 +114,23 @@ CSV
         end
         expect(shifts[:night][:rns].length).to eq(5)
 
+        # Night Techs
+        [
+          ["short", "ECT", 19, 12],
+          ["coleman", "ECT", 19, 12],
+        ].each do |args|
+          verify_shifts_contain(shifts[:night][:techs], *args)
+        end
+        expect(shifts[:night][:techs].length).to eq(2)
+
         [
           ["godinez", "RN", 7, 12],
           ["simmons", "RN", 19, 12],
+          ["cain", "ECT", 15, 8],
         ].each do |args|
           verify_shifts_contain(shifts[:unsorted], *args)
         end
-        expect(shifts[:unsorted].length).to eq(2)
+        expect(shifts[:unsorted].length).to eq(3)
       end
     end
   end

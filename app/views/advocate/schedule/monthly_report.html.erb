@@ -160,7 +160,7 @@
   <li><%= @reporter.unknown_employees.count %> Non ED Staff</li>
   <% @reporter.unknown_employees.each do |employee| %>
     <li>
-      <%= employee.name %>
+      <%= employee.name %> (<%= employee.role %>)
     </li>
   <% end %>
 </ul>

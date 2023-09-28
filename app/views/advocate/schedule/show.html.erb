@@ -68,16 +68,20 @@
       <% shifts[:day][:rns].each do |shift| %>
         <%= render partial: "shift", locals: {shift: shift} %>
       <% end %>
+      <% shifts[:day][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
     </div>
 
     <div class="shift_block">
-      <% if shifts[:swing][:rns].length > 0 %>
-        <div class="header">
-          Swing
-        </div>
-        <% shifts[:swing][:rns].each do |shift| %>
-          <%= render partial: "shift", locals: {shift: shift} %>
-        <% end %>
+      <div class="header">
+        Swing
+      </div>
+      <% shifts[:swing][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:swing][:techs].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
       <% end %>
     </div>
 
@@ -87,6 +91,9 @@
       </div>
       <%= render partial: "shift", locals: {shift: shifts[:night][:us]} %>
       <% shifts[:night][:rns].each do |shift| %>
+        <%= render partial: "shift", locals: {shift: shift} %>
+      <% end %>
+      <% shifts[:night][:techs].each do |shift| %>
         <%= render partial: "shift", locals: {shift: shift} %>
       <% end %>
     </div>

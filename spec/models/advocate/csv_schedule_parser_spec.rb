@@ -51,7 +51,14 @@ Emergency Department,09/06/2023,(F),"Smith, Nicole",ECT,19-12,19:00,12.50
 Emergency Department,09/06/2023,(F),"Vazquez, Ashley",ECT,19-12,19:00,12.50
 Emergency Department,09/06/2023,,"Millsap, Cassandra",US,19-12,19:00,12.50
 Emergency Department,09/06/2023,,"Conley, Kiesha",ACM,21-10,21:00,10.50
-_
+
+CSV
+
+    CSV_FILE_WITH_TECHS = <<-CSV
+Emergency Department,09/06/2023,,"Edwards, Veronica",RN,07-08,07:00,8.50
+Department: 36102,09/06/2023,(F),"robin, joshua",RN,07-12,07:00,12.50
+Emergency Department,09/06/2023,,"Foy, Tracey",ECT,07-12,07:00,12.50
+
 CSV
 
     CSV_FILE_SHORT = <<-CSV
@@ -84,6 +91,8 @@ CSV
       "hicks, ciara" => "FullTime",
       "duarte, abigail" => "FullTime",
       "hollins, quentin" => "FullTime",
+      "foy, tracey" => "FullTime",
+      "rogers, erica" => "unknown",
     }.to_yaml
 
     before do
@@ -166,8 +175,18 @@ CSV
       expect(employee.role).to eq("RN")
     end
 
+    describe "techs" do
+      it "parses techs" do
+        File.write("tmp/shifts.csv", CSV_FILE_WITH_TECHS)
+        CsvScheduleParser.parse("tmp/shifts.csv", "tmp/employees.yml")
+        tracey = Advocate::Employee.where(name: "foy, tracey").first!
+        expect(tracey.status).to eq("FullTime")
+        expect(tracey.role).to eq("ECT")
+      end
+    end
+
     describe "Employee Types" do
-      it "works" do
+      it "records employee types" do
         File.write("tmp/shifts.csv", CSV_FILE_MIXED)
         CsvScheduleParser.parse("tmp/shifts.csv", "tmp/employees.yml")
         veronica = Advocate::Employee.where(name: "edwards, veronica").first!
@@ -190,13 +209,14 @@ CSV
               "tmp/shifts.csv",
               "tmp/employees.yml",
             )
-          end.to change(Employee, :count).by(4)
-        end.to change(Shift.where(raw_shift_code: "ORF"), :count).by(4)
+          end.to change(Employee, :count).by(5)
+        end.to change(Shift.where(raw_shift_code: "ORF"), :count).by(5)
 
         expect(Employee.where(name: "ahmad, adam").first).to be_present
         expect(Employee.where(name: "hicks, ciara").first).to be_present
         expect(Employee.where(name: "duarte, abigail").first).to be_present
         expect(Employee.where(name: "hollins, quentin").first).to be_present
+        expect(Employee.where(name: "rogers, erica").first).to be_present
       end
 
       it "parses does not create duplicate orientee shifts" do
@@ -211,8 +231,8 @@ CSV
               "tmp/shifts.csv",
               "tmp/employees.yml",
             )
-          end.to change(Employee, :count).by(4)
-        end.to change(Shift.where(raw_shift_code: "ORF"), :count).by(4)
+          end.to change(Employee, :count).by(5)
+        end.to change(Shift.where(raw_shift_code: "ORF"), :count).by(5)
       end
     end
   end

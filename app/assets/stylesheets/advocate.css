@@ -17,8 +17,7 @@
   color: white;
 }
 
-.shift.NCT,
-.shift.TECH {
+.shift.ECT {
   background-color: teal;
   color: white;
 }
@@ -44,7 +43,7 @@
   background: darkgray;
 }
 
-.date.selected, .date.highlight.selected {
+.date.selected, .date.highlight.selected, .date.today.selected {
   background: purple;
   color: white;
   font-weight: bolder;

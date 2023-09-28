@@ -61,11 +61,11 @@ class Advocate::CsvScheduleParser
     # Department: 36102,08/30/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
     @rows.each do |row|
       _, date, identifier, full_name, role, shift_code, start_time, duration = row
-      next unless role == "RN" || role == "LPN"
+      next unless role == "RN" || role == "LPN" || role == "ECT"
       next if block_given? && yield(shift_code)
 
       full_name = full_name.gsub(/[[:space:]]/, " ").downcase
-      status = status_for_employee(full_name)
+      status = status_for_employee(full_name, row)
 
       employee = Advocate::Employee.create_from_full_name(full_name, role, status)
       Advocate::Shift.create!(
@@ -80,12 +80,13 @@ class Advocate::CsvScheduleParser
     end
   end
 
-  def status_for_employee(name)
+  def status_for_employee(name, row)
     if @employees.has_key?(name)
       @employees[name]
     else
       key = 0
       while !STATUS_MAP.keys.include?(key)
+        puts row[1..].join(",")
         puts "Employee type for #{name}:"
         STATUS_MAP.each { |k,v| puts "\t#{k}: #{v}" }
         key = STDIN.gets.chomp.to_i

@@ -18,7 +18,7 @@ class Advocate::Employee < ApplicationRecord
     ]
   end
 
-  has_many :shifts, class_name: "Advocate::Shift", foreign_key: "employee_id"
+  has_many :shifts, class_name: "Advocate::Shift", foreign_key: "employee_id", dependent: :destroy
 
   def self.update_shift_labels
     all.each { |e| e.update_shift_label! }
@@ -48,6 +48,10 @@ class Advocate::Employee < ApplicationRecord
     Advocate::Employee.where(first: "quentin").first!
       .shifts.where("date < '9/1/2023'").where.not(raw_shift_code: "ORF")
       .destroy_all
+
+    # Erica (ECT) seems to have been clocked as an RN one shift
+    erica_RN = Advocate::Employee.where(last: "cazares castro", role: "RN").first!
+    erica_RN.destroy
   end
 
   def update_shift_label!
@@ -76,7 +80,7 @@ class Advocate::Employee < ApplicationRecord
   end
 
   def tech?
-    ["TECH", "NCT"].include?(role)
+    ["TECH", "NCT", "ECT"].include?(role)
   end
 
   def full_name

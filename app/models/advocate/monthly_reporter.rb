@@ -7,10 +7,13 @@ class Advocate::MonthlyReporter
   def initialize(month)
     @start_day = month.beginning_of_month
     @end_day = month.end_of_month
-    @shifts = Advocate::Shift
+    @rn_shifts = Advocate::Shift
       .where("date >= ? and date <= ?", @start_day, @end_day)
       .where.not(raw_shift_code: "ORF")
-      .reject { |s| s.employee.status == Advocate::Employee::Status::UNKNOWN }
+      .reject do |s|
+        s.employee.status == Advocate::Employee::Status::UNKNOWN ||
+          s.employee.role != "RN"
+      end
   end
 
   def threshold_for(date, hour)
@@ -69,7 +72,7 @@ class Advocate::MonthlyReporter
       part_time: {hours: 0, pct: 0},
     }
 
-    @shifts.inject(result) do |acc, shift|
+    @rn_shifts.inject(result) do |acc, shift|
 
       if shift.employee.status == "FullTime"
         acc[:full_time][:hours] += shift.duration
@@ -106,7 +109,7 @@ class Advocate::MonthlyReporter
       end
     end
 
-    @shifts.each do |shift|
+    @rn_shifts.each do |shift|
       starting_hour = shift.start
       ending_hour = starting_hour + shift.duration
       (starting_hour...ending_hour).each do |hour|
@@ -205,7 +208,7 @@ class Advocate::MonthlyReporter
   end
 
   def employees_by_status(status)
-    employee_ids = @shifts.map(&:employee_id)
+    employee_ids = @rn_shifts.map(&:employee_id)
     Advocate::Employee
       .where(id: employee_ids)
       .where(status: status)
