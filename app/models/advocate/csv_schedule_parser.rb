@@ -42,6 +42,7 @@ class Advocate::CsvScheduleParser
   def delete_existing_shifts!
     Advocate::Shift
       .where("date >= ? AND date <= ?", @dates.min, @dates.max)
+      .where.not(raw_shift_code: "ORF")
       .destroy_all
   end
 

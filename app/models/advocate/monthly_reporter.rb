@@ -184,7 +184,7 @@ class Advocate::MonthlyReporter
       .where(id: orientee_ids)
       .where(status: Advocate::Employee::Status::FULL_TIME)
       .order(:last)
-      .all
+      .select { |e| e.rn? }
   end
 
   def unknown_employees

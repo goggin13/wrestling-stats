@@ -305,5 +305,16 @@ CSV
       expect(reporter.full_timers.map(&:id)).to include(employee.id)
       expect(reporter.orientees.map(&:id)).to_not include(employee.id)
     end
+
+    it "does not include techs" do
+      employee = FactoryBot.create(:advocate_employee, :full_time, role: "ECT")
+      date = Date.new(2023, 8, 23)
+      FactoryBot.create(:advocate_shift, employee: employee,
+                        raw_shift_code: "ORF", date: date)
+
+      reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+      expect(reporter.orientees.map(&:id)).to_not include(employee.id)
+    end
   end
 end
