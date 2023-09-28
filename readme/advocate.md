@@ -1,9 +1,9 @@
 ### Advocate PreProd
 
 #ToDo
-[ ] Make schedule browser work for RNs
+[X] Make schedule browser work for RNs
 [ ] Review all code, sanity check test coverage, rm unused code
-[ ] Add people on orientation
+[X] Add people on orientation
 [ ] Add techs
 
 Output:
@@ -33,3 +33,11 @@ OC19-12
 [$]
 [FL]
 [SWTC]
+
+## Pre Meeting
+* Download last month to current day of data productive only
+  * 2023-09_ah_daily_productive_only.csv
+* Download last month to current day of data non productive
+  * 2023-09_ah_daily_nonproductive.csv
+* RAILS_ENV=development bin/rails advocate:import_schedule[advocate_data/csv/2023-09_ah_daily_productive_only.csv]
+* RAILS_ENV=development bin/rails advocate:import_orientees[advocate_data/csv/2023-09_ah_daily_nonproductive.csv]

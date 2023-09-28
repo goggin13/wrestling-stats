@@ -22,7 +22,8 @@
 
 <% @presenter.dates.each_with_index do |date, i| %>
   <div class="date <%= @presenter.working_on?(date, @current_employee) ? "highlight" : "" %>
-                   <%= date >= @start_date ? "clickable" : "unclickable" %>"
+                   <%= date >= @start_date ? "clickable " : "unclickable " %>
+                   <%= date == Date.today  ? "today" : "" %>"
        id="<%= date.strftime("%m-%d") %>">
     <% if date < @start_date %>
       <%= date.strftime("%-m/%e").gsub(" ", "") %>

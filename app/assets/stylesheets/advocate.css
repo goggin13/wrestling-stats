@@ -59,6 +59,11 @@
   background: lightblue;
 }
 
+.date.today {
+  border: thin solid purple;
+  color: maroon;
+}
+
 .staffing-chart.line {
   height: 200px;
   max-width: 400px;
@@ -123,6 +128,11 @@
 }
 
 .for_copy_paste td.rn_pct {
-  width: 10px;
-  height: 4px;
+  padding: 0px;
+  font-size: 0.7em;
+}
+
+#month_label {
+  margin-left: 10px;
+  float: left;
 }

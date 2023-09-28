@@ -121,7 +121,9 @@ class Advocate::MonthlyReporter
     @_staffing_grid
   end
 
-  def median_pct
+  def pct_array
+    return @_pcts if defined?(@_pcts)
+
     pcts = []
     staffing_grid.each do |day, hours|
       hours.each do |hour, data|
@@ -131,7 +133,27 @@ class Advocate::MonthlyReporter
       end
     end
 
-    pcts.sort[pcts.length / 2]
+    @_pcts = pcts.sort
+  end
+
+  def min_pct
+    pct_array[0]
+  end
+
+  def q1_pct
+    pct_array[pct_array.length / 4]
+  end
+
+  def median_pct
+    pct_array[pct_array.length / 2]
+  end
+
+  def q3_pct
+    pct_array[pct_array.length / 4 * 3]
+  end
+
+  def max_pct
+    [pct_array[pct_array.length - 1], 100].min
   end
 
   def full_timers

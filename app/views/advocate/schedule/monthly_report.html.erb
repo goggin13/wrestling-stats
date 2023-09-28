@@ -25,6 +25,10 @@
                 advocate_monthly_report_path(month: @next_month.strftime("%m/%y"))) %>
   </div>
 
+  <div id="month_label">
+    <%= @start_date.strftime("%B") %>
+  </div>
+
   <table id="staffing_grid_legend">
     <tr>
       <th>Staffing %</th>
@@ -85,7 +89,7 @@
         </th>
         <% hours.each do |hour, data| %>
           <td class="rn_pct rn_pct_<%= [data[:pct].floor(-1), 100].min %>">
-            <div class="hide_for_copy_paste">
+            <div class="">
               <%= data[:rns] %>
             </div>
           </td>
