@@ -62,7 +62,7 @@ CSV
 
         stub_thresholds = {}
         (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
-        expect(reporter).to receive(:thresholds)
+        expect(reporter).to receive(:rn_thresholds)
           .at_least(:once)
           .and_return(stub_thresholds)
 
@@ -103,7 +103,62 @@ CSV
         expect(grid[6][:rn]).to eq({count: 5, pct: 50})
       end
 
-      it "returns uses weekend and weekday percentage thresholds" do
+      it "returns an map of days to ECT staffing numbers and percentages by hour" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        stub_thresholds = {}
+        (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
+        expect(reporter).to receive(:ect_thresholds)
+          .at_least(:once)
+          .and_return(stub_thresholds)
+
+        grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
+
+        # Day shift
+        expect(grid[7][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[8][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[9][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[10][:ect]).to eq({count: 2, pct: 20})
+
+        # west comes in
+        expect(grid[11][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[12][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[13][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[14][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[15][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[16][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[17][:ect]).to eq({count: 3, pct: 30})
+        expect(grid[18][:ect]).to eq({count: 3, pct: 30})
+
+        # Night shift
+        expect(grid[19][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[20][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[21][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[22][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[23][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[0][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[1][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[2][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[3][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[4][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[5][:ect]).to eq({count: 2, pct: 20})
+        expect(grid[6][:ect]).to eq({count: 2, pct: 20})
+      end
+
+      it "uses different %s for RNs and ECTs" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
+
+        expect(grid[7][:rn]).to eq({count: 7, pct: 117})
+        expect(grid[7][:ect]).to eq({count: 2, pct: 50})
+      end
+
+      it "uses weekend and weekday percentage thresholds" do
         File.write("tmp/shifts.csv", CSV_FILE_ONE_EMPLOYEE_PER_WEEKDAY)
         CsvScheduleParser.parse(
           "tmp/shifts.csv",
@@ -113,13 +168,13 @@ CSV
 
         stub_thresholds = {}
         (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
-        expect(reporter).to receive(:thresholds)
+        expect(reporter).to receive(:rn_thresholds)
           .at_least(:once)
           .and_return(stub_thresholds)
 
         stub_weekend_thresholds = {}
         (0..30).each { |h| stub_weekend_thresholds[h % 24] = 20.0 }
-        expect(reporter).to receive(:weekend_thresholds)
+        expect(reporter).to receive(:rn_weekend_thresholds)
           .at_least(:once)
           .and_return(stub_weekend_thresholds)
 
@@ -217,7 +272,7 @@ CSV
 
         stub_thresholds = {}
         (0..30).each { |h| stub_thresholds[h % 24] = 10.0 }
-        expect(reporter).to receive(:thresholds)
+        expect(reporter).to receive(:rn_thresholds)
           .at_least(:once)
           .and_return(stub_thresholds)
 
@@ -258,7 +313,7 @@ CSV
       CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
       reporter = MonthlyReporter.new(Date.new(2023, 8))
 
-      thresholds = reporter.weekend_thresholds
+      thresholds = reporter.rn_weekend_thresholds
 
       expect(thresholds[7]).to eq(6)
       expect(thresholds[8]).to eq(6)
@@ -291,7 +346,7 @@ CSV
       CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
       reporter = MonthlyReporter.new(Date.new(2023, 8))
 
-      thresholds = reporter.thresholds
+      thresholds = reporter.rn_thresholds
 
       expect(thresholds[7]).to eq(6)
       expect(thresholds[8]).to eq(6)
@@ -317,6 +372,39 @@ CSV
       expect(thresholds[4]).to eq(5)
       expect(thresholds[5]).to eq(5)
       expect(thresholds[6]).to eq(5)
+    end
+
+    it "uses ect thresholds" do
+      File.write("tmp/shifts.csv", CSV_FILE)
+      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+      reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+      thresholds = reporter.ect_thresholds
+
+      expect(thresholds[7]).to eq(4)
+      expect(thresholds[8]).to eq(4)
+      expect(thresholds[9]).to eq(5)
+      expect(thresholds[10]).to eq(5)
+      expect(thresholds[11]).to eq(5)
+      expect(thresholds[12]).to eq(5)
+      expect(thresholds[13]).to eq(5)
+      expect(thresholds[14]).to eq(5)
+      expect(thresholds[15]).to eq(5)
+      expect(thresholds[16]).to eq(5)
+      expect(thresholds[17]).to eq(5)
+      expect(thresholds[18]).to eq(5)
+      expect(thresholds[19]).to eq(5)
+      expect(thresholds[20]).to eq(5)
+      expect(thresholds[21]).to eq(5)
+      expect(thresholds[22]).to eq(5)
+      expect(thresholds[23]).to eq(4)
+      expect(thresholds[0]).to eq(4)
+      expect(thresholds[1]).to eq(4)
+      expect(thresholds[2]).to eq(4)
+      expect(thresholds[3]).to eq(3)
+      expect(thresholds[4]).to eq(3)
+      expect(thresholds[5]).to eq(3)
+      expect(thresholds[6]).to eq(3)
     end
   end
 end

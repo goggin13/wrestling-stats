@@ -59,8 +59,8 @@
         <tr>
           <th>Techs</th>
           <% timeline.each do |_, hour|%>
-          <td class="rn_pct rn_pct_<%= [hour[:rn][:pct].floor(-1), 100].min %>">
-              <%= hour[:rn][:count] %>
+          <td class="rn_pct rn_pct_<%= [hour[:ect][:pct].floor(-1), 100].min %>">
+              <%= hour[:ect][:count] %>
             </td>
           <% end %>
         </tr>
