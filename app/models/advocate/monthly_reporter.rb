@@ -105,7 +105,7 @@ class Advocate::MonthlyReporter
       @_staffing_grid[day] = {}
       hours = (7..23).to_a + (0..6).to_a
       hours.each do |hour|
-        @_staffing_grid[day][hour] = {rns: 0, pct: 0}
+        @_staffing_grid[day][hour] = {rn: {count: 0, pct: 0}}
       end
     end
 
@@ -114,10 +114,10 @@ class Advocate::MonthlyReporter
       ending_hour = starting_hour + shift.duration
       (starting_hour...ending_hour).each do |hour|
         hour = hour % 24
-        @_staffing_grid[shift.date][hour][:rns] += 1
+        @_staffing_grid[shift.date][hour][:rn][:count] += 1
         threshold = threshold_for(shift.date, hour)
-        pct = @_staffing_grid[shift.date][hour][:rns] / threshold
-        @_staffing_grid[shift.date][hour][:pct] = (pct.round(2) * 100).to_i
+        pct = @_staffing_grid[shift.date][hour][:rn][:count] / threshold
+        @_staffing_grid[shift.date][hour][:rn][:pct] = (pct.round(2) * 100).to_i
       end
     end
 
@@ -130,8 +130,8 @@ class Advocate::MonthlyReporter
     pcts = []
     staffing_grid.each do |day, hours|
       hours.each do |hour, data|
-        if data[:pct] > 0
-          pcts << data[:pct]
+        if data[:rn][:pct] > 0
+          pcts << data[:rn][:pct]
         end
       end
     end

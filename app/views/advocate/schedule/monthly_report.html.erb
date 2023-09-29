@@ -88,9 +88,9 @@
           </div>
         </th>
         <% hours.each do |hour, data| %>
-          <td class="rn_pct rn_pct_<%= [data[:pct].floor(-1), 100].min %>">
+          <td class="rn_pct rn_pct_<%= [data[:rn][:pct].floor(-1), 100].min %>">
             <div class="">
-              <%= data[:rns] %>
+              <%= data[:rn][:count] %>
             </div>
           </td>
         <% end %>

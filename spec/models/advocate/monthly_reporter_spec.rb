@@ -55,7 +55,7 @@ Department: 36102,08/16/2023,,"Cattenhead, Patricia",RN,CHGPREC,07:00,8.50
 CSV
 
     describe "staffing_grid_for_day" do
-      it "returns an map of days to staffing numbers and percentages by hour" do
+      it "returns an map of days to RN staffing numbers and percentages by hour" do
         File.write("tmp/shifts.csv", CSV_FILE)
         CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
         reporter = MonthlyReporter.new(Date.new(2023, 8))
@@ -69,38 +69,38 @@ CSV
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
 
         # Day shift
-        expect(grid[7]).to eq({rns: 7, pct: 70})
-        expect(grid[8]).to eq({rns: 7, pct: 70})
-        expect(grid[9]).to eq({rns: 7, pct: 70})
-        expect(grid[10]).to eq({rns: 7, pct: 70})
+        expect(grid[7][:rn]).to eq({count: 7, pct: 70})
+        expect(grid[8][:rn]).to eq({count: 7, pct: 70})
+        expect(grid[9][:rn]).to eq({count: 7, pct: 70})
+        expect(grid[10][:rn]).to eq({count: 7, pct: 70})
 
         # Matt comes in
-        expect(grid[11]).to eq({rns: 8, pct: 80})
-        expect(grid[12]).to eq({rns: 8, pct: 80})
-        expect(grid[13]).to eq({rns: 8, pct: 80})
-        expect(grid[14]).to eq({rns: 8, pct: 80})
+        expect(grid[11][:rn]).to eq({count: 8, pct: 80})
+        expect(grid[12][:rn]).to eq({count: 8, pct: 80})
+        expect(grid[13][:rn]).to eq({count: 8, pct: 80})
+        expect(grid[14][:rn]).to eq({count: 8, pct: 80})
 
         # Veronica goes home
-        expect(grid[15]).to eq({rns: 7, pct: 70})
-        expect(grid[16]).to eq({rns: 7, pct: 70})
-        expect(grid[17]).to eq({rns: 7, pct: 70})
-        expect(grid[18]).to eq({rns: 7, pct: 70})
+        expect(grid[15][:rn]).to eq({count: 7, pct: 70})
+        expect(grid[16][:rn]).to eq({count: 7, pct: 70})
+        expect(grid[17][:rn]).to eq({count: 7, pct: 70})
+        expect(grid[18][:rn]).to eq({count: 7, pct: 70})
 
         # Night shift
-        expect(grid[19]).to eq({rns: 6, pct: 60})
-        expect(grid[20]).to eq({rns: 6, pct: 60})
-        expect(grid[21]).to eq({rns: 6, pct: 60})
-        expect(grid[22]).to eq({rns: 6, pct: 60})
+        expect(grid[19][:rn]).to eq({count: 6, pct: 60})
+        expect(grid[20][:rn]).to eq({count: 6, pct: 60})
+        expect(grid[21][:rn]).to eq({count: 6, pct: 60})
+        expect(grid[22][:rn]).to eq({count: 6, pct: 60})
 
         # Matt goes home
-        expect(grid[23]).to eq({rns: 5, pct: 50})
-        expect(grid[0]).to eq({rns: 5, pct: 50})
-        expect(grid[1]).to eq({rns: 5, pct: 50})
-        expect(grid[2]).to eq({rns: 5, pct: 50})
-        expect(grid[3]).to eq({rns: 5, pct: 50})
-        expect(grid[4]).to eq({rns: 5, pct: 50})
-        expect(grid[5]).to eq({rns: 5, pct: 50})
-        expect(grid[6]).to eq({rns: 5, pct: 50})
+        expect(grid[23][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[0][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[1][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[2][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[3][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[4][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[5][:rn]).to eq({count: 5, pct: 50})
+        expect(grid[6][:rn]).to eq({count: 5, pct: 50})
       end
 
       it "returns uses weekend and weekday percentage thresholds" do
@@ -131,13 +131,13 @@ CSV
         sat = reporter.staffing_grid[Date.new(2023, 8, 19)]
         sun = reporter.staffing_grid[Date.new(2023, 8, 20)]
 
-        expect(mon[9][:pct]).to eq(10)
-        expect(tue[9][:pct]).to eq(10)
-        expect(wed[9][:pct]).to eq(10)
-        expect(thu[9][:pct]).to eq(10)
-        expect(fri[9][:pct]).to eq(5)
-        expect(sat[9][:pct]).to eq(5)
-        expect(sun[9][:pct]).to eq(5)
+        expect(mon[9][:rn][:pct]).to eq(10)
+        expect(tue[9][:rn][:pct]).to eq(10)
+        expect(wed[9][:rn][:pct]).to eq(10)
+        expect(thu[9][:rn][:pct]).to eq(10)
+        expect(fri[9][:rn][:pct]).to eq(5)
+        expect(sat[9][:rn][:pct]).to eq(5)
+        expect(sun[9][:rn][:pct]).to eq(5)
       end
 
       it "uses the calculated thresholds" do
@@ -147,73 +147,7 @@ CSV
 
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
 
-        expect(grid[7]).to eq({rns: 7, pct: 117})
-      end
-
-      it "uses the calculated weekend thresholds" do
-        File.write("tmp/shifts.csv", CSV_FILE)
-        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
-        reporter = MonthlyReporter.new(Date.new(2023, 8))
-
-        thresholds = reporter.weekend_thresholds
-
-        expect(thresholds[7]).to eq(6)
-        expect(thresholds[8]).to eq(6)
-        expect(thresholds[9]).to eq(7)
-        expect(thresholds[10]).to eq(7)
-        expect(thresholds[11]).to eq(9)
-        expect(thresholds[12]).to eq(9)
-        expect(thresholds[13]).to eq(9)
-        expect(thresholds[14]).to eq(9)
-        expect(thresholds[15]).to eq(9)
-        expect(thresholds[16]).to eq(9)
-        expect(thresholds[17]).to eq(9)
-        expect(thresholds[18]).to eq(9)
-        expect(thresholds[19]).to eq(8)
-        expect(thresholds[20]).to eq(8)
-        expect(thresholds[21]).to eq(7)
-        expect(thresholds[22]).to eq(7)
-        expect(thresholds[23]).to eq(7)
-        expect(thresholds[0]).to eq(7)
-        expect(thresholds[1]).to eq(7)
-        expect(thresholds[2]).to eq(7)
-        expect(thresholds[3]).to eq(6)
-        expect(thresholds[4]).to eq(6)
-        expect(thresholds[5]).to eq(6)
-        expect(thresholds[6]).to eq(6)
-      end
-
-      it "uses the calculated weekday thresholds" do
-        File.write("tmp/shifts.csv", CSV_FILE)
-        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
-        reporter = MonthlyReporter.new(Date.new(2023, 8))
-
-        thresholds = reporter.thresholds
-
-        expect(thresholds[7]).to eq(6)
-        expect(thresholds[8]).to eq(6)
-        expect(thresholds[9]).to eq(8)
-        expect(thresholds[10]).to eq(8)
-        expect(thresholds[11]).to eq(10)
-        expect(thresholds[12]).to eq(10)
-        expect(thresholds[13]).to eq(10)
-        expect(thresholds[14]).to eq(10)
-        expect(thresholds[15]).to eq(10)
-        expect(thresholds[16]).to eq(10)
-        expect(thresholds[17]).to eq(10)
-        expect(thresholds[18]).to eq(10)
-        expect(thresholds[19]).to eq(8)
-        expect(thresholds[20]).to eq(8)
-        expect(thresholds[21]).to eq(7)
-        expect(thresholds[22]).to eq(7)
-        expect(thresholds[23]).to eq(7)
-        expect(thresholds[0]).to eq(7)
-        expect(thresholds[1]).to eq(7)
-        expect(thresholds[2]).to eq(7)
-        expect(thresholds[3]).to eq(5)
-        expect(thresholds[4]).to eq(5)
-        expect(thresholds[5]).to eq(5)
-        expect(thresholds[6]).to eq(5)
+        expect(grid[7][:rn]).to eq({count: 7, pct: 117})
       end
 
       it "ignores ORF shifts" do
@@ -230,7 +164,7 @@ CSV
 
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
 
-        expect(grid[7][:rns]).to eq(7)
+        expect(grid[7][:rn][:count]).to eq(7)
       end
     end
 
@@ -315,6 +249,74 @@ CSV
       reporter = MonthlyReporter.new(Date.new(2023, 8))
 
       expect(reporter.orientees.map(&:id)).to_not include(employee.id)
+    end
+  end
+
+  describe "theshold definitions" do
+    it "uses the calculated weekend thresholds" do
+      File.write("tmp/shifts.csv", CSV_FILE)
+      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+      reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+      thresholds = reporter.weekend_thresholds
+
+      expect(thresholds[7]).to eq(6)
+      expect(thresholds[8]).to eq(6)
+      expect(thresholds[9]).to eq(7)
+      expect(thresholds[10]).to eq(7)
+      expect(thresholds[11]).to eq(9)
+      expect(thresholds[12]).to eq(9)
+      expect(thresholds[13]).to eq(9)
+      expect(thresholds[14]).to eq(9)
+      expect(thresholds[15]).to eq(9)
+      expect(thresholds[16]).to eq(9)
+      expect(thresholds[17]).to eq(9)
+      expect(thresholds[18]).to eq(9)
+      expect(thresholds[19]).to eq(8)
+      expect(thresholds[20]).to eq(8)
+      expect(thresholds[21]).to eq(7)
+      expect(thresholds[22]).to eq(7)
+      expect(thresholds[23]).to eq(7)
+      expect(thresholds[0]).to eq(7)
+      expect(thresholds[1]).to eq(7)
+      expect(thresholds[2]).to eq(7)
+      expect(thresholds[3]).to eq(6)
+      expect(thresholds[4]).to eq(6)
+      expect(thresholds[5]).to eq(6)
+      expect(thresholds[6]).to eq(6)
+    end
+
+    it "uses the calculated weekday thresholds" do
+      File.write("tmp/shifts.csv", CSV_FILE)
+      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+      reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+      thresholds = reporter.thresholds
+
+      expect(thresholds[7]).to eq(6)
+      expect(thresholds[8]).to eq(6)
+      expect(thresholds[9]).to eq(8)
+      expect(thresholds[10]).to eq(8)
+      expect(thresholds[11]).to eq(10)
+      expect(thresholds[12]).to eq(10)
+      expect(thresholds[13]).to eq(10)
+      expect(thresholds[14]).to eq(10)
+      expect(thresholds[15]).to eq(10)
+      expect(thresholds[16]).to eq(10)
+      expect(thresholds[17]).to eq(10)
+      expect(thresholds[18]).to eq(10)
+      expect(thresholds[19]).to eq(8)
+      expect(thresholds[20]).to eq(8)
+      expect(thresholds[21]).to eq(7)
+      expect(thresholds[22]).to eq(7)
+      expect(thresholds[23]).to eq(7)
+      expect(thresholds[0]).to eq(7)
+      expect(thresholds[1]).to eq(7)
+      expect(thresholds[2]).to eq(7)
+      expect(thresholds[3]).to eq(5)
+      expect(thresholds[4]).to eq(5)
+      expect(thresholds[5]).to eq(5)
+      expect(thresholds[6]).to eq(5)
     end
   end
 end
