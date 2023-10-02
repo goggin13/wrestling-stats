@@ -19,9 +19,16 @@
   </tr>
 
   <tr>
-    <th>Median Staffing</th>
+    <th>Median RN Staffing</th>
     <% @months.each do |_, reporter| %>
       <td class="rn_pct"><%= reporter.median_pct %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Median ECT Staffing</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.ect_median_pct %></td>
     <% end %>
   </tr>
 
@@ -187,6 +194,50 @@
     <th>Max</th>
     <% @months.each do |_, reporter| %>
       <td class="rn_pct"><%= reporter.max_pct %></td>
+    <% end %>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>ECT BoxPlots</th>
+    <% @months.each do |month, _| %>
+      <th><%= month.strftime("%b") %></th>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Min</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.ect_min_pct %></td>
+    <% end %>
+  </tr>
+  
+  <tr>
+    <th>Q1</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.ect_q1_pct %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Median</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.ect_median_pct %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Q3</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.ect_q3_pct %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Max</th>
+    <% @months.each do |_, reporter| %>
+      <td class="rn_pct"><%= reporter.ect_max_pct %></td>
     <% end %>
   </tr>
 </table>

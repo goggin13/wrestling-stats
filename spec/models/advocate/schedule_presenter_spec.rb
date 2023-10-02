@@ -133,5 +133,20 @@ CSV
         expect(shifts[:unsorted].length).to eq(3)
       end
     end
+
+    it "includes orientees only in orientees section" do
+      date = Date.new(2021,8,1)
+      FactoryBot.create(:advocate_shift, date: date, raw_shift_code: "ORF", start: 7, duration: 12)
+      FactoryBot.create(:advocate_shift, date: date, raw_shift_code: "ORF", start: 11, duration: 12)
+      FactoryBot.create(:advocate_shift, date: date, raw_shift_code: "ORF", start: 19, duration: 12)
+
+      presenter = SchedulePresenter.new(date, date + 30)
+      shifts = presenter.shifts_for(date)
+
+      expect(shifts[:day][:rns].length).to eq(0)
+      expect(shifts[:swing][:rns].length).to eq(0)
+      expect(shifts[:night][:rns].length).to eq(0)
+      expect(shifts[:orientees].length).to eq(3)
+    end
   end
 end

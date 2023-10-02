@@ -6,7 +6,9 @@ class Advocate::SchedulePresenter
     @monthly_reporter = Advocate::MonthlyReporter.new(start_date)
 
     @shifts = Advocate::Shift
-      .where(date: start_date..end_date).all
+      .where(date: start_date..end_date)
+      .where.not(raw_shift_code: "ORF")
+      .all
       .reject { |s| s.employee.status == Advocate::Employee::Status::UNKNOWN }
 
     Rails.logger.info "[INFO] Presenting #{start_date}-#{end_date}"

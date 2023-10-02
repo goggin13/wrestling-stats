@@ -178,6 +178,25 @@ class Advocate::MonthlyReporter
     @_pcts = pcts.sort
   end
 
+  def ect_pct_array
+    return @_ect_pcts if defined?(@_ect_pcts)
+
+    ect_pcts = []
+    staffing_grid.each do |day, hours|
+      hours.each do |hour, data|
+        if data[:ect][:pct] > 0
+          ect_pcts << data[:ect][:pct]
+        end
+      end
+    end
+
+    if ect_pcts.length == 0
+      ect_pcts = [0]
+    end
+
+    @_ect_pcts = ect_pcts.sort
+  end
+
   def min_pct
     pct_array[0]
   end
@@ -196,6 +215,26 @@ class Advocate::MonthlyReporter
 
   def max_pct
     [pct_array[pct_array.length - 1], 100].min
+  end
+
+  def ect_median_pct
+    [ect_pct_array[ect_pct_array.length - 1], 100].min
+  end
+
+  def ect_min_pct
+    ect_pct_array[0]
+  end
+
+  def ect_q1_pct
+    ect_pct_array[ect_pct_array.length / 4]
+  end
+
+  def ect_q3_pct
+    ect_pct_array[ect_pct_array.length / 4 * 3]
+  end
+
+  def ect_max_pct
+    [ect_pct_array[ect_pct_array.length - 1], 100].min
   end
 
   def full_timers
