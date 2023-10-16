@@ -66,7 +66,7 @@ class Advocate::MonthlyReporter
 
   # Day shift
   #   0700-0900 4 => floor techs: 2, triage tech: 1, vitals tech: 1
-  #   0900-2300 5 => floor techs: 2, triage tech: 1, vitals tech: 1, fast track: 1
+  #   0900-2300 5 => floor techs: 3, triage tech: 1, vitals tech: 1, fast track: 1
   #   2300-0300 4 => floor techs: 2, triage tech: 1, fast track: 1
   #   0300-0700 3 => floor techs: 2, triage tech: 1
   def ect_thresholds
@@ -74,7 +74,7 @@ class Advocate::MonthlyReporter
 
     @_ect_thresholds = {}
     (7...9).to_a.each { |h| @_ect_thresholds[h] = 4 }
-    (9...23).to_a.each { |h| @_ect_thresholds[h] = 5 }
+    (9...23).to_a.each { |h| @_ect_thresholds[h] = 6 }
     (23...24).to_a.each { |h| @_ect_thresholds[h] = 4 }
     (0...3).to_a.each { |h| @_ect_thresholds[h] = 4 }
     (3...7).to_a.each { |h| @_ect_thresholds[h] = 3 }
