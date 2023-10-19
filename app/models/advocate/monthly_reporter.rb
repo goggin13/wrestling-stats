@@ -218,7 +218,7 @@ class Advocate::MonthlyReporter
   end
 
   def ect_median_pct
-    [ect_pct_array[ect_pct_array.length - 1], 100].min
+    ect_pct_array[ect_pct_array.length / 2]
   end
 
   def ect_min_pct

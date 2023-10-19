@@ -35,9 +35,10 @@ OC19-12
 [SWTC]
 
 ## Pre Meeting
-* Download last month to current day of data productive only
+* Download last month to current day of data productive only (AH Daily Roster by Time)
   * 2023-09_ah_daily_productive_only.csv
-* Download last month to current day of data non productive
+* Download last month to current day of data non productive (AH Daily Roster by Time)
   * 2023-09_ah_daily_nonproductive.csv
 * RAILS_ENV=development bin/rails advocate:import_schedule[advocate_data/csv/2023-09_ah_daily_productive_only.csv]
 * RAILS_ENV=development bin/rails advocate:import_orientees[advocate_data/csv/2023-09_ah_daily_nonproductive.csv]
+* git commit -am "updated data pre-staff meeting" && git push

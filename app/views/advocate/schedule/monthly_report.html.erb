@@ -45,14 +45,9 @@
       <th><div class="hide_for_copy_paste">Goal RNs</div></th>
       <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
         <th>
-          <%# <% if hour % 4 == 0 %>
-          <% if false %>
+          <div class="hide_for_copy_paste">
             <%= hour_label %>
-          <% else %>
-            <div class="hide_for_copy_paste">
-              <%= hour_label %>
-            </div>
-          <% end %>
+          </div>
         </th>
       <% end %>
     </tr>
@@ -99,62 +94,68 @@
   </table>
 </div>
 
-<table>
-  <tr>
-    <th></th>
-    <th>Full Time</th>
-    <th>Part Time</th>
-    <th>Agency</th>
-  </tr>
-  <tr>
-    <th>Hours Worked</th>
-    <td>
-      <%= number_to_percentage(@hours_by_status[:full_time][:pct], precision: 0) %>
-    </td>
-    <td>
-      <%= number_to_percentage(@hours_by_status[:part_time][:pct], precision: 0) %>
-    </td>
-    <td>
-      <%= number_to_percentage(@hours_by_status[:agency][:pct], precision: 0) %>
-    </td>
-  </tr>
-</table>
+<div id="staffing_grid_container">
 
-<ul class="employee_list">
-  <li><%= @reporter.full_timers.count %> Full Time</li>
-  <% @reporter.full_timers.each do |employee| %>
-    <li>
-      <%= employee.name %>
-    </li>
-  <% end %>
-</ul>
+  <div id="month_label">
+    <%= @start_date.strftime("%B") %>
+  </div>
 
-<ul class="employee_list">
-  <li><%= @reporter.part_timers.count %> Part Time</li>
-  <% @reporter.part_timers.each do |employee| %>
-    <li>
-      <%= employee.name %>
-    </li>
-  <% end %>
-</ul>
+  <table id="staffing_grid_legend">
+    <tr>
+      <th>Staffing %</th>
+      <% (1..10).to_a.each do |i| %>
+        <td class="rn_pct rn_pct_<%= i * 10 %>">
+          <%= i * 10 %>
+        </td>
+      <% end %>
+    </tr>
+  </table>
 
-<ul class="employee_list">
-  <li><%= @reporter.agency.count %> Agency</li>
-  <% @reporter.agency.each do |employee| %>
-    <li>
-      <%= employee.name %>
-    </li>
-  <% end %>
-</ul>
+  <table id="staffing_grid">
+    <tr>
+      <th>
+        <div class="hide_for_copy_paste">
+          Goal ECTs
+        </div>
+      </th>
+      <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
+        <th>
+          <div class="hide_for_copy_paste">
+            <%= hour_label %>
+          </div>
+        </th>
+      <% end %>
+    </tr>
 
-<ul class="employee_list">
-  <li><%= @reporter.orientees.count %> Orientation</li>
-  <% @reporter.orientees.each do |employee| %>
-    <li>
-      <%= employee.name %>
-    </li>
-  <% end %>
-</ul>
+    <tr class="hide_for_copy_paste">
+      <th>
+        ECT %
+      </th>
+      <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
+        <td class="rn_pct">
+          <%= @reporter.ect_thresholds[hour] %> 
+        </td>
+      <% end %>
+    </tr>
+
+    <% @reporter.staffing_grid.each do |day, hours| %>
+      <tr>
+        <th>
+          <div class="hide_for_copy_paste">
+            <%= day.strftime("%e-%a") %>
+          </div>
+        </th>
+        <% hours.each do |hour, data| %>
+          <td class="rn_pct rn_pct_<%= [data[:ect][:pct].floor(-1), 100].min %>">
+            <div class="">
+              <%= data[:ect][:pct] %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
 
 <ul class="employee_list">
   <li><%= @reporter.unknown_employees.count %> Non ED Staff</li>
