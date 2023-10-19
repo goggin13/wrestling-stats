@@ -14,6 +14,47 @@ namespace :advocate do
     )
   end
 
+  desc "find days"
+  task :find_days, [] => :environment do |t, args|
+    minimum = 4
+    start_date = Date.new(2023, 11, 1)
+    end_date = Date.new(2023, 11, 20)
+
+    me = Advocate::Employee.where(last: "goggin").first!
+
+    employees = [
+      "edwards",
+      "cervantes",
+      "sreepathy",
+      "maciha",
+      "kuchta"
+    ].map do |last|
+      Advocate::Employee.where(last: last).first!
+    end
+
+    employee_ids = employees.map(&:id)
+
+    options = (start_date..end_date).inject({}) do |acc, date|
+      shifts = Advocate::Shift.where(date: date, employee_id: employee_ids)
+      working_employees = shifts.map(&:employee)
+      if !working_employees.include?(me)
+        available_employees = employees - working_employees
+        acc[date] = {
+          count: available_employees.length,
+          shifts: shifts,
+          names: available_employees.map(&:last).sort.join(","),
+        }
+      end
+
+      acc
+    end
+
+    options.each do |date, option|
+      next unless option[:count] >= minimum
+      puts "#{date.strftime("%a %m/%d")} (#{option[:count]}) - #{option[:names]}"
+    end
+  end
+
   desc "Rebuild all Advocate Data"
   task :rebuild, [] => :environment do |t, args|
     puts "deleting employees, shifts"
