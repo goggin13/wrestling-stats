@@ -17,8 +17,8 @@ namespace :advocate do
   desc "find days"
   task :find_days, [] => :environment do |t, args|
     minimum = 4
-    start_date = Date.new(2023, 11, 1)
-    end_date = Date.new(2023, 11, 20)
+    start_date = Date.new(2023, 10, 30)
+    end_date = Date.new(2023, 11, 17)
 
     me = Advocate::Employee.where(last: "goggin").first!
 
@@ -32,7 +32,7 @@ namespace :advocate do
       Advocate::Employee.where(last: last).first!
     end
 
-    employee_ids = employees.map(&:id)
+    employee_ids = employees.map(&:id) + [me.id]
 
     options = (start_date..end_date).inject({}) do |acc, date|
       shifts = Advocate::Shift.where(date: date, employee_id: employee_ids)

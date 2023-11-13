@@ -19,3 +19,5 @@ X - Auto-update rankings
 
 Google Doc for raw schedule:
 https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496Xtkw/edit#gid=0
+place in app/models/raw_schedule.rb
+run RAILS_ENV=development bundle exec rake schedule:ingest

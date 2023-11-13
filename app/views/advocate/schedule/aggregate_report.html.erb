@@ -42,19 +42,19 @@
   </tr>
 
   <tr>
-    <th>Agency Hours</th>
+    <th>Part Time Hours</th>
     <% @months.each do |_, reporter| %>
       <td>
-        <%= reporter.hours_by_employee_status[:agency][:pct] %>
+        <%= reporter.hours_by_employee_status[:part_time][:pct] %>
       </td>
     <% end %>
   </tr>
 
   <tr>
-    <th>Part Time Hours</th>
+    <th>Agency Hours</th>
     <% @months.each do |_, reporter| %>
       <td>
-        <%= reporter.hours_by_employee_status[:part_time][:pct] %>
+        <%= reporter.hours_by_employee_status[:agency][:pct] %>
       </td>
     <% end %>
   </tr>
@@ -156,7 +156,7 @@
 
 <table>
   <tr>
-    <th>BoxPlots</th>
+    <th>RN Staffing</th>
     <% @months.each do |month, _| %>
       <th><%= month.strftime("%b") %></th>
     <% end %>
@@ -202,41 +202,47 @@
   <tr>
     <th>ECT BoxPlots</th>
     <% @months.each do |month, _| %>
+      <% next if month < Date.new(2023, 9, 1) %>
       <th><%= month.strftime("%b") %></th>
     <% end %>
   </tr>
 
   <tr>
     <th>Min</th>
-    <% @months.each do |_, reporter| %>
+    <% @months.each do |month, reporter| %>
+      <% next if month < Date.new(2023, 9, 1) %>
       <td class="rn_pct"><%= reporter.ect_min_pct %></td>
     <% end %>
   </tr>
   
   <tr>
     <th>Q1</th>
-    <% @months.each do |_, reporter| %>
+    <% @months.each do |month, reporter| %>
+      <% next if month < Date.new(2023, 9, 1) %>
       <td class="rn_pct"><%= reporter.ect_q1_pct %></td>
     <% end %>
   </tr>
 
   <tr>
     <th>Median</th>
-    <% @months.each do |_, reporter| %>
+    <% @months.each do |month, reporter| %>
+      <% next if month < Date.new(2023, 9, 1) %>
       <td class="rn_pct"><%= reporter.ect_median_pct %></td>
     <% end %>
   </tr>
 
   <tr>
     <th>Q3</th>
-    <% @months.each do |_, reporter| %>
+    <% @months.each do |month, reporter| %>
+      <% next if month < Date.new(2023, 9, 1) %>
       <td class="rn_pct"><%= reporter.ect_q3_pct %></td>
     <% end %>
   </tr>
 
   <tr>
     <th>Max</th>
-    <% @months.each do |_, reporter| %>
+    <% @months.each do |month, reporter| %>
+      <% next if month < Date.new(2023, 9, 1) %>
       <td class="rn_pct"><%= reporter.ect_max_pct %></td>
     <% end %>
   </tr>

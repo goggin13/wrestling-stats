@@ -48,10 +48,6 @@ class Advocate::Employee < ApplicationRecord
     Advocate::Employee.where(first: "quentin").first!
       .shifts.where("date < '9/1/2023'").where.not(raw_shift_code: "ORF")
       .destroy_all
-
-    # Erica (ECT) seems to have been clocked as an RN one shift
-    erica_RN = Advocate::Employee.where(last: "cazares castro", role: "RN").first!
-    erica_RN.destroy
   end
 
   def update_shift_label!
