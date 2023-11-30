@@ -67,7 +67,7 @@ class WrestlerService
     document.css("#dual tr")[2..].each do |tr|
       data = tr.css("td").map { |td| td.content }
       rank, school, conference, record, previous = data
-      college = College.find_or_create_by!(name: school)
+      college = College.find_or_create_by_corrected_name(school)
       college.dual_rank = rank
       college.save!
     end
@@ -81,7 +81,7 @@ class WrestlerService
     document.css(".content.ng-star-inserted tr")[1..].each do |tr|
       data = tr.css("td").map { |td| td.content }
       rank, school, points, previous = data
-      college = College.find_or_create_by!(name: school)
+      college = College.find_or_create_by_corrected_name(school)
       college.tournament_rank = rank
       college.save!
     end
