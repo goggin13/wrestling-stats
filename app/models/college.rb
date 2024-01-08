@@ -9,6 +9,8 @@ class College < ApplicationRecord
     ["App State", "Appalachian State"],
     ["ND State", "North Dakota State"],
     ["SD State", "South Dakota State"],
+    ["OK State", "Oklahoma State"],
+    ["SIUE", "SIU Edwardsville"],
   ].inject({}) do |acc, names|
     canonical = names[0]
     names[1..].each do |alternate|
@@ -25,6 +27,20 @@ class College < ApplicationRecord
     end
 
     College.find_or_create_by(name: name)
+  end
+
+  def self.find_by_corrected_name!(name)
+    if EQUIVALENCIES.has_key?(name)
+      puts "Correcting: #{name} => #{EQUIVALENCIES[name]}"
+      name = EQUIVALENCIES[name]
+    end
+
+    college = College.find_by(name: name)
+    unless college.present?
+      raise "Unable to find college: '#{name}'"
+    end
+
+    college
   end
 
   def matches

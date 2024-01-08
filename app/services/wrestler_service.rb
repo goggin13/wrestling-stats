@@ -8,7 +8,7 @@ class WrestlerService
     WEIGHTS.each do |weight|
       WrestlerService.scrape_rankings_for_weight(weight, cached_urls)
     end
-    # WrestlerService.scrape_team_dual_rankings
+    WrestlerService.scrape_team_dual_rankings
     WrestlerService.scrape_team_tournament_rankings(cached_urls)
   end
 
@@ -60,14 +60,20 @@ class WrestlerService
     end
   end
 
+  def self.intermat_ncaa_d1_rankings_url
+    url = "https://intermatwrestle.com/rankings/ncaadi.html/"
+
+    DownloadService.redirects_to(url)
+  end
+
   def self.scrape_team_dual_rankings
     College.update_all(dual_rank: nil)
-    url = "https://intermatwrestle.com/rankings.html/ncaa-di-r9/"
+    url = intermat_ncaa_d1_rankings_url
     document = Nokogiri::HTML(DownloadService.download(url))
     document.css("#dual tr")[2..].each do |tr|
       data = tr.css("td").map { |td| td.content }
       rank, school, conference, record, previous = data
-      college = College.find_or_create_by_corrected_name(school)
+      college = College.find_by_corrected_name!(school)
       college.dual_rank = rank
       college.save!
     end
@@ -81,7 +87,7 @@ class WrestlerService
     document.css(".content.ng-star-inserted tr")[1..].each do |tr|
       data = tr.css("td").map { |td| td.content }
       rank, school, points, previous = data
-      college = College.find_or_create_by_corrected_name(school)
+      college = College.find_by_corrected_name!(school)
       college.tournament_rank = rank
       college.save!
     end

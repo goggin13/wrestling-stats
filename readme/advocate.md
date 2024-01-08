@@ -19,7 +19,7 @@ automate download or else it can never be prod
 # Tasks
 
 ### Import a schedule
-RAILS_ENV=development bundle exec rake advocate:import_schedule[spec/download_fixtures/advocate/schedule_6_26.html]
+RAILS_ENV=development bundle exec rake advocate:import_schedule[advocate_data/csv/schedule_6_26.html]
 
 ### Rebuild everything from spec/download_fixtures/advocate/archive
 RAILS_ENV=development bundle exec rake advocate:rebuild
