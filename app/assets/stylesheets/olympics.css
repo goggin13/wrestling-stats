@@ -88,6 +88,14 @@
   text-align: center;
 }
 
+#tiebreaker_criteria .empty_matchup {
+  border: thick solid black;
+}
+
+#tiebreaker_criteria .tied_matchup {
+  background: lightgray;
+}
+
 .generated_match {
   border: thin solid black;
   width: 19%;

@@ -27,8 +27,8 @@ module Olympics
     def tiebreaker_message(t1, t2)
       tiebreaker_message = ""
 
-      tiebreaker_message += "Games: #{t1.wins_over(t2)}-#{t2.wins_over(t1)} <br/>"
-      tiebreaker_message += "Cups: #{t1.bp_cups} to #{t2.bp_cups}"
+      tiebreaker_message += "h2h: #{t1.wins_over(t2)}-#{t2.wins_over(t1)} <br/>"
+      tiebreaker_message += "bp: #{t1.bp_cups} to #{t2.bp_cups}"
 
       tiebreaker_message
     end
