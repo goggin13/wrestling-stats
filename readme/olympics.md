@@ -1,5 +1,13 @@
 ### LOMD 
 
+### To Set Up
+* Modify teams via browser interface /olympics/teams
+* regenerate matches /olympics/generate_brackets 2314@#!$
+* use google sheets to verify matchups 
+https://docs.google.com/spreadsheets/d/1EgzblSSW6L-MJtA9tozflRCoKXXdquDymBUFEmX2rX0/edit#gid=1182915431
+* The order of games within events should be valid for 5-6 team olympics, more testing required for more teams
+
+
 #### ToDo
 ---- Must do ----
 X - CORS - prod testing

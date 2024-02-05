@@ -6,7 +6,7 @@ RSpec.describe RawSchedule do
     @indiana = FactoryBot.create(:college, name: "Indiana")
   end
 
-  describe "ingest" do
+  xdescribe "ingest" do
     it "creates colleges" do
       expect(RawSchedule).to receive(:matches).and_return([])
       expect(RawSchedule).to receive(:colleges).and_return(

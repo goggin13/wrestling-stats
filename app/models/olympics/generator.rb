@@ -37,19 +37,51 @@ class Olympics::Generator
     return event_games if event_games.nil?
     return event_games unless event_games.length == @num_teams
 
-    first_game = event_games.shift
-    second_game = event_games.find do |game|
-      !(game.contains?(first_game.team_1) || game.contains?(first_game.team_2))
-    end
-    event_games.delete(second_game)
+    first_three = first_three_games(event_games)
+    first_three.each { |game| event_games.delete(game) }
 
-    next_team = (@teams - (first_game.teams + second_game.teams)).first
-    third_game = event_games.find do |game|
-      game.contains?(next_team)
-    end
-    event_games.delete(third_game)
+    teams_in_first_three = first_three.map(&:teams).flatten
+    if teams_in_first_three.uniq.length == @num_teams
+      first_three + event_games
+    else
+      missing_team = (@teams - teams_in_first_three).first
+      next_game = event_games.find { |game| game.contains?(missing_team) }
+      event_games.delete(next_game)
 
-    [first_game, second_game, third_game] + event_games
+      first_three + [next_game] + event_games
+    end
+  end
+
+  def first_three_games(event_games, target=nil)
+    target ||= @num_teams
+    result = nil
+
+    event_games.each do |game_1|
+      event_games.each do |game_2|
+        next if game_1.overlaps_with?(game_2)
+
+        event_games.each do |game_3|
+          games = [game_1, game_2, game_3]
+          teams = [
+            game_1.team_1, game_1.team_2,
+            game_2.team_1, game_2.team_2,
+            game_3.team_1, game_3.team_2,
+          ]
+
+          if teams.uniq.length == target
+            result = games
+          end
+        end
+      end
+    end
+
+    result
+
+    if result.nil?
+      first_three_games(event_games, target - 1)
+    else
+      result
+    end
   end
 
   def group_games!
@@ -224,6 +256,10 @@ class Olympics::Generator
 
     def contains?(team)
       team_1 == team || team_2 == team
+    end
+
+    def overlaps_with?(other_game)
+      contains?(other_game.team_1) || contains?(other_game.team_2)
     end
 
     def teams

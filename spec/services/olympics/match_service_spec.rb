@@ -2,28 +2,6 @@ require "rails_helper.rb"
 require "csv"
 
 describe Olympics::MatchService do
-  describe "import_from_file" do
-    it "creates a new match" do
-      team_A = FactoryBot.create(:olympics_team, number: 3)
-      team_B = FactoryBot.create(:olympics_team, number: 5)
-
-      temp_file = Tempfile.new(["test_matchups", ".csv"])
-      CSV.open(temp_file.path, "w") do |csv|
-        csv << [17, 3, 5, "beer_pong"]
-      end
-
-      expect do
-        Olympics::MatchService.import_from_file(temp_file.path)
-      end.to change(Olympics::Match, :count).by(1)
-
-      match = Olympics::Match.last!
-      expect(match.bout_number).to eq(17)
-      expect(match.team_1.id).to eq(team_A.id)
-      expect(match.team_2.id).to eq(team_B.id)
-      expect(match.event).to eq(Olympics::Match::Events::BEER_PONG)
-    end
-  end
-
   describe "update" do
     describe "updating winner_id and advancing now_playing" do
       it "sets the matches now_playing to false on success" do

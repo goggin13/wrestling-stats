@@ -11,6 +11,7 @@ class College < ApplicationRecord
     ["SD State", "South Dakota State"],
     ["OK State", "Oklahoma State"],
     ["SIUE", "SIU Edwardsville"],
+    ["Penn", "Pennsylvania"],
   ].inject({}) do |acc, names|
     canonical = names[0]
     names[1..].each do |alternate|
