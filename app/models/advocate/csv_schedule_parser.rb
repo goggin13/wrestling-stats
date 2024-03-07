@@ -62,6 +62,7 @@ class Advocate::CsvScheduleParser
     # Department: 36102,08/30/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
     @rows.each do |row|
       _, date, identifier, full_name, role, shift_code, start_time, duration = row
+      shift_code = "ORF" if shift_code == "ORFNG"
       next unless role == "RN" || role == "LPN" || role == "ECT"
       next if block_given? && yield(shift_code)
 
