@@ -17,17 +17,17 @@ namespace :advocate do
   desc "find days"
   task :find_days, [] => :environment do |t, args|
     minimum = 4
-    start_date = Date.new(2023, 10, 30)
-    end_date = Date.new(2023, 11, 17)
+    start_date = Date.new(2024, 4, 1)
+    end_date = Date.new(2024, 4, 30)
 
     me = Advocate::Employee.where(last: "goggin").first!
 
     employees = [
-      "edwards",
+      "ahmad",
       "cervantes",
-      "sreepathy",
-      "maciha",
-      "kuchta"
+      "edwards",
+      "stachnik",
+      "maciha"
     ].map do |last|
       Advocate::Employee.where(last: last).first!
     end
