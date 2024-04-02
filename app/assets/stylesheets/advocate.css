@@ -85,8 +85,9 @@
 .rn_pct { 
   text-align: center;
 }
-.rn_pct_10 { background: red; }
-.rn_pct_20 { background: red; }
+.rn_pct_0 { background: darkred; }
+.rn_pct_10 { background: darkred; }
+.rn_pct_20 { background: darkred; }
 .rn_pct_30 { background: red; }
 .rn_pct_40 { background: red; }
 .rn_pct_50 { background: red; }

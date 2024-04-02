@@ -73,11 +73,11 @@ class Advocate::MonthlyReporter
     return @_ect_thresholds if defined?(@_ect_thresholds)
 
     @_ect_thresholds = {}
-    (7...9).to_a.each { |h| @_ect_thresholds[h] = 4 }
-    (9...23).to_a.each { |h| @_ect_thresholds[h] = 6 }
+    (7...9).to_a.each { |h| @_ect_thresholds[h] = 5 }
+    (9...23).to_a.each { |h| @_ect_thresholds[h] = 5 }
     (23...24).to_a.each { |h| @_ect_thresholds[h] = 4 }
     (0...3).to_a.each { |h| @_ect_thresholds[h] = 4 }
-    (3...7).to_a.each { |h| @_ect_thresholds[h] = 3 }
+    (3...7).to_a.each { |h| @_ect_thresholds[h] = 4 }
 
     @_ect_thresholds
   end
@@ -199,6 +199,33 @@ class Advocate::MonthlyReporter
 
   def min_pct
     pct_array[0]
+  end
+
+  def pct_tally(array)
+    grouped_pct_array = array.map { |pct| [pct.floor(-1), 100].min }
+    total = grouped_pct_array.length.to_f
+
+    results = {month: {count: 0, pct: 0} }
+    grouped_pct_array.tally.inject(results) do |acc, tally|
+      pct = [tally[0].floor(-1), 100].min
+      count = tally[1]
+      acc[pct] = {
+        count: count,
+        pct: count / total
+      }
+      acc[:month][:count] += count
+      acc[:month][:pct] += count / total
+
+      acc
+    end
+  end
+
+  def rn_pct_tally
+    pct_tally(pct_array)
+  end
+
+  def ect_pct_tally
+    pct_tally(ect_pct_array)
   end
 
   def q1_pct

@@ -11,7 +11,7 @@
 </div>
 
 <h1>
-  Median RN Staffing in <%= @start_date.strftime("%B") %>: <%= @reporter.median_pct %>%
+  Median RN Staffing in <%= @start_date.strftime("%B-%y") %>: <%= @reporter.median_pct %>%
 </h1>
 
 
@@ -94,6 +94,22 @@
   </table>
 </div>
 
+<p>
+RNS
+<% @reporter.rn_pct_tally.each do |pct, tally| %>
+  <br/>
+  <%= pct %>: (<%= tally[:count] %>, <%= number_to_percentage(tally[:pct] * 100, precision: 0) %>)
+<% end %>
+</p>
+
+<p>
+ECTs
+<% @reporter.ect_pct_tally.each do |pct, tally| %>
+  <br/>
+  <%= pct %>: (<%= tally[:count] %>, <%= number_to_percentage(tally[:pct] * 100, precision: 0) %>)
+<% end %>
+</p>
+
 <div id="staffing_grid_container">
 
   <div id="month_label">
@@ -148,7 +164,7 @@
         <% hours.each do |hour, data| %>
           <td class="rn_pct rn_pct_<%= [data[:ect][:pct].floor(-1), 100].min %>">
             <div class="">
-              <%= data[:ect][:pct] %>
+              <%= data[:ect][:count] %>
             </div>
           </td>
         <% end %>
