@@ -1,5 +1,34 @@
 desc "Advocate Tasks"
 namespace :advocate do
+  desc "import most recent schedule and orientees"
+  task :import, [] => :environment do |t, args|
+    non_productive_path = Dir
+      .glob("advocate_data/csv/*_show_non_productive_true.csv")
+      .max_by {|f| File.mtime(f)}
+
+    productive_path = Dir
+      .glob("advocate_data/csv/*_show_non_productive_false.csv")
+      .max_by {|f| File.mtime(f)}
+
+    puts "Parsing productive file"
+    Advocate::CsvScheduleParser.parse(
+      productive_path,
+      Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH
+    )
+    puts "\tDone"
+
+    puts "Parsing orientee file"
+    Advocate::CsvScheduleParser.parse_orientees_from_nonproductive_file!(
+      non_productive_path,
+      Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH
+    )
+    puts "\tDone"
+
+    puts "Cleaning up"
+    Advocate::Employee.post_import_data_cleaning
+    puts "\tDone"
+  end
+
   desc "import schedule"
   task :import_schedule, [:path] => :environment do |t, args|
     Advocate::CsvScheduleParser.parse(args.path, Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)

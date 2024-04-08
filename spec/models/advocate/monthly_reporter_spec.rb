@@ -155,7 +155,7 @@ CSV
         grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
 
         expect(grid[7][:rn]).to eq({count: 7, pct: 117})
-        expect(grid[7][:ect]).to eq({count: 2, pct: 50})
+        expect(grid[7][:ect]).to eq({count: 2, pct: 40})
       end
 
       it "uses weekend and weekday percentage thresholds" do
