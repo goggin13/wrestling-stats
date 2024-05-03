@@ -1131,14 +1131,17 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"George, Jasmine",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Hollins, Quentin",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Johnson, Xeryus",RN,19-12,19:00,12.50
-Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Marshall, Leshaunna",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Thornton, Steven",RN,19-12,19:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(N),"Marshall, Leshaunna",RN,NCNS,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(FN),"cordero, kenneth",RN,SWTCH,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Curry, Jada",ECT,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Harris, Shalanda",ECT,19-12,19:00,12.50
-Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Johnson, Lafrance",ECT,19-12,19:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(F),"Reed, Shakeda",ECT,19-12,19:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(F),"Smith, Timothy",ECT,19-12,19:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(N),"Johnson, Lafrance",ECT,ABS,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,,"Millsap, Cassandra",US,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(F),"Jones, Claressa",RN,EX23-08,23:00,8.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/02/2024,(F),"Cain, Lisa",ECT,23-08,23:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/03/2024,,"Foy, Tracey",ECT,EX07-08,07:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/03/2024,,"Rivera, Amanda",ECT,EX07-08,07:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/03/2024,(FN),"Velazquez, Diana",RN-SANE,OC07-12,07:00,12.00
@@ -1211,6 +1214,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,(F),"Royce, Cecil",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,(F),"Tolledo, Robert Patrick",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,,"Barnes, Jordan",ECT,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,,"West, Marguerite",ECT,EX07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,,"Weed, Calvin",ECT,EX08-11,08:00,11.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/05/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
@@ -1241,6 +1245,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,,"Washington, Tempestt",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,,"Kuchta, Deanna",RN,EX15-12,15:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,(F),"Bell, Candace",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/06/2024,,"Boyd, Erin",RN,19-12,19:00,12.50
@@ -1265,7 +1270,9 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"Washington, Tempestt",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"Kuchta, Deanna",RN,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"Coleman, Leslie",ECT,EX11-08,11:00,8.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"West, Marguerite",ECT,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"Goggin, Matthew",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,(N),"Williams, Josie",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/07/2024,,"George, Jasmine",RN,19-12,19:00,12.50
@@ -1290,6 +1297,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,,"Foy, Tracey",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,,"Smith, Shannon",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,,"Villa, Alma",ECT,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,,"Kuchta, Deanna",RN,EX09-10,09:00,10.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,,"Weed, Calvin",ECT,EX09-10,09:00,10.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/08/2024,,"Goggin, Matthew",RN,11-12,11:00,12.50
@@ -1321,6 +1329,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,,"Coleman, Leslie",ECT,EX09-10,09:00,10.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,,"West, Marguerite",ECT,EX11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,(N),"Williams, Josie",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,,"Abukhaled, Yazen",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/09/2024,,"Hedenschoug, Tyler",RN,19-12,19:00,12.50
@@ -1342,6 +1351,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,(F),"robin, joshua",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,(F),"Royce, Cecil",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,(F),"Soto, Melissa",RN,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,,"Kuchta, Deanna",RN,EX07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,,"Smith, Shannon",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/10/2024,,"Weed, Calvin",ECT,07-12,07:00,12.50
@@ -1417,6 +1427,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,(F),"Royce, Cecil",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,(F),"Swiatek, Joseph",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,,"West, Marguerite",ECT,EX09-10,09:00,10.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,,"Mccullough, Rebecca",LPN,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/13/2024,,"Smith, Shannon",ECT,11-08,11:00,8.50
@@ -1446,6 +1457,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,,"Washington, Tempestt",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,,"Goggin, Matthew",RN,11-12,11:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,,"Kuchta, Deanna",RN,EX15-12,15:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,,"Abukhaled, Yazen",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/14/2024,,"George, Jasmine",RN,19-12,19:00,12.50
@@ -1498,6 +1510,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,,"Foy, Tracey",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,,"Jackson, Keena",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,,"Weed, Calvin",ECT,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,,"Kuchta, Deanna",RN,09-06,09:00,6.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,,"Smith, Shannon",ECT,11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/16/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
@@ -1553,6 +1566,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,,"Villa, Alma",ECT,EX11-08,11:00,8.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,,"West, Marguerite",ECT,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,,"Hedenschoug, Tyler",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/18/2024,,"Hinds, LaTanya",RN,19-12,19:00,12.50
@@ -1575,6 +1589,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,(F),"robin, joshua",RN,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,,"Barnes, Jordan",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,,"West, Marguerite",ECT,EX07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/19/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
@@ -1601,6 +1616,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,,"Jackson, Keena",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,,"Weed, Calvin",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,,"Washington, Tempestt",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,,"West, Marguerite",ECT,EX09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,,"Smith, Shannon",ECT,11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/20/2024,(N),"Williams, Josie",RN,ORF,19:00,12.00
@@ -1625,6 +1641,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,,"Villa, Alma",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,,"West, Marguerite",ECT,EX09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,,"Goggin, Matthew",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,,"King, Lauren",RN,¤19-08,19:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/21/2024,,"Abukhaled, Yazen",RN,19-12,19:00,12.50
@@ -1680,6 +1697,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,(N),"Jackson, Keena",ECT,SWTCH,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,(FN),"Devine, Alexis",RN,UNV,09:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,,"Washington, Tempestt",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,,"Kuchta, Deanna",RN,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,(F),"cordero, kenneth",RN,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/23/2024,,"Hicks, Ciara",RN,19-12,19:00,12.50
@@ -1703,6 +1721,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,,"Jackson, Keena",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,,"Weed, Calvin",ECT,EX09-10,09:00,10.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,,"Kuchta, Deanna",RN,11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,,"Smith, Shannon",ECT,11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/24/2024,,"Abukhaled, Yazen",RN,19-12,19:00,12.50
@@ -1772,6 +1791,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,,"Jackson, Keena",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,,"Smith, Shannon",ECT,07-12,07:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,,"West, Marguerite",ECT,EX10-12,10:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,,"Mccullough, Rebecca",LPN,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,,"Morrar, Khalid",RN,EX11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/27/2024,(F),"Bell, Candace",RN,19-12,19:00,12.50
@@ -1795,7 +1815,9 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,,"Jackson, Keena",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,,"West, Marguerite",ECT,EX09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,,"Goggin, Matthew",RN,11-12,11:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,,"Kuchta, Deanna",RN,15-12,15:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,,"King, Lauren",RN,19-08,19:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,(N),"Bell, Karnika",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/28/2024,(N),"Williams, Josie",RN,ORF,19:00,12.00
@@ -1822,6 +1844,8 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,,"Maxwell Heads, Stacy",ECT,EX09-08,09:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,,"Goggin, Matthew",RN,11-12,11:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,,"West, Marguerite",ECT,EX11-12,11:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,,"Kuchta, Deanna",RN,EX15-08,15:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,(N),"Williams, Josie",RN,ORF,19:00,12.00
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,,"Stachnik, Gabrielle",RN-LEAD,19-12,19:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,05/29/2024,(F),"Bell, Candace",RN,19-12,19:00,12.50
@@ -1896,6 +1920,7 @@ Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency 
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,,"Barnes, Jordan",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,,"Rivera, Amanda",ECT,07-12,07:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,(F),"Devine, Alexis",RN,09-12,09:00,12.50
+Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,,"West, Marguerite",ECT,EX09-12,09:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,,"Smith, Shannon",ECT,11-08,11:00,8.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,(F),"Barounis, Lauren",RN,11-12,11:00,12.50
 Facility:  1250065 - Advocate Trinity Hospital   Department:  36102 - Emergency Department   ,06/01/2024,,"Abukhaled, Yazen",RN-LEAD,19-12,19:00,12.50
