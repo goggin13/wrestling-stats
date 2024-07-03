@@ -67,23 +67,22 @@
       <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
         <td class="rn_pct">
           <% weekday, weekend = [@reporter.rn_thresholds[hour], @reporter.rn_weekend_thresholds[hour]] %>
-          <% if weekday != weekend %>
-            <%= weekend %>
-          <% else %>
-          <% end %>
+          <%= weekend %>
         </td>
       <% end %>
     </tr>
 
     <% @reporter.staffing_grid.each do |day, hours| %>
-      <tr>
+      <tr class="<%= day == Date.today ? 'today' : '' %>">
         <th>
           <div class="hide_for_copy_paste">
             <%= day.strftime("%e-%a") %>
           </div>
         </th>
         <% hours.each do |hour, data| %>
-          <td class="rn_pct rn_pct_<%= [data[:rn][:pct].floor(-1), 100].min %>">
+          <td class="rn_pct 
+                     rn_pct_<%= [data[:rn][:pct].floor(-1), 100].min %>
+                     <%= hour == 18 ? 'shift_boundary' : '' %>">
             <div class="">
               <%= data[:rn][:count] %>
             </div>

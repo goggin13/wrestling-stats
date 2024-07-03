@@ -84,7 +84,7 @@
       <th><%= shift_label %></th>
       <% @months.each do |_, reporter| %>
         <td>
-          <%= reporter.full_time_by_shift_label[shift_label].count %>
+          <%# <%= reporter.full_time_by_shift_label[shift_label].count %>
         </td>
       <% end %>
     </tr>
@@ -93,7 +93,7 @@
       <th><%= shift_label %></th>
       <% @months.each do |_, reporter| %>
         <td>
-          <% reporter.full_time_by_shift_label[shift_label].map(&:short_name).sort.each do |employee| %>
+          <% (reporter.full_time_by_shift_label[shift_label] || []).map(&:short_name).sort.each do |employee| %>
             <%= employee %><br/>
           <% end %>
         </td>

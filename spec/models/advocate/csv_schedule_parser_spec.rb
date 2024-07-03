@@ -73,6 +73,12 @@ Department: 36102,08/30/2023,,"Berrios, Maricela",LPN,19-12,19:00,12.50
 
 CSV
 
+    CSV_FILE_RN_LEAD = <<-CSV
+textbox175,textbox3,textbox9,EmployeeName,textbox15,textbox2,CalendarDate,textbox1
+Department: 36102,08/30/2023,,"Berrios, Maricela",RN-LEAD,19-12,19:00,12.50
+
+CSV
+
     CSV_FILE_MIXED = <<-CSV
 textbox175,textbox3,textbox9,EmployeeName,textbox15,textbox2,CalendarDate,textbox1
 Department: 36102,08/30/2023,,"Edwards, Veronica",RN,CHGPREC,07:00,8.50
@@ -170,6 +176,14 @@ CSV
 
     it "counts an LPN as an RN" do
       File.write("tmp/shifts.csv", CSV_FILE_LPN)
+      CsvScheduleParser.parse("tmp/shifts.csv", "tmp/employees.yml")
+
+      employee = Employee.last!
+      expect(employee.role).to eq("RN")
+    end
+
+    it "counts a RN-LEAD as an RN" do
+      File.write("tmp/shifts.csv", CSV_FILE_RN_LEAD)
       CsvScheduleParser.parse("tmp/shifts.csv", "tmp/employees.yml")
 
       employee = Employee.last!

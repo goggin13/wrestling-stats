@@ -136,3 +136,12 @@
   margin-left: 10px;
   float: left;
 }
+
+td.shift_boundary {
+  border-right: 2px dashed black;
+}
+
+tr.today td {
+  border-bottom: medium solid black;
+  border-top: medium solid black;
+}

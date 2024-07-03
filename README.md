@@ -7,7 +7,7 @@ In a new pane
 psql -Upostgres
 psql -Upostgres
 CREATE USER dumbledore login createdb;
-\password dumbdledore
+\password dumbledore 
   <dumbledore_development>
 
 In a new pane

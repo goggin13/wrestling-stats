@@ -27,25 +27,40 @@ class Advocate::MonthlyReporter
     end
   end
 
-  # D0700-0900  6
-  # D0900-1100  Fr-Sun: 7, 8
-  # D1100-1300  Fr-Sun: 9, 10
-  # D1300-1500  Fr-Sun: 9, 10
-  # E1500-1900  Fr-Sun: 9, 10
-  # E1900-2100  8
-  # E2100-2300  7
-  # N2300-0100  7
-  # NT0100-0300 7
-  # NT0300-0700 Fr-Sun: 6, 5
+  # of RNs by hour  Mon-Thu Fri-Sun
+  # 07:00 6 6
+  # 08:00 6 6
+  # 09:00 8 7
+  # 10:00 8 7
+  # 11:00 10  9
+  # 12:00 10  9
+  # 13:00 10  9
+  # 14:00 10  9
+  # 15:00 10  9
+  # 16:00 10  9
+  # 17:00 10  9
+  # 18:00 10  9
+  # 19:00 10  9
+  # 20:00 10  9
+  # 21:00 8 8
+  # 22:00 8 8
+  # 23:00 7 7
+  # 00:00 7 7
+  # 01:00 7 7
+  # 02:00 7 7
+  # 03:00 5 6
+  # 04:00 5 6
+  # 05:00 5 6
+  # 06:00 5 6
   def rn_thresholds
     return @_rn_thresholds if defined?(@_rn_thresholds)
 
     @_rn_thresholds = {}
     (7...9).to_a.each { |h| @_rn_thresholds[h] = 6 }
     (9...11).to_a.each { |h| @_rn_thresholds[h] = 8 }
-    (11...19).to_a.each { |h| @_rn_thresholds[h] = 10 }
-    (19...21).to_a.each { |h| @_rn_thresholds[h] = 8 }
-    (21...24).to_a.each { |h| @_rn_thresholds[h] = 7 }
+    (11...21).to_a.each { |h| @_rn_thresholds[h] = 10 }
+    (21...23).to_a.each { |h| @_rn_thresholds[h] = 8 }
+    (23...24).to_a.each { |h| @_rn_thresholds[h] = 7 }
     (0...3).to_a.each { |h| @_rn_thresholds[h] = 7 }
     (3...7).to_a.each { |h| @_rn_thresholds[h] = 5 }
 
@@ -58,7 +73,7 @@ class Advocate::MonthlyReporter
     @_rn_weekend_thresholds = rn_thresholds.dup
 
     (9...11).to_a.each { |h| @_rn_weekend_thresholds[h] = 7 }
-    (11...19).to_a.each { |h| @_rn_weekend_thresholds[h] = 9 }
+    (11...21).to_a.each { |h| @_rn_weekend_thresholds[h] = 9 }
     (3...7).to_a.each { |h| @_rn_weekend_thresholds[h] = 6 }
 
     @_rn_weekend_thresholds
