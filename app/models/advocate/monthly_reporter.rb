@@ -19,80 +19,62 @@ class Advocate::MonthlyReporter
   def threshold_for(role, date, hour)
     if role == :ect
       ect_thresholds[hour].to_f
-    # Fri, Sat, Sun
-    elsif [5, 6, 0].include?(date.wday)
-      rn_weekend_thresholds[hour].to_f
     else
       rn_thresholds[hour].to_f
     end
   end
 
-  # of RNs by hour  Mon-Thu Fri-Sun
-  # 07:00 6 6
-  # 08:00 6 6
-  # 09:00 8 7
-  # 10:00 8 7
-  # 11:00 10  9
-  # 12:00 10  9
-  # 13:00 10  9
-  # 14:00 10  9
-  # 15:00 10  9
-  # 16:00 10  9
-  # 17:00 10  9
-  # 18:00 10  9
-  # 19:00 10  9
-  # 20:00 10  9
-  # 21:00 8 8
-  # 22:00 8 8
-  # 23:00 7 7
-  # 00:00 7 7
-  # 01:00 7 7
-  # 02:00 7 7
-  # 03:00 5 6
-  # 04:00 5 6
-  # 05:00 5 6
-  # 06:00 5 6
+  # of RNs by hour
+  # 07:00 7
+  # 08:00 7
+  # 09:00 8
+  # 10:00 8
+  # 11:00 9
+  # 12:00 9
+  # 13:00 9
+  # 14:00 9
+  # 15:00 10
+  # 16:00 10
+  # 17:00 10
+  # 18:00 10
+  # 19:00 10
+  # 20:00 10
+  # 21:00 9
+  # 22:00 9
+  # 23:00 8
+  # 00:00 8
+  # 01:00 8
+  # 02:00 8
+  # 03:00 7
+  # 04:00 7
+  # 05:00 7
+  # 06:00 7
   def rn_thresholds
     return @_rn_thresholds if defined?(@_rn_thresholds)
 
     @_rn_thresholds = {}
-    (7...9).to_a.each { |h| @_rn_thresholds[h] = 6 }
+    (7...9).to_a.each { |h| @_rn_thresholds[h] = 7 }
     (9...11).to_a.each { |h| @_rn_thresholds[h] = 8 }
-    (11...21).to_a.each { |h| @_rn_thresholds[h] = 10 }
-    (21...23).to_a.each { |h| @_rn_thresholds[h] = 8 }
-    (23...24).to_a.each { |h| @_rn_thresholds[h] = 7 }
-    (0...3).to_a.each { |h| @_rn_thresholds[h] = 7 }
-    (3...7).to_a.each { |h| @_rn_thresholds[h] = 5 }
+    (11...15).to_a.each { |h| @_rn_thresholds[h] = 9 }
+    (15...21).to_a.each { |h| @_rn_thresholds[h] = 10 }
+    (21...23).to_a.each { |h| @_rn_thresholds[h] = 9 }
+    (23...24).to_a.each { |h| @_rn_thresholds[h] = 8 }
+    (0...3).to_a.each { |h| @_rn_thresholds[h] = 8 }
+    (3...7).to_a.each { |h| @_rn_thresholds[h] = 7 }
 
     @_rn_thresholds
   end
 
-  def rn_weekend_thresholds
-    return @_rn_weekend_thresholds if defined?(@_rn_weekend_thresholds)
-
-    @_rn_weekend_thresholds = rn_thresholds.dup
-
-    (9...11).to_a.each { |h| @_rn_weekend_thresholds[h] = 7 }
-    (11...21).to_a.each { |h| @_rn_weekend_thresholds[h] = 9 }
-    (3...7).to_a.each { |h| @_rn_weekend_thresholds[h] = 6 }
-
-    @_rn_weekend_thresholds
-  end
-
-  # Day shift
-  #   0700-0900 4 => floor techs: 2, triage tech: 1, vitals tech: 1
-  #   0900-2300 6 => floor techs: 3, triage tech: 1, vitals tech: 1, fast track: 1
-  #   2300-0300 4 => floor techs: 2, triage tech: 1, fast track: 1
-  #   0300-0700 3 => floor techs: 2, triage tech: 1
+  # 11a-11p: 5
+  # 11p-11a: 4
   def ect_thresholds
     return @_ect_thresholds if defined?(@_ect_thresholds)
 
     @_ect_thresholds = {}
-    (7...9).to_a.each { |h| @_ect_thresholds[h] = 5 }
-    (9...23).to_a.each { |h| @_ect_thresholds[h] = 5 }
+    (7...11).to_a.each { |h| @_ect_thresholds[h] = 4 }
+    (11..23).to_a.each { |h| @_ect_thresholds[h] = 5 }
     (23...24).to_a.each { |h| @_ect_thresholds[h] = 4 }
-    (0...3).to_a.each { |h| @_ect_thresholds[h] = 4 }
-    (3...7).to_a.each { |h| @_ect_thresholds[h] = 4 }
+    (0...7).to_a.each { |h| @_ect_thresholds[h] = 4 }
 
     @_ect_thresholds
   end

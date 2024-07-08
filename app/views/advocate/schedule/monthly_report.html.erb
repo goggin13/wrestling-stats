@@ -53,21 +53,12 @@
     </tr>
 
     <tr class="hide_for_copy_paste">
-      <th rowspan='2'>
-        weekday<hr/>weekend 
+      <th>
+        goal
       </th>
       <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
         <td class="rn_pct">
-          <% weekday, weekend = [@reporter.rn_thresholds[hour], @reporter.rn_weekend_thresholds[hour]] %>
-          <%= weekday %> 
-        </td>
-      <% end %>
-    </tr>
-    <tr class="hide_for_copy_paste">
-      <% Advocate::MonthlyReporter::ALL_HOUR_LABELS.each do |hour, hour_label| %>
-        <td class="rn_pct">
-          <% weekday, weekend = [@reporter.rn_thresholds[hour], @reporter.rn_weekend_thresholds[hour]] %>
-          <%= weekend %>
+          <%= @reporter.rn_thresholds[hour] %>
         </td>
       <% end %>
     </tr>

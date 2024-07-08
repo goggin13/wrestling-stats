@@ -172,12 +172,6 @@ CSV
           .at_least(:once)
           .and_return(stub_thresholds)
 
-        stub_weekend_thresholds = {}
-        (0..30).each { |h| stub_weekend_thresholds[h % 24] = 20.0 }
-        expect(reporter).to receive(:rn_weekend_thresholds)
-          .at_least(:once)
-          .and_return(stub_weekend_thresholds)
-
         mon = reporter.staffing_grid[Date.new(2023, 8, 14)]
         tue = reporter.staffing_grid[Date.new(2023, 8, 15)]
         wed = reporter.staffing_grid[Date.new(2023, 8, 16)]
@@ -308,40 +302,7 @@ CSV
   end
 
   describe "theshold definitions" do
-    it "uses the calculated weekend thresholds" do
-      File.write("tmp/shifts.csv", CSV_FILE)
-      CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
-      reporter = MonthlyReporter.new(Date.new(2023, 8))
-
-      thresholds = reporter.rn_weekend_thresholds
-
-      expect(thresholds[7]).to eq(6)
-      expect(thresholds[8]).to eq(6)
-      expect(thresholds[9]).to eq(7)
-      expect(thresholds[10]).to eq(7)
-      expect(thresholds[11]).to eq(9)
-      expect(thresholds[12]).to eq(9)
-      expect(thresholds[13]).to eq(9)
-      expect(thresholds[14]).to eq(9)
-      expect(thresholds[15]).to eq(9)
-      expect(thresholds[16]).to eq(9)
-      expect(thresholds[17]).to eq(9)
-      expect(thresholds[18]).to eq(9)
-      expect(thresholds[19]).to eq(8)
-      expect(thresholds[20]).to eq(8)
-      expect(thresholds[21]).to eq(7)
-      expect(thresholds[22]).to eq(7)
-      expect(thresholds[23]).to eq(7)
-      expect(thresholds[0]).to eq(7)
-      expect(thresholds[1]).to eq(7)
-      expect(thresholds[2]).to eq(7)
-      expect(thresholds[3]).to eq(6)
-      expect(thresholds[4]).to eq(6)
-      expect(thresholds[5]).to eq(6)
-      expect(thresholds[6]).to eq(6)
-    end
-
-    it "uses the calculated weekday thresholds" do
+    it "uses the calculated thresholds" do
       File.write("tmp/shifts.csv", CSV_FILE)
       CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
       reporter = MonthlyReporter.new(Date.new(2023, 8))

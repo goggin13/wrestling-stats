@@ -19,6 +19,10 @@ RAILS_ENV=development bundle exec rake rankings:update
 RAILS_ENV=development bundle exec rake advocate:import_schedule[spec/download_fixtures/advocate/schedule_3_31.html] 
 RAILS_ENV=test bundle exec rspec
 
+# Access DB PSQL
+./docker/exec_db.sh
+psql -Udumbledore -d dumbledore_development
+
 # ToDo
 - Silo JS and CSS files between apps
 - move wrestling stats to subdirectory
