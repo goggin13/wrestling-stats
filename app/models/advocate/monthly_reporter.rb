@@ -239,6 +239,8 @@ class Advocate::MonthlyReporter
   end
 
   def max_pct
+    return 0 if pct_array.length == 0
+
     [pct_array[pct_array.length - 1], 100].min
   end
 

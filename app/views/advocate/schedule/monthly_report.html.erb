@@ -25,10 +25,6 @@
                 advocate_monthly_report_path(month: @next_month.strftime("%m/%y"))) %>
   </div>
 
-  <div id="month_label">
-    <%= @start_date.strftime("%B") %>
-  </div>
-
   <table id="staffing_grid_legend">
     <tr>
       <th>Staffing %</th>
@@ -101,10 +97,6 @@ ECTs
 </p>
 
 <div id="staffing_grid_container">
-
-  <div id="month_label">
-    <%= @start_date.strftime("%B") %>
-  </div>
 
   <table id="staffing_grid_legend">
     <tr>

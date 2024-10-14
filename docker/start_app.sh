@@ -6,8 +6,8 @@ echo $PROCESS_COUNT
 
 if [ $PROCESS_COUNT -lt 5 ]
 then
-	echo "Opening docker"
-	open -a Docker
+	echo "Open Docker!"
+	exit 1
 else
 	echo "Docker is running"
 fi
