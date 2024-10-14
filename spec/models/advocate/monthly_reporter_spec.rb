@@ -215,6 +215,23 @@ CSV
 
         expect(grid[7][:rn][:count]).to eq(7)
       end
+
+      it "ignores LD-D shifts" do
+        File.write("tmp/shifts.csv", CSV_FILE)
+        CsvScheduleParser.parse("tmp/shifts.csv", Advocate::Employee::EMPLOYEE_STATUS_FILE_PATH)
+        rn = FactoryBot.create(:advocate_employee, role: "RN")
+        FactoryBot.create(:advocate_shift,
+                          employee: rn,
+                          date: Date.new(2023, 8, 30),
+                          start: 7, duration: 12,
+                          raw_shift_code: "LD-D")
+
+        reporter = MonthlyReporter.new(Date.new(2023, 8))
+
+        grid = reporter.staffing_grid[Date.new(2023, 8, 30)]
+
+        expect(grid[7][:rn][:count]).to eq(7)
+      end
     end
 
     describe "hours_by_employee_status" do

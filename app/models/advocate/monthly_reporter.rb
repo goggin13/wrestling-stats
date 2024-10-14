@@ -10,6 +10,7 @@ class Advocate::MonthlyReporter
     @all_shifts = Advocate::Shift
       .where("date >= ? and date <= ?", @start_day, @end_day)
       .where.not(raw_shift_code: "ORF")
+      .where.not(raw_shift_code: "LD-D")
       .reject { |s| s.employee.status == Advocate::Employee::Status::UNKNOWN }
 
     @rn_shifts = @all_shifts
