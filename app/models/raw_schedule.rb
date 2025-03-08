@@ -2,6 +2,8 @@ class RawSchedule
   def self.ingest
     Wrestler.destroy_all
     College.destroy_all
+    Match.destroy_all
+
     colleges.each do |data|
       college = College.find_or_create_by_corrected_name(data[0])
       college.update!(url: data[1])
@@ -19,12 +21,7 @@ class RawSchedule
       params.merge!(time: time) if time.present?
       params.merge!(watch_on: watch_on) if watch_on.present?
 
-      match = Match.find_by(away_team: away_team, home_team: home_team)
-      if match.present?
-        match.update!(params)
-      else
-        Match.create!(params)
-      end
+      Match.create!(params)
     end
   end
 
