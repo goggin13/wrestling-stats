@@ -94,8 +94,8 @@
 .rn_pct_60 { background: salmon; }
 .rn_pct_70 { background: salmon; }
 .rn_pct_80 { background: yellow; }
-.rn_pct_90 { background: greenyellow; }
-.rn_pct_100 { background: lightgreen; }
+.rn_pct_90 { background: lightgreen; }
+.rn_pct_100 { background: greenyellow; }
 
 .employee_list {
   width: 150px;

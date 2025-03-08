@@ -12,6 +12,8 @@ class College < ApplicationRecord
     ["OK State", "Oklahoma State"],
     ["SIUE", "SIU Edwardsville"],
     ["Penn", "Pennsylvania"],
+    ["Army", "Army West Point"],
+    ["Northern Colorado", "N. Colorado"],
   ].inject({}) do |acc, names|
     canonical = names[0]
     names[1..].each do |alternate|
@@ -38,7 +40,9 @@ class College < ApplicationRecord
 
     college = College.find_by(name: name)
     unless college.present?
-      raise "Unable to find college: '#{name}'"
+      msg = "Unable to find college: '#{name}'"
+      msg += "\nAdd mapping to EQUIVALENCIES in app/models/college.rb"
+      raise msg
     end
 
     college

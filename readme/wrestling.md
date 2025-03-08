@@ -17,7 +17,15 @@ X - Highlight top 10 matchups
 X - Team rankings page.
 X - Auto-update rankings
 
+## New Season?  Start here
+1) Input new schedule to google doc
 Google Doc for raw schedule:
 https://docs.google.com/spreadsheets/d/18UGHTlAAwXFuMBU_lxElWh-hpKd_0cCMU-sY496Xtkw/edit#gid=0
 place in app/models/raw_schedule.rb
-run RAILS_ENV=development bundle exec rake schedule:ingest
+
+2) Ingest
+RAILS_ENV=development bundle exec rake wrestling:reset_schedule
+
+3) Update rankings
+RAILS_ENV=development bundle exec rake wrestling:rankings
+
