@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_08_173434) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_08_181542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -130,6 +130,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_08_173434) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "wrestle_bet_wrestlers", force: :cascade do |t|
+    t.string "name"
+    t.bigint "college_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["college_id"], name: "index_wrestle_bet_wrestlers_on_college_id"
+  end
+
   create_table "wrestlers", force: :cascade do |t|
     t.string "name"
     t.string "college"
@@ -144,5 +152,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_08_173434) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "wrestle_bet_wrestlers", "colleges"
   add_foreign_key "wrestlers", "colleges"
 end

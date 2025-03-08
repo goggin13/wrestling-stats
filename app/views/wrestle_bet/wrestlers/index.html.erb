@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Wrestlers</h1>
+
+<div id="wrestle_bet_wrestlers">
+  <% @wrestle_bet_wrestlers.each do |wrestle_bet_wrestler| %>
+    <%= render wrestle_bet_wrestler %>
+    <p>
+      <%= link_to "Show this wrestler", wrestle_bet_wrestler %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New wrestler", new_wrestle_bet_wrestler_path %>

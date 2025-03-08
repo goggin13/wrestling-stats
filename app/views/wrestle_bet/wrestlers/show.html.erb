@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @wrestle_bet_wrestler %>
+
+<div>
+  <%= link_to "Edit this wrestler", edit_wrestle_bet_wrestler_path(@wrestle_bet_wrestler) %> |
+  <%= link_to "Back to wrestlers", wrestle_bet_wrestlers_path %>
+
+  <%= button_to "Destroy this wrestler", @wrestle_bet_wrestler, method: :delete %>
+</div>

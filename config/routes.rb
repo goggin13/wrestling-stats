@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   end
 
   namespace :wrestle_bet do
+    resources :wrestlers
     get "/tournaments", to: "tournaments#index"
   end
 
