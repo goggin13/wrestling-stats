@@ -8,15 +8,15 @@ class WrestlerService
     WEIGHTS.each do |weight|
       WrestlerService.scrape_rankings_for_weight(weight, cached_urls)
     end
-    # WrestlerService.scrape_team_dual_rankings
     WrestlerService.scrape_team_tournament_rankings(cached_urls)
   end
 
   def self.current_rankings_url
-    # flow_rankings_index_url = "#{FLOW_ROOT}/rankings"
-    flow_rankings_index_url = "#{FLOW_ROOT}/collections/7215281-college-rankings"
+    flow_rankings_index_url = "#{FLOW_ROOT}/rankings"
     document = Nokogiri::HTML(DownloadService.download(flow_rankings_index_url))
-    path = document.xpath("//a[contains(., '2024-25 NCAA DI Wrestling Rankings')]")[0]["href"]
+    link_title = "2024-25 NCAA DI Wrestling Rankings"
+    links = document.xpath("//a[contains(., '#{link_title}')]")
+    path = links[0]["href"]
 
     FLOW_ROOT + path
   end
@@ -53,7 +53,7 @@ class WrestlerService
         year: year,
       }
 
-      puts "#{weight}lbs #{rank} #{name}"
+      Rails.logger.info "#{weight}lbs #{rank} #{name}"
 
       if wrestler
         wrestler.update!(update_data)
@@ -69,20 +69,6 @@ class WrestlerService
     DownloadService.redirects_to(url)
   end
 
-  def self.scrape_team_dual_rankings
-    College.update_all(dual_rank: nil)
-    url = intermat_ncaa_d1_rankings_url
-    document = Nokogiri::HTML(DownloadService.download(url))
-    document.css("#dual tr")[2..].each do |tr|
-      data = tr.css("td").map { |td| td.content }
-      rank, school, conference, record, previous = data
-      puts "Dual[#{rank}] : #{school}"
-      college = College.find_by_corrected_name!(school)
-      college.dual_rank = rank
-      college.save!
-    end
-  end
-
   def self.scrape_team_tournament_rankings(cached_urls=nil)
     urls = cached_urls || ranking_urls_by_weight
     url = urls[:tournament]
@@ -91,7 +77,7 @@ class WrestlerService
     document.css(".content.ng-star-inserted tr")[1..].each do |tr|
       data = tr.css("td").map { |td| td.content }
       rank, school, points, previous = data
-      puts "Tournament[#{rank}] : #{school}"
+      Rails.logger.info "Tournament[#{rank}] : #{school}"
       college = College.find_by_corrected_name!(school)
       college.tournament_rank = rank
       college.save!

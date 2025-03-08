@@ -14,7 +14,7 @@ describe WrestlerService do
         .with("https://www.flowrestling.org/rankings")
         .and_return(@flow_rankings_index)
 
-      expect(WrestlerService.current_rankings_url).to eq("https://www.flowrestling.org/rankings/10846490-2023-24-ncaa-di-rankings/46726-p4p-carter-starocci")
+      expect(WrestlerService.current_rankings_url).to eq("https://www.flowrestling.org/rankings/12557781-2024-25-ncaa-di-wrestling-rankings/53811-p4p-gable-steveson")
     end
   end
 
@@ -37,7 +37,7 @@ describe WrestlerService do
 
       expect(DownloadService)
         .to receive(:download)
-        .with("https://www.flowrestling.org/rankings/10846490-2023-24-ncaa-di-rankings/46726-p4p-carter-starocci")
+        .with("https://www.flowrestling.org/rankings/12557781-2024-25-ncaa-di-wrestling-rankings/53811-p4p-gable-steveson")
         .and_return(@flow_p4p_rankings)
 
       result = WrestlerService.ranking_urls_by_weight
@@ -144,41 +144,7 @@ describe WrestlerService do
     end
   end
 
-  xdescribe ".scrape_team_dual_rankings" do
-    before do
-      fixture_path = "spec/download_fixtures/intermat_rankings.html"
-      fixture_data = File.read(fixture_path)
-      expect(DownloadService)
-        .to receive(:redirects_to)
-        .with("https://intermatwrestle.com/rankings/ncaadi.html/")
-        .and_return("https://intermatwrestle.com/rankings.html/ncaa-di-r9/")
-      expect(DownloadService)
-        .to receive(:download)
-        .with("https://intermatwrestle.com/rankings.html/ncaa-di-r9/")
-        .and_return(fixture_data)
-    end
-
-    it "updates a teams dual meet ranking" do
-      college = FactoryBot.create(:college, name: "Cornell")
-      expect(college.dual_rank).to eq(nil)
-
-      WrestlerService.scrape_team_dual_rankings
-
-      college.reload
-      expect(college.dual_rank).to eq(2)
-    end
-
-    it "updates a teams dual meet ranking to nil if they aren't on the list" do
-      college = FactoryBot.create(:college, name: "TC3", dual_rank: 1)
-
-      WrestlerService.scrape_team_dual_rankings
-
-      college.reload
-      expect(college.dual_rank).to eq(nil)
-    end
-  end
-
-  xdescribe ".scrape_team_tournament_rankings" do
+  describe ".scrape_team_tournament_rankings" do
     before do
       fixture_path = "spec/download_fixtures/flow_team_tournament_rankings.html"
       fixture_data = File.read(fixture_path)
@@ -187,16 +153,22 @@ describe WrestlerService do
       allow(WrestlerService)
         .to receive(:ranking_urls_by_weight)
         .and_return({tournament: "https://www.flowrestling.org/rankings/10846490-2023-24-ncaa-di-rankings/46737-penn-state"})
+
+      college_names = ["Penn State", "Iowa", "OK State", "Nebraska", "Minnesota", "Ohio State", "UNI", "Virginia Tech", "Cornell", "NC State", "Stanford", "Arizona State", "Purdue", "Illinois", "Missouri", "Michigan", "Iowa State", "Little Rock", "Maryland", "West Virginia", "N. Colorado", "Oregon State", "Lehigh", "SD State", "North Carolina", "Utah Valley", "CSU-Bakersfield", "Rutgers", "Ohio", "Cal Poly", "Navy", "App State", "Central Michigan", "Penn", "Oklahoma", "Pittsburgh", "Binghamton", "Northwestern", "Wyoming", "Bucknell", "Lock Haven", "Indiana", "Princeton", "Rider", "Drexel", "Virginia", "Army", "Wisconsin", "Campbell", "Chattanooga", "Columbia", "Gardner-Webb", "George Mason", "Harvard", "Hofstra", "Michigan State", "Air Force", "Northern Colorado", "ND State", "American", "Cleveland State", "SIUE", "Franklin & Marshall", "Brown"]
+
+      college_names.each do |college_name|
+        FactoryBot.create(:college, name: college_name)
+      end
     end
 
     it "updates a teams tournament ranking" do
-      college = FactoryBot.create(:college, name: "Cornell")
+      college = College.find_by_name("Cornell")
       expect(college.tournament_rank).to eq(nil)
 
       WrestlerService.scrape_team_tournament_rankings
 
       college.reload
-      expect(college.tournament_rank).to eq(2)
+      expect(college.tournament_rank).to eq(9)
     end
 
     it "updates a teams tournament ranking to nil if they aren't on the list" do

@@ -4,7 +4,7 @@ PROCESS_COUNT=$(ps aux | grep docker | wc -l)
 
 echo $PROCESS_COUNT
 
-if [ $PROCESS_COUNT -lt 12 ]
+if [ $PROCESS_COUNT -lt 13 ]
 then
 	echo "Open Docker!"
 	exit 1

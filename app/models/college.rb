@@ -2,6 +2,7 @@ class College < ApplicationRecord
   has_many :wrestlers, -> { order("weight ASC") }
   has_many :home_matches, class_name: "Match", foreign_key: "home_team_id", dependent: :destroy
   has_many :away_matches, class_name: "Match", foreign_key: "away_team_id", dependent: :destroy
+  validates_uniqueness_of :name
 
   EQUIVALENCIES = [
     # [Canonical, alias_1, alias_2, ...],
@@ -25,7 +26,7 @@ class College < ApplicationRecord
 
   def self.find_or_create_by_corrected_name(name)
     if EQUIVALENCIES.has_key?(name)
-      puts "Correcting: #{name} => #{EQUIVALENCIES[name]}"
+      Rails.logger.info "Correcting: #{name} => #{EQUIVALENCIES[name]}"
       name = EQUIVALENCIES[name]
     end
 
@@ -34,7 +35,7 @@ class College < ApplicationRecord
 
   def self.find_by_corrected_name!(name)
     if EQUIVALENCIES.has_key?(name)
-      puts "Correcting: #{name} => #{EQUIVALENCIES[name]}"
+      Rails.logger.info "Correcting: #{name} => #{EQUIVALENCIES[name]}"
       name = EQUIVALENCIES[name]
     end
 
