@@ -30,6 +30,7 @@ class WrestleBet::WrestlersController < WrestleBet::ApplicationController
         format.html { redirect_to wrestle_bet_wrestler_url(@wrestle_bet_wrestler), notice: "Wrestler was successfully created." }
         format.json { render :show, status: :created, location: @wrestle_bet_wrestler }
       else
+        @colleges = College.pluck(:name, :id)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @wrestle_bet_wrestler.errors, status: :unprocessable_entity }
       end
@@ -43,6 +44,7 @@ class WrestleBet::WrestlersController < WrestleBet::ApplicationController
         format.html { redirect_to wrestle_bet_wrestler_url(@wrestle_bet_wrestler), notice: "Wrestler was successfully updated." }
         format.json { render :show, status: :ok, location: @wrestle_bet_wrestler }
       else
+        @colleges = College.pluck(:name, :id)
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @wrestle_bet_wrestler.errors, status: :unprocessable_entity }
       end

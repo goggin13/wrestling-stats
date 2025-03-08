@@ -13,6 +13,8 @@ bets/index
 bets/administer
 
 X tournament model
+X wrestler model
+don't delete colleges in 
 match model
 bets model
     spread_bet
