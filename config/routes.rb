@@ -25,6 +25,10 @@ Rails.application.routes.draw do
     get "/delete_drink", to: "drinks#destroy"
   end
 
+  namespace :wrestle_bet do
+    get "/tournaments", to: "tournaments#index"
+  end
+
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_scope :user do
