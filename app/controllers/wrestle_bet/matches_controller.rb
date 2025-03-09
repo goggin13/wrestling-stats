@@ -3,7 +3,7 @@ class WrestleBet::MatchesController < WrestleBet::ApplicationController
 
   # GET /wrestle_bet/matches or /wrestle_bet/matches.json
   def index
-    @wrestle_bet_matches = WrestleBet::Match.all
+    @wrestle_bet_matches = WrestleBet::Match.order("weight ASC").all
   end
 
   # GET /wrestle_bet/matches/1 or /wrestle_bet/matches/1.json

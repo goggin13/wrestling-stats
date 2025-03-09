@@ -20,4 +20,12 @@ class WrestleBet::Match < ApplicationRecord
   def open_for_betting?
     !started? && !completed?
   end
+
+  def users_with_home_wagers
+    bets.where(wager: "home").map(&:user)
+  end
+
+  def users_with_away_wagers
+    bets.where(wager: "away").map(&:user)
+  end
 end

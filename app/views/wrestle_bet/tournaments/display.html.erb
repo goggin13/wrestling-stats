@@ -1,0 +1,41 @@
+<div id="wrestle_bet_match_display">
+<table>
+  <tr>
+    <td colspan='2'>
+      <h1><%= @match.weight %> lbs</h1>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <%= @match.home_wrestler.name %>
+    </td>
+    <td>
+      <%= @match.away_wrestler.name %>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <%= @match.home_wrestler.college.name %>
+    </td>
+    <td>
+      <%= @match.away_wrestler.college.name %>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <% @match.users_with_home_wagers.each do |user| %>
+        <%= user.email %><br/>
+      <% end %>
+    </td>
+    <td>
+      <% @match.users_with_away_wagers.each do |user| %>
+        <%= user.email %><br/>
+      <% end %>
+    </td>
+  </tr>
+
+</table>
+</div>

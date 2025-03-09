@@ -9,4 +9,15 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
     @tournament = WrestleBet::Tournament.find(params[:id])
     @matches = @tournament.matches.order("weight ASC")
   end
+
+  def display
+    @tournament = WrestleBet::Tournament.find(params[:id])
+    @match = @tournament.current_match
+
+    if @match.present?
+      render
+    else
+      render "leaderboard"
+    end
+  end
 end

@@ -7,4 +7,8 @@ class User < ApplicationRecord
   def admin?
     email == "goggin13@gmail.com"
   end
+
+  def display_name
+    email.split("@")[0]
+  end
 end
