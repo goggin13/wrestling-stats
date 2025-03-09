@@ -7,6 +7,6 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
 
   def betslip
     @tournament = WrestleBet::Tournament.find(params[:id])
-    @matches = @tournament.matches
+    @matches = @tournament.matches.order("weight ASC")
   end
 end

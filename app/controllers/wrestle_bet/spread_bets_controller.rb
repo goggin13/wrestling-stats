@@ -4,6 +4,8 @@ class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
 
   before_action :set_wrestle_bet_spread_bet, only: %i[ show edit update destroy ]
 
+  before_action :verify_match_has_not_started, only: %i[ create ]
+
   # GET /wrestle_bet/spread_bets or /wrestle_bet/spread_bets.json
   def index
     @wrestle_bet_spread_bets = WrestleBet::SpreadBet.all
@@ -84,5 +86,13 @@ class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
     # Only allow a list of trusted parameters through.
     def wrestle_bet_spread_bet_params
       params.require(:wrestle_bet_spread_bet).permit(:match_id, :wager)
+    end
+
+    def verify_match_has_not_started
+      @match = WrestleBet::Match.find(wrestle_bet_spread_bet_params[:match_id])
+      if @match.started?
+          redirect_to wrestle_bet_betslip_url(id: @match.tournament_id),
+            alert: "Match has already started"
+      end
     end
 end

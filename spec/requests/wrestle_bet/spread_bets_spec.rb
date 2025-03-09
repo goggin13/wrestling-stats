@@ -114,6 +114,14 @@ RSpec.describe "/wrestle_bet/spread_bets", type: :request do
         bet = WrestleBet::SpreadBet.last!
         expect(bet.user_id).to eq(@user.id)
       end
+
+      it "redirects to the betslip without placing a bet if the match has started" do
+        @match.update_attribute(:started, true)
+        expect {
+          post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @valid_attributes }
+        }.to change(WrestleBet::SpreadBet, :count).by(0)
+        expect(response.code).to eq("302")
+      end
     end
 
     context "with invalid parameters" do

@@ -20,6 +20,19 @@ feature "WrestleBet Betslip page" do
     expect(page).to have_content("You need to sign in or sign up before continuing.")
   end
 
+  scenario "redirects with an error message if that match has started" do
+    sign_in(@user)
+    visit @betslip_path
+
+    @match.update_attribute(:started, true)
+
+    expect do
+      click_button "Bet on Gable Steveson"
+    end.to change(WrestleBet::SpreadBet, :count).by (0)
+
+    expect(page).to have_content("Match has already started")
+  end
+
   scenario "it lets you bet on the home wrestler" do
     sign_in(@user)
     visit @betslip_path
