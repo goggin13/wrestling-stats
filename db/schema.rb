@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_08_181542) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_09_032922) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,6 +121,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_08_181542) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "wrestle_bet_matches", force: :cascade do |t|
+    t.integer "weight"
+    t.boolean "started", default: false
+    t.integer "home_wrestler_id"
+    t.integer "away_wrestler_id"
+    t.integer "home_score"
+    t.integer "away_score"
+    t.integer "tournament_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "wrestle_bet_tournaments", force: :cascade do |t|

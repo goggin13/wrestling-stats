@@ -1,0 +1,25 @@
+<div id="<%= dom_id match %>">
+  <p>
+    <%= match.weight %> lbs
+
+    in <%= match.tournament.name %>
+  </p>
+
+  <p>
+    <strong>Started?</strong>
+    <%= match.started %>
+  </p>
+
+  <p>
+    <%= match.home_wrestler.name %>
+    vs.
+    <%= match.away_wrestler.name %>
+  </p>
+
+  <p>
+    <%= match.home_score %>
+    -
+    <%= match.away_score %>
+  </p>
+
+</div>

@@ -45,3 +45,6 @@ psql -Udumbledore -d dumbledore_development
 
 # Run a query from the App container from a file
 psql -Udumbledore -d dumbledore_development -h database -f query.sql
+
+# Run rspec without certain irectories
+rspec --exclude-pattern="spec/models/advocate/*"

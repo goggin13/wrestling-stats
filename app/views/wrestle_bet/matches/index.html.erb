@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Matches</h1>
+
+<div id="wrestle_bet_matches">
+  <% @wrestle_bet_matches.each do |wrestle_bet_match| %>
+    <%= render wrestle_bet_match %>
+    <p>
+      <%= link_to "Show this match", wrestle_bet_match %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New match", new_wrestle_bet_match_path %>

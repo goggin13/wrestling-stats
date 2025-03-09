@@ -1,0 +1,52 @@
+<%= form_with(model: wrestle_bet_match) do |form| %>
+  <% if wrestle_bet_match.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(wrestle_bet_match.errors.count, "error") %> prohibited this wrestle_bet_match from being saved:</h2>
+
+      <ul>
+        <% wrestle_bet_match.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :weight, style: "display: block" %>
+    <%= form.number_field :weight %>
+  </div>
+
+  <div>
+    <%= form.label :started, style: "display: block" %>
+    <%= form.check_box :started %>
+  </div>
+
+  <div>
+    <%= form.label :home_wrestler_id, style: "display: block" %>
+    <%= form.number_field :home_wrestler_id %>
+  </div>
+
+  <div>
+    <%= form.label :away_wrestler_id, style: "display: block" %>
+    <%= form.number_field :away_wrestler_id %>
+  </div>
+
+  <div>
+    <%= form.label :home_score, style: "display: block" %>
+    <%= form.number_field :home_score %>
+  </div>
+
+  <div>
+    <%= form.label :away_score, style: "display: block" %>
+    <%= form.number_field :away_score %>
+  </div>
+
+  <div>
+    <%= form.label :tournament_id, style: "display: block" %>
+    <%= form.number_field :tournament_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
