@@ -1,4 +1,7 @@
 class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
+  skip_before_action :authenticate_admin!, only: [:create]
+  before_action :authenticate_user!, only: [:create]
+
   before_action :set_wrestle_bet_spread_bet, only: %i[ show edit update destroy ]
 
   # GET /wrestle_bet/spread_bets or /wrestle_bet/spread_bets.json
@@ -21,17 +24,30 @@ class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
 
   # POST /wrestle_bet/spread_bets or /wrestle_bet/spread_bets.json
   def create
-    @wrestle_bet_spread_bet = WrestleBet::SpreadBet.new(wrestle_bet_spread_bet_params)
-    @wrestle_bet_spread_bet.user_id = current_user.id
+    @bet = WrestleBet::SpreadBet.new(wrestle_bet_spread_bet_params)
+    @bet.user_id = current_user.id
+    WrestleBet::SpreadBet.where(
+      user_id: current_user.id,
+      match_id: @bet.match_id,
+    ).destroy_all
 
 
     respond_to do |format|
-      if @wrestle_bet_spread_bet.save
-        format.html { redirect_to wrestle_bet_spread_bet_url(@wrestle_bet_spread_bet), notice: "Spread bet was successfully created." }
-        format.json { render :show, status: :created, location: @wrestle_bet_spread_bet }
+      if @bet.save
+        format.html {
+          redirect_to wrestle_bet_betslip_url(id: @bet.match.tournament_id),
+          notice: "#{@bet.label} placed"
+        }
+        format.json { render :show, status: :created, location: @bet }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @wrestle_bet_spread_bet.errors, status: :unprocessable_entity }
+        @bet.errors.each do |field, message|
+          Rails.logger.info("Failed to save bet: #{field}-#{message}")
+        end
+        format.html {
+          redirect_to wrestle_bet_betslip_url(id: @bet.match.tournament_id),
+          alert: "failed to place bet"
+        }
+        format.json { render json: @bet.errors, status: :unprocessable_entity }
       end
     end
   end

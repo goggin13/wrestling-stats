@@ -1,0 +1,48 @@
+<h1>Your Betslip</h1>
+
+<table>
+
+  <% @matches.each do |match| %>
+
+  <tr>
+    <th colspan='2'>
+      <%= match.weight %> lbs <br/>
+      <%= match.home_wrestler.name %> (<%= match.home_wrestler.college.name %>) <br/>
+      vs. <br/>
+      <%= match.away_wrestler.name %> (<%= match.away_wrestler.college.name %>)
+    </th>
+  </tr>
+
+  <tr>
+    <td>
+      <%= match.home_wrestler.name %> <br/>
+      +<%= match.spread %>
+    
+      <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "home")) do |form| %>
+        <%= form.hidden_field :match_id %>
+        <%= form.hidden_field :wager %>
+
+        <div>
+          <%= form.submit "Bet on #{match.home_wrestler.name}" %>
+        </div>
+      <% end %>
+    </td>
+    <td>
+      <%= match.away_wrestler.name %> <br/>
+      -<%= match.spread %>
+
+      <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "away")) do |form| %>
+        <%= form.hidden_field :match_id %>
+        <%= form.hidden_field :wager %>
+
+        <div>
+          <%= form.submit "Bet on #{match.away_wrestler.name}" %>
+        </div>
+      <% end %>
+    </td>
+  </tr>
+
+  <% end %>
+
+
+</table>

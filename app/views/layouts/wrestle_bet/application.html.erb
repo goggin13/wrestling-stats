@@ -15,9 +15,15 @@
   <body>
 
     <% if user_signed_in? && current_user.admin? %>
-      <%= link_to "Matches", wrestle_bet_matches_url %>
-      <%= link_to "Wrestlers", wrestle_bet_wrestlers_url %>
+
+      <%= link_to "Matches", wrestle_bet_matches_path %>
+      <%= link_to "Wrestlers", wrestle_bet_wrestlers_path %>
       <%= link_to "Bets", wrestle_bet_spread_bets_path %>
+      
+      <% if @tournament.present? %>
+        <%= link_to "Betslip", wrestle_bet_betslip_path(id: @tournament.id) %>
+      <% end %>
+
     <% else %>
     <% end %>
 

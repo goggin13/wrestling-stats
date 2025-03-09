@@ -6,6 +6,7 @@ RSpec.describe "/wrestle_bet/spread_bets", type: :request do
     @user = FactoryBot.create(:user, :admin)
     sign_in(@user)
     @match = FactoryBot.create(:wrestle_bet_match)
+    @tournament = @match.tournament
     @valid_attributes = {
       user_id: @user.id,
       match_id: @match.id,
@@ -54,10 +55,58 @@ RSpec.describe "/wrestle_bet/spread_bets", type: :request do
         }.to change(WrestleBet::SpreadBet, :count).by(1)
       end
 
-      it "redirects to the created wrestle_bet_spread_bet" do
+      it "removes prior wrestlebets for that match/user" do
+        expect {
+          post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @valid_attributes }
+        }.to change(WrestleBet::SpreadBet, :count).by(1)
+        first_bet = WrestleBet::SpreadBet.last!
+
+        expect {
+          post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @valid_attributes }
+        }.to change(WrestleBet::SpreadBet, :count).by(0)
+        second_bet = WrestleBet::SpreadBet.last!
+
+        expect(second_bet.id).to_not eq(first_bet.id)
+      end
+
+      it "doesn't remove old bets for other users" do
+        other_user_bet = FactoryBot.create(:wrestle_bet_spread_bet)
+        post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @valid_attributes }
+
+        expect(other_user_bet.reload.id).to_not be_nil
+      end
+
+      it "doesn't remove old bets for other matches" do
+        other_bet = FactoryBot.create(:wrestle_bet_spread_bet, user: @user)
+        post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @valid_attributes }
+
+        expect(other_bet.reload.id).to_not be_nil
+      end
+
+      it "replaces an existing bet on the same match" do
+        other_bet = FactoryBot.create(
+          :wrestle_bet_spread_bet,
+          match: @match,
+          user: @user,
+          wager: "home",
+        )
+
+        post wrestle_bet_spread_bets_url, params: {
+          wrestle_bet_spread_bet: @valid_attributes.merge(wager: "away")
+        }
+
+        new_bet = WrestleBet::SpreadBet.last!
+        old_bet = WrestleBet::SpreadBet.where(id: other_bet.id).first
+
+        expect(old_bet).to be_nil
+        expect(new_bet.wager).to eq("away")
+      end
+
+      it "redirects to the betslip" do
         post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @valid_attributes }
         bet = WrestleBet::SpreadBet.last!
-        expect(response).to redirect_to(wrestle_bet_spread_bet_url(bet))
+        betslip_url = wrestle_bet_betslip_url(id: @tournament.id)
+        expect(response).to redirect_to(betslip_url)
       end
 
       it "creates assigned to the authenticated user" do
@@ -74,9 +123,9 @@ RSpec.describe "/wrestle_bet/spread_bets", type: :request do
         }.to change(WrestleBet::SpreadBet, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it "redirects to the betslip" do
         post wrestle_bet_spread_bets_url, params: { wrestle_bet_spread_bet: @invalid_attributes }
-        expect(response.code).to eq("422")
+        expect(response.code).to eq("302")
       end
     end
   end

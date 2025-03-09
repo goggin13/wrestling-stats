@@ -18,15 +18,13 @@ X don't delete colleges in
 X match model [started home_score away_score weight]
 X add spread to match table
 X script to create matches
-
-spread_bet model
-    match
-    user_id
-    wager: home/away
-
-user login set up
+X spread_bet model
 
 page for users to view/edit/place bets
+- lock matches from betting
+- display current bets
+
+user login set up
 
 current match view
 leaderboard view

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :matches
     resources :wrestlers
     get "/tournaments", to: "tournaments#index"
+    get "/tournaments/:id/betslip", to: "tournaments#betslip", as: :betslip
   end
 
   devise_for :users
