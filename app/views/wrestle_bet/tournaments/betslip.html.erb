@@ -1,8 +1,12 @@
+<div id="wrestle_bet_betslip">
+
 <h1>Your Betslip</h1>
 
 <table>
 
   <% @matches.each do |match| %>
+
+  <% current_bet = match.current_bet_for_user(current_user) %>
 
   <tr>
     <th colspan='2'>
@@ -14,30 +18,50 @@
   </tr>
 
   <tr>
+    <td colspan='2'>
+      <% if match.completed? %>
+        match concluded
+      <% elsif match.started? %>
+        betting closed, match is in progress
+      <% else %>
+        betting open
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
     <td>
       <%= match.home_wrestler.name %> <br/>
-      +<%= match.spread %>
+      +<%= match.spread %> <br/>
     
-      <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "home")) do |form| %>
-        <%= form.hidden_field :match_id %>
-        <%= form.hidden_field :wager %>
+      <% if current_bet.present? && current_bet.wager == "home" %>
+        You bet on <%= match.home_wrestler.name %>
+      <% elsif match.open_for_betting? %>
+        <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "home")) do |form| %>
+          <%= form.hidden_field :match_id %>
+          <%= form.hidden_field :wager %>
 
-        <div>
-          <%= form.submit "Bet on #{match.home_wrestler.name}" %>
-        </div>
+          <div>
+            <%= form.submit "Bet on #{match.home_wrestler.name}" %>
+          </div>
+        <% end %>
       <% end %>
     </td>
     <td>
       <%= match.away_wrestler.name %> <br/>
-      -<%= match.spread %>
+      -<%= match.spread %><br/>
 
-      <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "away")) do |form| %>
-        <%= form.hidden_field :match_id %>
-        <%= form.hidden_field :wager %>
+      <% if current_bet.present? && current_bet.wager == "away" %>
+        You bet on <%= match.away_wrestler.name %>
+      <% elsif match.open_for_betting? %>
+        <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "away")) do |form| %>
+          <%= form.hidden_field :match_id %>
+          <%= form.hidden_field :wager %>
 
-        <div>
-          <%= form.submit "Bet on #{match.away_wrestler.name}" %>
-        </div>
+          <div>
+            <%= form.submit "Bet on #{match.away_wrestler.name}" %>
+          </div>
+        <% end %>
       <% end %>
     </td>
   </tr>
@@ -46,3 +70,4 @@
 
 
 </table>
+</div>

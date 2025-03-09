@@ -4,6 +4,7 @@
 
 <div>
   <%= link_to "Back to matches", wrestle_bet_matches_path %>
+  <%= link_to "Edit", edit_wrestle_bet_match_path(@wrestle_bet_match) %>
 
   <%= button_to "Destroy this match", @wrestle_bet_match, method: :delete %>
 </div>

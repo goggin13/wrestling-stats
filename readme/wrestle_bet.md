@@ -21,12 +21,13 @@ X script to create matches
 X spread_bet model
 
 page for users to view/edit/place bets
-- lock matches from betting
-- display current bets
+X lock matches from betting
+X display current bets
+
+current match view
 
 user login set up
 
-current match view
 leaderboard view
     
 prop_bet
