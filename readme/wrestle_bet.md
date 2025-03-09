@@ -15,14 +15,17 @@ bets/administer
 X tournament model
 X wrestler model
 X don't delete colleges in 
-match model
-    started
-    home_score
-    away_score
-    weight
-bets model
-    spread_bet
-    prop_bet
+X match model [started home_score away_score weight]
+add spread to match table
+spread_bet model
+    match
+    user_id
+    wager: home/away
+    
+prop_bet
+    user_id,
+    tournament_id,
+    wager
 
 script to create matches
 

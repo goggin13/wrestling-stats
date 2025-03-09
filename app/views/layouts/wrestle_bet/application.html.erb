@@ -15,7 +15,8 @@
   <body>
 
     <% if user_signed_in? && current_user.admin? %>
-      
+      <%= link_to "Matches", wrestle_bet_matches_url %>
+      <%= link_to "Wrestlers", wrestle_bet_wrestlers_url %>
     <% else %>
     <% end %>
 

@@ -1,18 +1,18 @@
- require 'rails_helper'
+require 'rails_helper'
 
 RSpec.describe "/wrestle_bet/matches", type: :request do
   
   before do
     sign_in FactoryBot.create(:user, :admin)
-    tournament = FactoryBot.create(:wrestle_bet_tournament)
-    home_wrestler = FactoryBot.create(:wrestle_bet_wrestler)
-    away_wrestler = FactoryBot.create(:wrestle_bet_wrestler)
+    @tournament = FactoryBot.create(:wrestle_bet_tournament)
+    @home_wrestler = FactoryBot.create(:wrestle_bet_wrestler)
+    @away_wrestler = FactoryBot.create(:wrestle_bet_wrestler)
     @valid_attributes = {
-      home_wrestler_id: home_wrestler.id,
-      away_wrestler_id: away_wrestler.id,
-      tournament_id: tournament.id,
+      home_wrestler_id: @home_wrestler.id,
+      away_wrestler_id: @away_wrestler.id,
+      tournament_id: @tournament.id,
       weight: 149,
-
+      spread: 1.5,
     }
 
     @invalid_attributes = @valid_attributes.merge(weight: nil)
@@ -61,6 +61,17 @@ RSpec.describe "/wrestle_bet/matches", type: :request do
         post wrestle_bet_matches_url, params: { wrestle_bet_match: @valid_attributes }
         match = WrestleBet::Match.last!
         expect(response).to redirect_to(wrestle_bet_match_url(match))
+      end
+
+      it "writes the expected parameters" do
+        post wrestle_bet_matches_url, params: { wrestle_bet_match: @valid_attributes }
+        match = WrestleBet::Match.last!
+
+        expect(match.weight).to eq(149)
+        expect(match.tournament_id).to eq(@tournament.id)
+        expect(match.home_wrestler_id).to eq(@home_wrestler.id)
+        expect(match.away_wrestler_id).to eq(@away_wrestler.id)
+        expect(match.spread).to eq(1.5)
       end
     end
 

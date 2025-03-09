@@ -1,4 +1,4 @@
-class WrestleBet::MatchesController < ApplicationController
+class WrestleBet::MatchesController < WrestleBet::ApplicationController
   before_action :set_wrestle_bet_match, only: %i[ show edit update destroy ]
 
   # GET /wrestle_bet/matches or /wrestle_bet/matches.json
@@ -65,6 +65,6 @@ class WrestleBet::MatchesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def wrestle_bet_match_params
-      params.require(:wrestle_bet_match).permit(:weight, :started, :home_wrestler_id, :away_wrestler_id, :home_score, :away_score, :tournament_id)
+      params.require(:wrestle_bet_match).permit(:weight, :started, :home_wrestler_id, :away_wrestler_id, :home_score, :away_score, :tournament_id, :spread)
     end
 end

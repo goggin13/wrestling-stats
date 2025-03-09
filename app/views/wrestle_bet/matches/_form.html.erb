@@ -42,6 +42,11 @@
   </div>
 
   <div>
+    <%= form.label :spread, style: "display: block" %>
+    <%= form.number_field :spread, step: :any %>
+  </div>
+
+  <div>
     <%= form.label :tournament_id, style: "display: block" %>
     <%= form.number_field :tournament_id %>
   </div>
