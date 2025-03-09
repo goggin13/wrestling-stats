@@ -14,8 +14,12 @@ bets/administer
 
 X tournament model
 X wrestler model
-don't delete colleges in 
+X don't delete colleges in 
 match model
+    started
+    home_score
+    away_score
+    weight
 bets model
     spread_bet
     prop_bet
