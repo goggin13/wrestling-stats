@@ -16,26 +16,25 @@ X tournament model
 X wrestler model
 X don't delete colleges in 
 X match model [started home_score away_score weight]
-add spread to match table
+X add spread to match table
+X script to create matches
+
 spread_bet model
     match
     user_id
     wager: home/away
+
+user login set up
+
+page for users to view/edit/place bets
+
+current match view
+leaderboard view
     
 prop_bet
     user_id,
     tournament_id,
     wager
 
-script to create matches
-
-page for users to view/edit/place bets
-admin page to lock bets, mark bet as won/lost
-    display current match
-
-auto login links for users
-
-current match view
-leaderboard view
 
 UI stylings and async work
