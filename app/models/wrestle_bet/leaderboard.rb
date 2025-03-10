@@ -1,4 +1,10 @@
 class WrestleBet::Leaderboard
+  def self.score_for_user(user)
+    leaderboard = WrestleBet::Leaderboard.new(WrestleBet::Tournament.first!)
+
+    leaderboard.score_for_user(user)
+  end
+
   def initialize(tournament)
     @tournament = tournament
     _init_scores
@@ -10,11 +16,22 @@ class WrestleBet::Leaderboard
     @tournament.matches.each do |match|
       match.bets.each do |bet|
         @scores[bet.user] ||= 0
-        if bet.won?
-          @scores[bet.user] += 1
-        end
+        @scores[bet.user] += 1 if bet.won?
       end
     end
+
+    return unless @tournament.completed?
+
+    @tournament.prop_bets.each do |bet|
+      @scores[bet.user] ||= 0
+      @scores[bet.user] += 1 if bet.won_jesus?
+      @scores[bet.user] += 1 if bet.won_challenges?
+      @scores[bet.user] += 1 if bet.won_exposure?
+    end
+  end
+
+  def score_for_user(user)
+    @scores[user]
   end
 
   def rankings

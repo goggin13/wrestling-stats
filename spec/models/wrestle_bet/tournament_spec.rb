@@ -87,4 +87,24 @@ RSpec.describe WrestleBet::Tournament, type: :model do
       expect(@tournament.started?).to eq(false)
     end
   end
+
+  describe "completed?" do
+    it "is false if there is a match that hasn't been scored" do
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        home_score: 1, away_score: 2)
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        home_score: nil, away_score: nil)
+
+      expect(@tournament.completed?).to eq(false)
+    end
+
+    it "is true if all the matches have been scored" do
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        home_score: 1, away_score: 2)
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        home_score: 1, away_score: 2)
+
+      expect(@tournament.completed?).to eq(true)
+    end
+  end
 end

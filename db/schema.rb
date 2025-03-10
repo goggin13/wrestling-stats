@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_10_022711) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_10_155322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -161,6 +161,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_10_022711) do
     t.integer "current_match_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "jesus", default: 0
+    t.integer "exposure", default: 0
+    t.integer "challenges", default: 0
   end
 
   create_table "wrestle_bet_wrestlers", force: :cascade do |t|

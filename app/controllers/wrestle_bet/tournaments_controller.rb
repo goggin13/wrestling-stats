@@ -9,6 +9,8 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
   def betslip
     @tournament = WrestleBet::Tournament.find(params[:id])
     @matches = @tournament.matches.order("weight ASC")
+      .all
+      .sort_by { |m| m.completed? ? 1 : 0 }
 
     @prop_bet = WrestleBet::PropBet.where(
       user_id: current_user.id,
@@ -35,6 +37,16 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
       @rankings = @leaderboard.rankings
       render "leaderboard"
     end
+  end
+
+  def update
+    @tournament = WrestleBet::Tournament.find(params[:id])
+    @tournament.jesus = params[:wrestle_bet_tournament][:jesus]
+    @tournament.exposure = params[:wrestle_bet_tournament][:exposure]
+    @tournament.challenges = params[:wrestle_bet_tournament][:challenges]
+    @tournament.save!
+
+    redirect_to wrestle_bet_matches_url, notice: "Updated"
   end
 
   def _authenticate_user_from_link

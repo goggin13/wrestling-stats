@@ -24,7 +24,7 @@ X current match view
 X leaderboard view
 X user login set up
 X create prop_bets
-score prop bets
+X score prop bets
 
 https://www.youtube.com/watch?v=OoPmNm2Z8sg
 user avatars

@@ -3,7 +3,11 @@ class WrestleBet::MatchesController < WrestleBet::ApplicationController
 
   # GET /wrestle_bet/matches or /wrestle_bet/matches.json
   def index
-    @wrestle_bet_matches = WrestleBet::Match.order("weight ASC").all
+    @wrestle_bet_matches = WrestleBet::Match.order("weight ASC")
+      .all
+      .sort_by { |m| m.completed? ? 1 : 0 }
+
+    @tournament = WrestleBet::Tournament.first!
   end
 
   # GET /wrestle_bet/matches/1 or /wrestle_bet/matches/1.json

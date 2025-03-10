@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :spread_bets
     resources :matches
     resources :wrestlers
+    resources :tournaments, only: [:update]
     get "/tournaments", to: "tournaments#index"
     get "/tournaments/:id/betslip", to: "tournaments#betslip", as: :betslip
     get "/tournaments/:id/display", to: "tournaments#display", as: :display

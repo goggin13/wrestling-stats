@@ -33,19 +33,19 @@ namespace :wrestle_bet do
     users << User.where(email: "goggin13@gmail.com").first!
 
     [
-      [285, [
+      [285, 5, [
         ["Gable Steveson", "Minnesota"],
         ["Greg Kerkfleit", "Penn State"],
       ]],
-      [184, [
+      [184, 6, [
         ["Carter Starocci", "Penn State"],
         ["Parker Keckeison", "UNI"],
       ]],
-      [165, [
+      [165, 7, [
         ["Mitchell Mesenbring", "Penn State"],
         ["Michael Caliendo", "Iowa"],
       ]]
-    ].each do |weight, wrestler_data|
+    ].each do |weight, spread, wrestler_data|
       wrestlers = wrestler_data.map do |name, college_name|
         college = College.where(name: college_name).first!
         WrestleBet::Wrestler.create!(
@@ -56,6 +56,7 @@ namespace :wrestle_bet do
 
       match = WrestleBet::Match.create!(
         weight: weight,
+        spread: spread,
         home_wrestler: wrestlers[0],
         away_wrestler: wrestlers[1],
         tournament: tournament,

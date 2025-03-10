@@ -4,9 +4,14 @@ class WrestleBet::Match < ApplicationRecord
   belongs_to :tournament
   has_many :bets, class_name: "WrestleBet::SpreadBet"
   validates_presence_of :weight
+  validates_presence_of :spread
 
   def title
     "#{weight} lbs: #{home_wrestler.name} (#{home_wrestler.college.name}) vs. #{away_wrestler.name} (#{away_wrestler.college.name})"
+  end
+
+  def short_title
+    "#{weight} lbs: #{home_wrestler.name.split(" ")[0]} vs. #{away_wrestler.name.split(" ")[0]}"
   end
 
   def current_bet_for_user(user)

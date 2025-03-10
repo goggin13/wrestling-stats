@@ -9,6 +9,7 @@ RSpec.describe "wrestle_bet/matches/show", type: :view do
       away_wrestler_id: FactoryBot.create(:wrestle_bet_wrestler).id,
       home_score: 17,
       away_score: 18,
+      spread: 4,
       tournament_id: FactoryBot.create(:wrestle_bet_tournament).id
     ))
   end

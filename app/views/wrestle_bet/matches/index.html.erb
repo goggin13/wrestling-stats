@@ -6,9 +6,57 @@
 <%= link_to "New match", new_wrestle_bet_match_path %>
 </p>
 
+<p>
+  Prop Bets<br/>
+  <%= form_with(model: @tournament) do |form| %>
+    <div>
+      <%= form.hidden_field :tournament_id %>
+    </div>
+
+    <div>
+      <%= form.label :jesus, style: "display: block" %>
+      <%= form.number_field :jesus %>
+    </div>
+
+    <div>
+      <%= form.label :exposure, style: "display: block" %>
+      <%= form.number_field :exposure %>
+    </div>
+
+    <div>
+      <%= form.label :challenges, style: "display: block" %>
+      <%= form.number_field :challenges %>
+    </div>
+
+    <div>
+      <%= form.submit "Save Prop Bet Tallies" %>
+    </div>
+  <% end %>
+</p>
+
 <div id="wrestle_bet_matches">
   <% @wrestle_bet_matches.each do |wrestle_bet_match| %>
-    <%= render wrestle_bet_match %>
+    <h3><%= wrestle_bet_match.title %> (<%= wrestle_bet_match.spread %>)</h3>
+    <%= form_with(model: wrestle_bet_match) do |form| %>
+      <div>
+        <%= form.label :started, style: "display: block" %>
+        <%= form.check_box :started %>
+      </div>
+
+      <div>
+        <%= form.label :home_score, style: "display: block" %>
+        <%= form.number_field :home_score %>
+      </div>
+
+      <div>
+        <%= form.label :away_score, style: "display: block" %>
+        <%= form.number_field :away_score %>
+      </div>
+
+      <div>
+        <%= form.submit "Update #{wrestle_bet_match.short_title}" %>
+      </div>
+    <% end %>
     <%= link_to "Edit", edit_wrestle_bet_match_path(wrestle_bet_match) %>
   <% end %>
 </div>

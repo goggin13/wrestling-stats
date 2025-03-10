@@ -17,10 +17,4 @@ class User < ApplicationRecord
   def encoded_email
     Base64.encode64(email).chomp
   end
-
-  def wrestle_bet_score
-    wrestle_bet_bets.all.count do |bet|
-      bet.won?
-    end
-  end
 end

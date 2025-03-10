@@ -5,6 +5,7 @@ RSpec.describe "wrestle_bet/matches/edit", type: :view do
     @wrestle_bet_match = assign(:wrestle_bet_match, WrestleBet::Match.create!(
       weight: 1,
       started: false,
+      spread: 1,
       home_wrestler_id: FactoryBot.create(:wrestle_bet_wrestler).id,
       away_wrestler_id: FactoryBot.create(:wrestle_bet_wrestler).id,
       home_score: 1,
