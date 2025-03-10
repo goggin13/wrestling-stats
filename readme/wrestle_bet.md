@@ -19,16 +19,11 @@ X match model [started home_score away_score weight]
 X add spread to match table
 X script to create matches
 X spread_bet model
-
-page for users to view/edit/place bets
-X lock matches from betting
-X display current bets
-
-current match view
+X page for users to view/edit/place bets
+X current match view
+X leaderboard view
 
 user login set up
-
-leaderboard view
     
 prop_bet
     user_id,

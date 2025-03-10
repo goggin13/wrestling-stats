@@ -14,4 +14,20 @@ class WrestleBet::SpreadBet < ApplicationRecord
 
     "Bet on #{name}"
   end
+
+  def won?
+    return false unless match.completed?
+
+    if wager == "home" && match.spread < 0 # favored
+      (match.home_score - match.away_score) > match.spread.abs
+    elsif wager == "away" && match.spread < 0 # underdog
+      (match.home_score - match.away_score) < match.spread.abs
+    elsif wager == "home" && match.spread > 0 # underdog
+      (match.away_score - match.home_score) < match.spread.abs
+    elsif wager == "away" && match.spread > 0 # favorite
+      (match.away_score - match.home_score) > match.spread.abs
+    else
+      raise "won? fall through"
+    end
+  end
 end

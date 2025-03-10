@@ -17,6 +17,8 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
     if @match.present?
       render
     else
+      @leaderboard = WrestleBet::Leaderboard.new(@tournament)
+      @rankings = @leaderboard.rankings
       render "leaderboard"
     end
   end

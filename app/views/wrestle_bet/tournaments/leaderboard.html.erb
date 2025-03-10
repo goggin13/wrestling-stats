@@ -1,1 +1,13 @@
 <h1>The Leaderboard</h1>
+
+<ul>
+  <% @rankings.each do |position, data| %>
+    <li>
+      <%= position.ordinalize %><br/>
+      <%= data[:points] %> points<br/>
+      <% data[:users].each do |user| %>
+        <%= user.email %><br/>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

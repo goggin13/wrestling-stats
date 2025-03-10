@@ -16,7 +16,8 @@ RSpec.describe WrestleBet::Tournament, type: :model do
         tournament: @tournament,
         started: true,
         home_score: nil,
-        away_score: nil
+        away_score: nil,
+        spread: 4
      )
 
       expect(@tournament.current_match.id).to eq(match.id)
