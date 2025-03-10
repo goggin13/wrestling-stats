@@ -22,13 +22,11 @@ X spread_bet model
 X page for users to view/edit/place bets
 X current match view
 X leaderboard view
-
-user login set up
+X user login set up
     
 prop_bet
     user_id,
     tournament_id,
     wager
-
 
 UI stylings and async work

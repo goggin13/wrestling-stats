@@ -1,0 +1,7 @@
+<h1>Users</h1>
+
+<ul>
+  <% User.all.each do |user| %>
+    <li><%= user_betslip_link(user, @tournament) %></li>
+  <% end %>
+</ul>
