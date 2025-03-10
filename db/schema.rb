@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_09_182243) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_10_022711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -136,6 +136,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_09_182243) do
     t.float "spread"
   end
 
+  create_table "wrestle_bet_prop_bets", force: :cascade do |t|
+    t.integer "tournament_id"
+    t.bigint "user_id", null: false
+    t.integer "jesus"
+    t.integer "exposure"
+    t.integer "challenges"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wrestle_bet_prop_bets_on_user_id"
+  end
+
   create_table "wrestle_bet_spread_bets", force: :cascade do |t|
     t.integer "match_id"
     t.bigint "user_id", null: false
@@ -174,6 +185,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_09_182243) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "wrestle_bet_prop_bets", "users"
   add_foreign_key "wrestle_bet_spread_bets", "users"
   add_foreign_key "wrestle_bet_wrestlers", "colleges"
   add_foreign_key "wrestlers", "colleges"

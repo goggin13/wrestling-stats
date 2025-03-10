@@ -56,6 +56,35 @@ RSpec.describe WrestleBet::Tournament, type: :model do
 
       expect(@tournament.current_match).to be_nil
     end
+  end
 
+  describe "started?" do
+    it "is true if any match has started: true" do
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        started: true, home_score: nil, away_score: nil)
+
+      expect(@tournament.started?).to eq(true)
+    end
+
+    it "is true if any match has a non null home score" do
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        started: false, home_score: 1, away_score: nil)
+
+      expect(@tournament.started?).to eq(true)
+    end
+
+    it "is true if any match has a non null away score" do
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        started: false, home_score: nil, away_score: 1)
+
+      expect(@tournament.started?).to eq(true)
+    end
+
+    it "is false if no match has started and none has any score" do
+      FactoryBot.create(:wrestle_bet_match, tournament: @tournament,
+        started: false, home_score: nil, away_score: nil)
+
+      expect(@tournament.started?).to eq(false)
+    end
   end
 end

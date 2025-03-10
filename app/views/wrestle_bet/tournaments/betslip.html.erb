@@ -4,6 +4,10 @@
 
 You currently have <%= current_user.wrestle_bet_score %> points
 
+<div id="wrestle_bet_prop_bets">
+  <%= render partial: "wrestle_bet/prop_bets/form", locals: {prop_bet: @prop_bet} %>
+</div>
+
 <table>
 
   <% @matches.each do |match| %>

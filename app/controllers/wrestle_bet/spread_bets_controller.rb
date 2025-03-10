@@ -33,7 +33,6 @@ class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
       match_id: @bet.match_id,
     ).destroy_all
 
-
     respond_to do |format|
       if @bet.save
         format.html {

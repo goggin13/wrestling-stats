@@ -9,6 +9,15 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
   def betslip
     @tournament = WrestleBet::Tournament.find(params[:id])
     @matches = @tournament.matches.order("weight ASC")
+
+    @prop_bet = WrestleBet::PropBet.where(
+      user_id: current_user.id,
+      tournament_id: @tournament.id
+    ).first
+
+    unless @prop_bet.present?
+      @prop_bet = WrestleBet::PropBet.new(tournament_id: @tournament.id)
+    end
   end
 
   def user_links

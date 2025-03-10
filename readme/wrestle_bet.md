@@ -23,10 +23,15 @@ X page for users to view/edit/place bets
 X current match view
 X leaderboard view
 X user login set up
-    
-prop_bet
-    user_id,
-    tournament_id,
-    wager
+X create prop_bets
+score prop bets
 
+https://www.youtube.com/watch?v=OoPmNm2Z8sg
+user avatars
+wrestler avatars
+college logos
+
+auto-reload display
 UI stylings and async work
+
+testing party - at least 1hr of good brain space only on feature/request specs

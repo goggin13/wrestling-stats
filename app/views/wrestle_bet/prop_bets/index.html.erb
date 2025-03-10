@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Prop bets</h1>
+
+<div id="wrestle_bet_prop_bets">
+  <% @wrestle_bet_prop_bets.each do |wrestle_bet_prop_bet| %>
+    <%= render wrestle_bet_prop_bet %>
+    <p>
+      <%= link_to "Show this prop bet", wrestle_bet_prop_bet %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New prop bet", new_wrestle_bet_prop_bet_path %>

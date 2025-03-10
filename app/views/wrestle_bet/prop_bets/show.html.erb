@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @wrestle_bet_prop_bet %>
+
+<div>
+  <%= link_to "Edit this prop bet", edit_wrestle_bet_prop_bet_path(@wrestle_bet_prop_bet) %> |
+  <%= link_to "Back to prop bets", wrestle_bet_prop_bets_path %>
+
+  <%= button_to "Destroy this prop bet", @wrestle_bet_prop_bet, method: :delete %>
+</div>

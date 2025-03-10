@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   end
 
   namespace :wrestle_bet do
+    resources :prop_bets
     resources :spread_bets
     resources :matches
     resources :wrestlers

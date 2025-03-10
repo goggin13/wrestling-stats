@@ -42,7 +42,6 @@ psql -Udumbledore -d dumbledore_development
 - add a new view in /views/new_application/controller/index.html.erb
 - Can now visit in browser
 
-
 # Run a query from the App container from a file
 psql -Udumbledore -d dumbledore_development -h database -f query.sql
 

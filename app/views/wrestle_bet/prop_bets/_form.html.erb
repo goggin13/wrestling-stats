@@ -1,0 +1,24 @@
+<%= form_with(model: prop_bet) do |form| %>
+  <div>
+    <%= form.hidden_field :tournament_id %>
+  </div>
+
+  <div>
+    <%= form.label :jesus, style: "display: block" %>
+    <%= form.number_field :jesus %>
+  </div>
+
+  <div>
+    <%= form.label :exposure, style: "display: block" %>
+    <%= form.number_field :exposure %>
+  </div>
+
+  <div>
+    <%= form.label :challenges, style: "display: block" %>
+    <%= form.number_field :challenges %>
+  </div>
+
+  <div>
+    <%= form.submit "Save Prop Bets" %>
+  </div>
+<% end %>
