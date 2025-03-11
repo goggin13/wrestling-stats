@@ -33,18 +33,46 @@ namespace :wrestle_bet do
     users << User.where(email: "goggin13@gmail.com").first!
 
     [
-      [285, 5, [
-        ["Gable Steveson", "Minnesota"],
-        ["Greg Kerkfleit", "Penn State"],
+      [125, 1, [
+        ["Matt Ramos", "Purdue"],
+        ["Luke Lilledahl", "Penn State"],
+      ]],
+      [133, 5, [
+        ["Drake Ayala", "Iowa"],
+        ["Lucas Byrd", "Illinois"],
+      ]],
+      [141, 7, [
+        ["Brock Hardy", "Nebraska"],
+        ["Andrew Alirez", "Northern Colorado"],
+      ]],
+      [149, 7, [
+        ["Caleb Henson", "Virginia Tech"],
+        ["Ridge Lovett", "Nebraska"],
+      ]],
+      [157, 7, [
+        ["Tyler Kasak", "Penn State"],
+        ["Meyer Shapiro", "Cornell"],
+      ]],
+      [165, 7, [
+        ["Mitchell Mesenbrink", "Penn State"],
+        ["Michael Caliendo", "Iowa"],
+      ]],
+      [174, 7, [
+        ["Keegan O'Toole", "Missouri"],
+        ["Levi Haines", "Penn State"],
       ]],
       [184, 6, [
         ["Carter Starocci", "Penn State"],
         ["Parker Keckeison", "UNI"],
       ]],
-      [165, 7, [
-        ["Mitchell Mesenbring", "Penn State"],
-        ["Michael Caliendo", "Iowa"],
-      ]]
+      [197, 6, [
+        ["Jacob Cardenas", "Michigan"],
+        ["Stephen Buchanan", "Iowa"],
+      ]],
+      [285, 5, [
+        ["Gable Steveson", "Minnesota"],
+        ["Greg Kerkfleit", "Penn State"],
+      ]],
     ].each do |weight, spread, wrestler_data|
       wrestlers = wrestler_data.map do |name, college_name|
         college = College.where(name: college_name).first!
@@ -70,6 +98,17 @@ namespace :wrestle_bet do
           wager: wager
         )
       end
+    end
+
+    users.each do |user|
+      wager = ["home", "away"].shuffle.first
+      WrestleBet::PropBet.create!(
+        user: user,
+        tournament: tournament,
+        jesus: (1..5).to_a.shuffle.first,
+        exposure: (1..5).to_a.shuffle.first,
+        challenges: (1..5).to_a.shuffle.first,
+      )
     end
   end
 end

@@ -25,7 +25,13 @@ You currently have <%= WrestleBet::Leaderboard.score_for_user(current_user) %> p
 
   <tr>
     <td colspan='2'>
-      <% if match.completed? %>
+      <% if match.completed? && current_bet.present? %>
+        <% if current_bet.won? %>
+          Bet Won
+        <% else %>
+          Bet Lost
+        <% end %>
+      <% elsif match.completed? %>
         match concluded
       <% elsif match.started? %>
         betting closed, match is in progress

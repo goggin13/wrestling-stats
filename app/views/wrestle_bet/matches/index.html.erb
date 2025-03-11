@@ -44,12 +44,12 @@
       </div>
 
       <div>
-        <%= form.label :home_score, style: "display: block" %>
+        <%= form.label :home_score, wrestle_bet_match.home_wrestler.name + " (home)", style: "display: block" %>
         <%= form.number_field :home_score %>
       </div>
 
       <div>
-        <%= form.label :away_score, style: "display: block" %>
+        <%= form.label :away_score, wrestle_bet_match.away_wrestler.name + " (away)", style: "display: block" %>
         <%= form.number_field :away_score %>
       </div>
 

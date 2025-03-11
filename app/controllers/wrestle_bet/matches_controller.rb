@@ -51,7 +51,7 @@ class WrestleBet::MatchesController < WrestleBet::ApplicationController
   def update
     respond_to do |format|
       if @wrestle_bet_match.update(wrestle_bet_match_params)
-        format.html { redirect_to wrestle_bet_match_url(@wrestle_bet_match), notice: "Match was successfully updated." }
+        format.html { redirect_to wrestle_bet_matches_url, notice: "Match was successfully updated." }
         format.json { render :show, status: :ok, location: @wrestle_bet_match }
       else
         format.html { render :edit, status: :unprocessable_entity }

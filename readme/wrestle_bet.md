@@ -25,6 +25,7 @@ X leaderboard view
 X user login set up
 X create prop_bets
 X score prop bets
+X auto-reload display
 
 https://www.youtube.com/watch?v=OoPmNm2Z8sg
 user avatars
@@ -33,7 +34,23 @@ college logos
 
 deploy and test, get images to prod
 
-auto-reload display
-UI stylings and async work
+scorecard when tournament is completed
+          total | 125 | 133 | 141 | 149 | 157 ... | jesus () | exposures () | challenges ()
+  winner    9      x     x     0     x     x          0            x              x
+  second
+  ...
+ 
+UI makeover party
 
-testing party - at least 1hr of good brain space only on feature/request specs
+testing party - at least 2hr of good brain space only on feature/request specs
+  - feature spec for a regular user walk through
+  - feature spec for a admin walk through
+  - request specs
+    - admin
+      - updating a match
+      - updating a prop bet
+      - routes used from JS land
+    - users
+      - logging in from link
+      - placing a bet
+      - placing a prop bet
