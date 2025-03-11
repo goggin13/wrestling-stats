@@ -1,8 +1,8 @@
 <div 
   id="wrestle_bet_match_display"
   tournament-path="<%= wrestle_bet_tournament_path(@match.tournament) %>"
-  match-path="<%= wrestle_bet_match_path(@match) %>"
->
+  match-path="<%= wrestle_bet_match_path(@match) %>" >
+
 <table>
   <tr>
     <td colspan='2'>
@@ -12,34 +12,60 @@
 
   <tr>
     <td>
+      <%= image_tag @match.home_wrestler.avatar.variant(:large) %><br/>
+      <%= image_tag @match.home_wrestler.college.logo.variant(:thumb), class: "wrestle_bet_college" %><br/>
       <%= @match.home_wrestler.name %>
+      ( <%= @match.home_wrestler.college.name %> )
     </td>
     <td>
+      <%= image_tag @match.away_wrestler.avatar.variant(:large) %><br/>
+      <%= image_tag @match.away_wrestler.college.logo.variant(:thumb), class: "wrestle_bet_college" %><br/>
       <%= @match.away_wrestler.name %>
-    </td>
-  </tr>
-
-  <tr>
-    <td>
-      <%= @match.home_wrestler.college.name %>
-    </td>
-    <td>
-      <%= @match.away_wrestler.college.name %>
+      ( <%= @match.away_wrestler.college.name %> )
     </td>
   </tr>
 
   <tr>
     <td>
       <% @match.users_with_home_wagers.each do |user| %>
-        <%= user.email %><br/>
+        <%= image_tag user.avatar.variant(:thumb) %>
       <% end %>
     </td>
     <td>
       <% @match.users_with_away_wagers.each do |user| %>
-        <%= user.email %><br/>
+        <%= image_tag user.avatar.variant(:thumb) %>
       <% end %>
     </td>
   </tr>
 
+  <tr>
+    <td colspan='2'>
+      <hr/>
+      <div class="prop_bet_score">
+        Jesus: <br/>
+        <% @tournament.jesus.times do %>
+          <%= image_tag "wrestle_bet/jesus.png", :size => '100x100'%> 
+        <% end %>
+      </div>
+
+      <div class="prop_bet_score">
+        Challenges: <br/>
+        <% @tournament.challenges.times do %>
+          <%= image_tag "wrestle_bet/challenge.png" , :size => '100x100'%>       
+        <% end %>
+      </div>
+
+      <div class="prop_bet_score">
+        Turns: <br/>
+        <% @tournament.exposure.times do %>
+          <%= image_tag "wrestle_bet/exposure.png", :size => "100x100" %> 
+        <% end %>
+      </div>
+    </td>
+  </tr>
+
 </table>
+
+<%= render partial: "prop_bet_animations" %>
+
 </div>

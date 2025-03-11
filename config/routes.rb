@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     get "/tournaments/:id/betslip", to: "tournaments#betslip", as: :betslip
     get "/tournaments/:id/display", to: "tournaments#display", as: :display
     get "/tournaments/:id/user_links", to: "tournaments#user_links", as: :user_links
+    get "/tournaments/:id/scorecard", to: "tournaments#scorecard", as: :scorecard
   end
 
   devise_for :users

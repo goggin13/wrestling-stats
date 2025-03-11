@@ -22,6 +22,7 @@
       
       <% if @tournament.present? %>
         <%= link_to "Betslip", wrestle_bet_betslip_path(id: @tournament.id) %>
+        <%= link_to "Scorecard", wrestle_bet_scorecard_path(id: @tournament.id) %>
         <%= link_to "Display", wrestle_bet_display_path(id: @tournament.id) %>
         <%= link_to "Users", wrestle_bet_user_links_path(id: @tournament.id) %>
       <% end %>

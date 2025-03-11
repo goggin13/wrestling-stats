@@ -2,6 +2,7 @@ class WrestleBet::Wrestler < ApplicationRecord
   belongs_to :college
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100]
+    attachable.variant :large, resize_to_fill: [400, 400]
   end
 
   after_commit :add_default_avatar, on: [:create, :update]

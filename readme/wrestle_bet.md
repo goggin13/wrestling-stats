@@ -28,14 +28,8 @@ X score prop bets
 X auto-reload display
 X images
 X deploy and test, get images to prod
-
-async prop bet detection
-
-scorecard when tournament is completed
-          total | 125 | 133 | 141 | 149 | 157 ... | jesus () | exposures () | challenges ()
-  winner    9      x     x     0     x     x          0            x              x
-  second
-  ...
+X async prop bet detection
+X scorecard
  
 UI makeover party
 

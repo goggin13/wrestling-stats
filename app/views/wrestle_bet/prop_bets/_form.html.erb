@@ -4,17 +4,30 @@
   </div>
 
   <div>
-    <%= form.label :jesus, style: "display: block" %>
+    <h4>
+      <%= form.label :jesus, style: "display: block" %>
+    </h4>
+    <p>
+      How many champions will thank God, say how blessed they are, or reference their faith in the post match interview?
+    </p>
     <%= form.number_field :jesus %>
   </div>
 
   <div>
-    <%= form.label :exposure, style: "display: block" %>
+    <h4><%= form.label "Turns", style: "display: block" %></h4>
+    <p>
+      How many times will a wrestler be be turned to their back, yielding at least 2 points or a pin? 
+    </p>
     <%= form.number_field :exposure %>
   </div>
 
   <div>
-    <%= form.label :challenges, style: "display: block" %>
+    <h4>
+      <%= form.label :challenges, style: "display: block" %>
+    </h4>
+    <p>
+      How many times will a coach dispute a call by throwing a challenge brick onto the mat?
+    </p>
     <%= form.number_field :challenges %>
   </div>
 

@@ -1,7 +1,7 @@
 class WrestleBet::TournamentsController < WrestleBet::ApplicationController
-  skip_before_action :authenticate_admin!, only: [:betslip, :show]
+  skip_before_action :authenticate_admin!, only: [:betslip, :show, :scorecard]
   before_action :_authenticate_user_from_link, only: [:betslip]
-  before_action :authenticate_user!, only: [:betslip]
+  before_action :authenticate_user!, only: [:betslip, :scorecard]
 
   def index
   end
@@ -33,9 +33,9 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
     if @match.present?
       render
     else
+      @tournament = WrestleBet::Tournament.find(params[:id])
       @leaderboard = WrestleBet::Leaderboard.new(@tournament)
-      @rankings = @leaderboard.rankings
-      render "leaderboard"
+      render "scorecard"
     end
   end
 
@@ -54,6 +54,11 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
     @tournament.save!
 
     redirect_to wrestle_bet_matches_url, notice: "Updated"
+  end
+
+  def scorecard
+    @tournament = WrestleBet::Tournament.find(params[:id])
+    @leaderboard = WrestleBet::Leaderboard.new(@tournament)
   end
 
   def _authenticate_user_from_link

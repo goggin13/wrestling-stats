@@ -2,11 +2,19 @@
 
 <h1><%= current_user.email %> Betslip</h1>
 
-You currently have <%= WrestleBet::Leaderboard.score_for_user(current_user) %> points
-
 <div id="wrestle_bet_prop_bets">
+  <h2>Prop Bets</h2>
+  <p>
+    These must be entered before the first match starts
+  </p>
   <%= render partial: "wrestle_bet/prop_bets/form", locals: {prop_bet: @prop_bet} %>
 </div>
+
+<div id="wrestle_bet_spread_bets">
+<h2>Match Bets</h2>
+<p>
+  These can be entered or altered up until each match begins
+</p>
 
 <table>
 
@@ -18,7 +26,6 @@ You currently have <%= WrestleBet::Leaderboard.score_for_user(current_user) %> p
     <th colspan='2'>
       <%= match.weight %> lbs <br/>
       <%= match.home_wrestler.name %> (<%= match.home_wrestler.college.name %>) <br/>
-      vs. <br/>
       <%= match.away_wrestler.name %> (<%= match.away_wrestler.college.name %>)
     </th>
   </tr>
@@ -43,6 +50,7 @@ You currently have <%= WrestleBet::Leaderboard.score_for_user(current_user) %> p
 
   <tr>
     <td>
+      <%= image_tag match.home_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.home_wrestler.name %> <br/>
       +<%= match.spread %> <br/>
     
@@ -60,6 +68,7 @@ You currently have <%= WrestleBet::Leaderboard.score_for_user(current_user) %> p
       <% end %>
     </td>
     <td>
+      <%= image_tag match.away_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.away_wrestler.name %> <br/>
       -<%= match.spread %><br/>
 
@@ -82,4 +91,5 @@ You currently have <%= WrestleBet::Leaderboard.score_for_user(current_user) %> p
 
 
 </table>
+</div>
 </div>

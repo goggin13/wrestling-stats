@@ -17,8 +17,6 @@ $(document).ready(function () {
     poll_for_tournament(tournament_path);
     poll_for_prop_bet(tournament_path);
   };
-
-
 });
 
 function poll_for_prop_bet(tournament_path) {
@@ -42,12 +40,15 @@ function poll_for_prop_bet(tournament_path) {
         } else if (tournament.jesus != jesus_count) {
           console.log("Display Jesus");
           jesus_count = tournament.jesus;
+          show_jesus();
         } else if (tournament.exposure != exposure_count) {
           console.log("Display exposure");
           exposure_count = tournament.exposure;
+          show_exposure();
         } else if (tournament.challenges != challenge_count) {
           console.log("Display challenge");
           challenge_count = tournament.challenges;
+          show_challenge();
 				}
 
         setTimeout(poll, 5000);
@@ -105,6 +106,23 @@ function poll_for_match(match_path) {
 function set_winner(winner) {
   console.log("setting winner!", winner);
   reload_page_in_x_seconds(2);
+};
+
+function show_jesus() {
+  const sound = new Audio("/assets/heaven.mp3");
+  sound.play();
+  $("#wrestle_bet_jesus").fadeIn(7000);
+  reload_page_in_x_seconds(3); 
+};
+
+function show_exposure() {
+  $("#wrestle_bet_exposure").fadeIn(7000);
+  reload_page_in_x_seconds(3); 
+};
+
+function show_challenge() {
+  $("#wrestle_bet_challenge").fadeIn(7000);
+  reload_page_in_x_seconds(3); 
 };
 
 function reload_page_in_x_seconds(seconds) {

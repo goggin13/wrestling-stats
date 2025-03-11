@@ -10,11 +10,22 @@ class WrestleBet::Leaderboard
     _init_scores
   end
 
+  def users
+    @scores.keys.sort_by do |a|
+      @scores[a]
+    end.reverse
+  end
+
   def _init_scores
     @scores = {}
+    @scores_by_user_weight = {}
+    @props_for_user = {}
 
     @tournament.matches.each do |match|
       match.bets.each do |bet|
+        @scores_by_user_weight[bet.user] ||= {}
+        @scores_by_user_weight[bet.user][match.weight] = bet.won? ? 1 : 0
+
         @scores[bet.user] ||= 0
         @scores[bet.user] += 1 if bet.won?
       end
@@ -27,11 +38,27 @@ class WrestleBet::Leaderboard
       @scores[bet.user] += 1 if bet.won_jesus?
       @scores[bet.user] += 1 if bet.won_challenges?
       @scores[bet.user] += 1 if bet.won_exposure?
+
+      @props_for_user[bet.user] = {
+        jesus: bet.won_jesus? ? 1 : 0,
+        challenges: bet.won_challenges? ? 1 : 0,
+        exposure: bet.won_exposure? ? 1 : 0,
+      }
     end
   end
 
   def score_for_user(user)
     @scores[user]
+  end
+
+  def score_for_weight(user, weight)
+    @scores_by_user_weight[user][weight]
+  end
+
+  def score_for_prop(user, prop)
+    return 0 unless @tournament.completed?
+
+    @props_for_user[user][prop]
   end
 
   def rankings

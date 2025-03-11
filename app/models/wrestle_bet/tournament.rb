@@ -47,6 +47,10 @@ class WrestleBet::Tournament < ApplicationRecord
     }
   end
 
+  def weights
+    matches.pluck(:weight).sort
+  end
+
   def winning_prop_bet_value(type)
     _winning_prop_bet_values[type]
   end
