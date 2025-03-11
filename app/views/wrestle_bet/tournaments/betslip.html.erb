@@ -4,10 +4,20 @@
 
 <div id="wrestle_bet_prop_bets">
   <h2>Prop Bets</h2>
-  <p>
-    These must be entered before the first match starts
-  </p>
-  <%= render partial: "wrestle_bet/prop_bets/form", locals: {prop_bet: @prop_bet} %>
+  <div id="prop_bet_toggle">
+    <div class="prop_bets_hide_show <%= @tournament.started? ? "" : "hidden" %>">
+      Show bets
+    </div>
+    <div class="prop_bets_hide_show <%= @tournament.started? ? "hidden" : "" %>">
+      Hide bets
+    </div>
+  </div>
+  <div id="prop_bet_content" class="<%= @tournament.started? ? "hidden" : "" %>">
+    <p>
+      These must be entered before the first match starts
+    </p>
+    <%= render partial: "wrestle_bet/prop_bets/form", locals: {prop_bet: @prop_bet} %>
+  </div>
 </div>
 
 <div id="wrestle_bet_spread_bets">
@@ -49,7 +59,7 @@
   </tr>
 
   <tr>
-    <td>
+    <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "home" ? "current_bet" : "" %>">
       <%= image_tag match.home_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.home_wrestler.name %> <br/>
       +<%= match.spread %> <br/>
@@ -67,7 +77,7 @@
         <% end %>
       <% end %>
     </td>
-    <td>
+    <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "away" ? "current_bet" : "" %>">
       <%= image_tag match.away_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.away_wrestler.name %> <br/>
       -<%= match.spread %><br/>

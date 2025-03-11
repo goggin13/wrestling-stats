@@ -1,0 +1,34 @@
+<h1>Scorecard</h1>
+
+<div 
+  id="wrestle_bet_leaderboard"
+  tournament-path="<%= wrestle_bet_tournament_path(@tournament) %>">
+
+<table>
+  <tr>
+      <th></th>
+      <th>Total</th>
+      <% @tournament.weights.each do |weight| %>
+        <th><%= weight %></th>
+      <% end %>
+      <th>Jesus</th>
+      <th>Turns</th>
+      <th>Challenge<th>
+  </tr>
+  
+  <% @leaderboard.users.each do |user| %>
+    <tr>
+      <th><%= user.email %></th>
+      <td><%= @leaderboard.score_for_user(user) %></td>
+      <% @tournament.weights.each do |weight| %>
+        <td><%= @leaderboard.score_for_weight(user, weight) %></td>
+      <% end %>
+      <td><%= @leaderboard.score_for_prop(user, :jesus) %></td>
+      <td><%= @leaderboard.score_for_prop(user, :exposure) %></td>
+      <td><%= @leaderboard.score_for_prop(user, :challenge) %></td>
+    </tr>
+  <% end %>
+
+</table>
+
+</div>

@@ -4,9 +4,9 @@
   </div>
 
   <div>
-    <h4>
-      <%= form.label :jesus, style: "display: block" %>
-    </h4>
+    <hr/>
+    <%= form.label :jesus, style: "display: block" %>
+    <%= image_tag "wrestle_bet/jesus.png", :size => '75x75'%> 
     <p>
       How many champions will thank God, say how blessed they are, or reference their faith in the post match interview?
     </p>
@@ -14,7 +14,9 @@
   </div>
 
   <div>
-    <h4><%= form.label "Turns", style: "display: block" %></h4>
+    <hr/>
+    <%= form.label "Turns", style: "display: block" %>
+    <%= image_tag "wrestle_bet/exposure.png", :size => "75x75" %> 
     <p>
       How many times will a wrestler be be turned to their back, yielding at least 2 points or a pin? 
     </p>
@@ -22,16 +24,18 @@
   </div>
 
   <div>
-    <h4>
-      <%= form.label :challenges, style: "display: block" %>
-    </h4>
+    <hr/>
+    <%= form.label :challenges, style: "display: block" %>
+    <%= image_tag "wrestle_bet/challenge.png" , :size => '75x75'%>       
     <p>
       How many times will a coach dispute a call by throwing a challenge brick onto the mat?
     </p>
     <%= form.number_field :challenges %>
   </div>
 
-  <div>
-    <%= form.submit "Save Prop Bets" %>
-  </div>
+  <% if !prop_bet.tournament.started? %>
+    <div>
+      <%= form.submit "Save Prop Bets" %>
+    </div>
+  <% end %>
 <% end %>

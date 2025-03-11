@@ -10,10 +10,12 @@
 
 #wrestle_bet_prop_bets {
   border: thin solid black;
+  padding-bottom: 20px;
 }
 
 #wrestle_bet_spread_bets {
   border: thin solid black;
+  margin-top: 20px;
 }
 
 #wrestle_bet_match_display table td {
@@ -36,4 +38,9 @@
 }
 
 .wrestle_bet_college {
+}
+
+#wrestle_bet_spread_bets .wrestle_bet_wrestler.current_bet {
+  border: medium solid black;
+  border-radius: 10px;
 }

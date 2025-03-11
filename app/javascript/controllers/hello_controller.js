@@ -17,6 +17,11 @@ $(document).ready(function () {
     poll_for_tournament(tournament_path);
     poll_for_prop_bet(tournament_path);
   };
+
+  var $prop_bet_toggle = $("#prop_bet_toggle");
+  if ($prop_bet_toggle.length > 0) {
+    hide_show_prop_bets($prop_bet_toggle);
+  }
 });
 
 function poll_for_prop_bet(tournament_path) {
@@ -132,3 +137,9 @@ function reload_page_in_x_seconds(seconds) {
   }, seconds * 1000);
 };
 
+function hide_show_prop_bets($prop_bet_toggle) {
+  $prop_bet_toggle.click(function () {
+    $("#prop_bet_content").toggle();
+    $(".prop_bets_hide_show").toggle();
+  });
+}
