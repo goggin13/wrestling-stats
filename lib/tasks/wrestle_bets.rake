@@ -115,6 +115,30 @@ namespace :wrestle_bet do
   desc "Assign logos to colleges"
   task import_logos: :environment do
     {
+      "Luke Lilledahl" => "https://bloximages.newyork1.vip.townnews.com/psucollegian.com/content/tncms/assets/v3/editorial/8/c5/8c592f50-bb2f-11ef-a6f1-ab4b8287cfd2/675f50bc694bd.image.jpg?resize=1396%2C983",
+      "Drake Ayala" => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9z3aSZBSTtAC-fm4WpicdbFvSU9jbxviesQ&s",
+      "Lucas Byrd" => "https://images.sidearmdev.com/convert?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ffightingillini.com%2Fimages%2F2025%2F1%2F30%2F20250110_WRES_vs_OhioState_KS_0412.jpg&type=webp",
+      "Ridge Lovett" => "https://bloximages.chicago2.vip.townnews.com/nptelegraph.com/content/tncms/assets/v3/editorial/9/ea/9ea4b4d7-3ced-5d8a-aa03-845902cac8e0/62130aecb9723.image.jpg?resize=751%2C500",
+      "Caleb Henson" => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyGs3QdSbhAKdVfWANIdqRtXRBZtZy4GV4Fg&s",
+      "Tyler Kasak" => "https://www.pennlive.com/resizer/rPd1NIB6NCxrRLA2gqfyulEnrp0=/arc-anglerfish-arc2-prod-advancelocal/public/ORZM4POW7FGX7DR3B4HYGZH5BA.jpg",
+      "Meyer Shapiro" => "https://d2779tscntxxsw.cloudfront.net/6255d87ad17da.png?width=1200&quality=80",
+      "Mitchell Mesenbrink" => "https://www.statecollege.com/wp-content/uploads/2024/03/mesenbrink-aidan-conrad.jpeg",
+      "Michael Caliendo" => "https://images.sidearmdev.com/convert?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Fgobison.sidearmsports.com%2Fimages%2F2022%2F11%2F4%2F1M2A9668_oVCJM.JPG&type=webp",
+      "Keegan O'Toole" => "https://www.columbiatribune.com/gcdn/presto/2023/03/20/PMJS/caa10295-5c51-49b8-866f-afbca81f31ef-USATSI_20264619.jpg",
+      "Levi Haines" => "https://www.yorkdispatch.com/gcdn/authoring/authoring-images/2024/03/24/PPYD/73083591007-ap-24084150331129.jpg?width=1200&disable=upscale&format=pjpg&auto=webp",
+      "Carter Starocci" => "https://www.baschamania.com/static/sitefiles/podcast/carterstarocci-web.png",
+      "Parker Keckeison" => "https://images.sidearmdev.com/resize?url=https%3A%2F%2Funipanthers.com%2Fimages%2F2024%2F12%2F7%2F11-24-24_UNI_v._SDSU-24_uFgxR.jpg&width=1600",
+      "Stephen Buchanan" => "https://image-cdn.essentiallysports.com/wp-content/uploads/Stephen-Buchana-e1723573431335.jpg",
+      "Gable Steveson" => "https://img.olympics.com/images/image/private/t_s_pog_staticContent_hero_lg_2x/f_auto/primary/eguu89dfco7qzu3s1hae",
+      "Greg Kerkfleit" => "https://www.ydr.com/gcdn/authoring/authoring-images/2024/03/24/PPYR/73083946007-kerk.jpg?crop=3642,2049,x0,y0&width=3200&height=1801&format=pjpg&auto=webp",
+    }.each do |name, avatar_url|
+      wrestler = WrestleBet::Wrestler.where(name: name).first!
+      puts name
+      puts avatar_url
+      wrestler.avatar.attach(io: URI.open(avatar_url), filename: name)
+    end
+
+    {
       "Cornell" => "https://content.sportslogos.net/logos/30/651/thumbs/65139712002.gif",
       "Illinois" => "https://content.sportslogos.net/logos/32/706/thumbs/70667432022.gif",
       "Iowa" => "https://content.sportslogos.net/logos/32/712/thumbs/71241981979.gif",

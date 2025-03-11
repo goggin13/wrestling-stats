@@ -5,7 +5,7 @@ class College < ApplicationRecord
   validates_uniqueness_of :name
 
   has_one_attached :logo do |attachable|
-    attachable.variant :thumb, resize_to_limit: [100, 100]
+    attachable.variant :thumb, resize_to_fill: [100, 100]
   end
 
   after_commit :add_default_logo, on: [:create, :update]

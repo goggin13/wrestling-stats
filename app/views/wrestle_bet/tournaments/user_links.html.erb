@@ -2,6 +2,14 @@
 
 <ul>
   <% User.all.each do |user| %>
-    <li><%= user_betslip_link(user, @tournament) %></li>
+    <li>
+      <% if user.avatar.attached? %>
+        <%= image_tag user.avatar.variant(:thumb) %>
+      <% end %>
+
+      <%= user_betslip_link(user, @tournament) %>
+
+      <%= link_to("Edit", edit_user_registration_path(user)) %>
+    </li>
   <% end %>
 </ul>
