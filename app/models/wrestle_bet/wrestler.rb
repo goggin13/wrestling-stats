@@ -7,6 +7,8 @@ class WrestleBet::Wrestler < ApplicationRecord
   after_commit :add_default_avatar, on: [:create, :update]
 
   private def add_default_avatar
+    return if Rails.env.test?
+
     unless avatar.attached?
       file_name = "default_wrestler_avatar.jpg"
       default_avatar_path = Rails.root.join("app", "assets", "images", "wrestle_bet", file_name)

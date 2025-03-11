@@ -25,6 +25,8 @@ class User < ApplicationRecord
   end
 
   private def add_default_avatar
+    return if Rails.env.test?
+
     unless avatar.attached?
       file_name = "default_user_avatar.png"
       default_avatar_path = Rails.root.join("app", "assets", "images", file_name)

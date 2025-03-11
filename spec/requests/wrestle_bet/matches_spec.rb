@@ -106,7 +106,7 @@ RSpec.describe "/wrestle_bet/matches", type: :request do
         match = WrestleBet::Match.create! @valid_attributes
         patch wrestle_bet_match_url(match), params: { wrestle_bet_match: @new_attributes }
         match.reload
-        expect(response).to redirect_to(wrestle_bet_match_url(match))
+        expect(response).to redirect_to(wrestle_bet_matches_url)
       end
     end
 
