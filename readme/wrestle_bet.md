@@ -26,13 +26,10 @@ X user login set up
 X create prop_bets
 X score prop bets
 X auto-reload display
+X images
+X deploy and test, get images to prod
 
-https://www.youtube.com/watch?v=OoPmNm2Z8sg
-user avatars
-wrestler avatars
-college logos
-
-deploy and test, get images to prod
+async prop bet detection
 
 scorecard when tournament is completed
           total | 125 | 133 | 141 | 149 | 157 ... | jesus () | exposures () | challenges ()
