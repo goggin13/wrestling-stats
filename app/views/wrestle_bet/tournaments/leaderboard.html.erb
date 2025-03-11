@@ -1,5 +1,9 @@
 <h1>The Leaderboard</h1>
 
+<div 
+  id="wrestle_bet_leaderboard"
+  tournament-path="<%= wrestle_bet_tournament_path(@tournament) %>">
+
 <ul>
   <% @rankings.each do |position, data| %>
     <li>
@@ -11,3 +15,5 @@
     </li>
   <% end %>
 </ul>
+
+</div>

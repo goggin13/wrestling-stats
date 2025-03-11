@@ -1,5 +1,6 @@
 class WrestleBet::MatchesController < WrestleBet::ApplicationController
   before_action :set_wrestle_bet_match, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_admin!, only: [:show]
 
   # GET /wrestle_bet/matches or /wrestle_bet/matches.json
   def index
@@ -12,6 +13,14 @@ class WrestleBet::MatchesController < WrestleBet::ApplicationController
 
   # GET /wrestle_bet/matches/1 or /wrestle_bet/matches/1.json
   def show
+    respond_to do |format|
+      format.html { render  }
+      format.json do
+        render json: @wrestle_bet_match.as_json(
+          only: [:id, :home_score, :away_score]
+        )
+      end
+    end
   end
 
   # GET /wrestle_bet/matches/new

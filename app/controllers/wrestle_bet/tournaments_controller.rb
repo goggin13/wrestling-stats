@@ -1,5 +1,5 @@
 class WrestleBet::TournamentsController < WrestleBet::ApplicationController
-  skip_before_action :authenticate_admin!, only: [:betslip]
+  skip_before_action :authenticate_admin!, only: [:betslip, :show]
   before_action :_authenticate_user_from_link, only: [:betslip]
   before_action :authenticate_user!, only: [:betslip]
 
@@ -37,6 +37,13 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
       @rankings = @leaderboard.rankings
       render "leaderboard"
     end
+  end
+
+  def show
+    @tournament = WrestleBet::Tournament.find(params[:id])
+    render json: @tournament.as_json(
+      only: [:id, :jesus, :exposure, :challenges],
+    ).merge(match_in_progress: @tournament.current_match.present?)
   end
 
   def update

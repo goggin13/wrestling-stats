@@ -31,6 +31,8 @@ user avatars
 wrestler avatars
 college logos
 
+deploy and test, get images to prod
+
 auto-reload display
 UI stylings and async work
 
