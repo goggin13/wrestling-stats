@@ -17,6 +17,13 @@
   </div>
 
   <div>
+    <%= form.file_field :avatar %>
+    <% if wrestle_bet_wrestler.avatar.attached? %>
+      <%= image_tag wrestle_bet_wrestler.avatar.variant(:thumb) %>
+    <% end %>
+  </div>
+
+  <div>
     <%= form.label :college_id, style: "display: block" %>
     <%= form.select :college_id, @colleges %>
   </div>

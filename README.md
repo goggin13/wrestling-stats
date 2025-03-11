@@ -47,3 +47,4 @@ psql -Udumbledore -d dumbledore_development -h database -f query.sql
 
 # Run rspec without certain irectories
 rspec --exclude-pattern="spec/models/advocate/*"
+

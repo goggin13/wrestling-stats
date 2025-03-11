@@ -69,6 +69,6 @@ class WrestleBet::WrestlersController < WrestleBet::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def wrestle_bet_wrestler_params
-      params.require(:wrestle_bet_wrestler).permit(:name, :college_id)
+      params.require(:wrestle_bet_wrestler).permit(:name, :college_id, :avatar)
     end
 end

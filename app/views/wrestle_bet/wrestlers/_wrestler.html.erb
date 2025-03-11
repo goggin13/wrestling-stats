@@ -1,10 +1,17 @@
 <div id="<%= dom_id wrestler %>">
-  <p>
-    <%= wrestler.name %>
-  </p>
 
   <p>
-    <%= wrestler.college.name %>
+    <% if wrestler.avatar.attached? %>
+      <%= image_tag wrestler.avatar.variant(:thumb) %>
+    <% end %>
+
+    <% if wrestler.college.logo.attached? %>
+      <%= image_tag wrestler.college.logo.variant(:thumb) %>
+    <% end %>
+
+    <%= link_to wrestler.name, wrestler %>
+    ( <%= wrestler.college.name %> )
+
   </p>
 
 </div>

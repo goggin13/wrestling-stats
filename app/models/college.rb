@@ -4,6 +4,12 @@ class College < ApplicationRecord
   has_many :away_matches, class_name: "Match", foreign_key: "away_team_id", dependent: :destroy
   validates_uniqueness_of :name
 
+  has_one_attached :logo do |attachable|
+    attachable.variant :thumb, resize_to_limit: [100, 100]
+  end
+
+  after_commit :add_default_logo, on: [:create, :update]
+
   EQUIVALENCIES = [
     # [Canonical, alias_1, alias_2, ...],
     ["UNI", "Northern Iowa"],
@@ -51,5 +57,16 @@ class College < ApplicationRecord
 
   def matches
     Match.where("home_team_id = :id OR away_team_id = :id", id: id).order(date: "ASC")
+  end
+
+  private def add_default_logo
+    unless logo.attached?
+      file_name = "default_college_logo.jpg"
+      default_logo_path = Rails.root.join("app", "assets", "images", file_name)
+      self.logo.attach(
+        io: File.open(default_logo_path),
+        filename: file_name
+      )
+    end
   end
 end

@@ -111,4 +111,25 @@ namespace :wrestle_bet do
       )
     end
   end
+
+  desc "Assign logos to colleges"
+  task import_logos: :environment do
+    {
+      "Cornell" => "https://content.sportslogos.net/logos/30/651/thumbs/65139712002.gif",
+      "Illinois" => "https://content.sportslogos.net/logos/32/706/thumbs/70667432022.gif",
+      "Iowa" => "https://content.sportslogos.net/logos/32/712/thumbs/71241981979.gif",
+      "Michigan" => "https://content.sportslogos.net/logos/32/750/thumbs/75086742016.gif",
+      "Minnesota" => "https://content.sportslogos.net/logos/32/753/thumbs/75397141986.gif",
+      "Missouri" => "https://content.sportslogos.net/logos/32/757/thumbs/75718052018.gif",
+      "Nebraska" => "https://content.sportslogos.net/logos/33/766/thumbs/76662700.gif",
+      "Northern Colorado" => "https://content.sportslogos.net/logos/33/4954/thumbs/495412272010.gif",
+      "Penn State" => "https://content.sportslogos.net/logos/33/801/thumbs/80145772005.gif",
+      "Purdue" => "https://content.sportslogos.net/logos/33/809/thumbs/80917862012.gif",
+      "UNI" => "https://content.sportslogos.net/logos/33/786/thumbs/78670852021.gif",
+      "Virginia Tech" => "https://content.sportslogos.net/logos/35/901/thumbs/90121061983.gif",
+    }.each do |name, logo_url|
+      college = College.where(name: name).first!
+      college.logo.attach(io: URI.open(logo_url), filename: name)
+    end
+  end
 end
