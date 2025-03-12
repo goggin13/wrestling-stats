@@ -15,28 +15,41 @@ namespace :wrestle_bet do
     tournament = WrestleBet::Tournament.create!(name: "2025 NCAA")
 
     users = [
-      "rudolphocisneros@gmail.com",
-      "klynch425@gmail.com",
-      "lucaslemanski2@gmail.com",
-      "choy.ash831@gmail.com",
-      "erinumhoefer@gmail.com",
-      "katepotteiger@gmail.com",
-      "seg12@cornell.edu"
-    ].map do |email|
-      user = User.where(email: email).first
+      {email: "klynch425@gmail.com", file: "kelly.png"},
+      {email: "lucaslemanski2@gmail.com", file: "luke.png"},
+      {email: "choy.ash831@gmail.com", file: "ashley.png"},
+      {email: "danstipanuk@gmail.com", file: "dan.jpg"},
+      {email: "katepotteiger@gmail.com", file: "kate.png"},
+      {email: "seg12@cornell.edu", file: "steve.png"},
+      {email: "cookediana@gmail.com", file: "diana.png"},
+      # {email: "cepluard@gmail.com", : file: "claire.png"},
+      # {email: "Tworhach35@gmail.com", file: "tom.png"}
+    ].map do |user_data|
+      user = User.where(email: user_data[:email]).first
       if user.present?
         user
       else
         password = SecureRandom.hex(8)
-        User.create!(
-          :email => email,
+        user = User.create!(
+          :email => user_data[:email],
           :password => password,
           :password_confirmation => password,
         )
       end
+
+      image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", user_data[:file])
+      puts "attaching #{image_path}"
+      user.avatar.attach(io: File.open(image_path), filename: user_data[:file])
+      sleep(1) if Rails.env.prod?
+
+      user
     end
 
-    users << User.where(email: "goggin13@gmail.com").first!
+    goggin = User.where(email: "goggin13@gmail.com").first!
+    image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", "matt.png")
+    goggin.avatar.attach(io: File.open(image_path), filename: "matt.png")
+    sleep(1) if Rails.env.prod?
+    users << goggin
 
     # spread is always from POV of home wrestler
     # if you always make home wrestler the favorite, all spreads are (-)
@@ -143,11 +156,12 @@ namespace :wrestle_bet do
     }.each do |name, avatar_url|
       wrestler = WrestleBet::Wrestler.where(name: name).first!
       puts name
-      if wrestler.avatar.attached?
-        puts "\tavatar attached"
-      else
+      if ENV["REFRESH_IMAGES"].present? || !wrestler.avatar.attached?
         puts "\tattaching #{avatar_url}"
         wrestler.avatar.attach(io: URI.open(avatar_url), filename: name)
+        sleep(1) if Rails.env.prod?
+      else
+        puts "\tavatar attached"
       end
     end
 
@@ -167,11 +181,12 @@ namespace :wrestle_bet do
     }.each do |name, logo_url|
       college = College.find_by_corrected_name!(name)
       puts name
-      if college.logo.attached?
-        puts "\tlogo attached"
-      else
+      if ENV["REFRESH_IMAGES"].present? || !college.logo.attached?
         puts "\tattaching #{logo_url}"
         college.logo.attach(io: URI.open(logo_url), filename: name)
+        sleep(1) if Rails.env.prod?
+      else
+        puts "\tlogo attached"
       end
     end
   end

@@ -2,6 +2,8 @@
 
 <h1><%= current_user.email %> Betslip</h1>
 
+<%= image_tag current_user.avatar.variant(:thumb) %>
+
 <div id="wrestle_bet_prop_bets">
   <h2>Prop Bets</h2>
   <div id="prop_bet_toggle">
