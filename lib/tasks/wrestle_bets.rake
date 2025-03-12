@@ -1,10 +1,16 @@
 namespace :wrestle_bet do
+  task reset: :environment do
+    Rake::Task["wrestle_bet:reset_data"].invoke
+    Rake::Task["wrestle_bet:import_images"].invoke
+  end
+
   desc "Scrape Latest Individual and Team Rankings from Intermat"
-  task reset_all: :environment do
+  task reset_data: :environment do
     WrestleBet::Tournament.destroy_all
     WrestleBet::Match.destroy_all
-    WrestleBet::Wrestler.destroy_all
+    # WrestleBet::Wrestler.destroy_all
     WrestleBet::SpreadBet.destroy_all
+    WrestleBet::PropBet.destroy_all
 
     tournament = WrestleBet::Tournament.create!(name: "2025 NCAA")
 
@@ -76,7 +82,7 @@ namespace :wrestle_bet do
     ].each do |weight, spread, wrestler_data|
       wrestlers = wrestler_data.map do |name, college_name|
         college = College.find_by_corrected_name!(college_name)
-        WrestleBet::Wrestler.create!(
+        WrestleBet::Wrestler.find_or_create_by(
           name: name,
           college: college
         )
@@ -112,8 +118,8 @@ namespace :wrestle_bet do
     end
   end
 
-  desc "Assign logos to colleges"
-  task import_logos: :environment do
+  desc "Assign avatars to wrestlers, logos to colleges"
+  task import_images: :environment do
     {
       "Luke Lilledahl" => "https://bloximages.newyork1.vip.townnews.com/psucollegian.com/content/tncms/assets/v3/editorial/8/c5/8c592f50-bb2f-11ef-a6f1-ab4b8287cfd2/675f50bc694bd.image.jpg?resize=1396%2C983",
       "Drake Ayala" => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9z3aSZBSTtAC-fm4WpicdbFvSU9jbxviesQ&s",
@@ -134,8 +140,12 @@ namespace :wrestle_bet do
     }.each do |name, avatar_url|
       wrestler = WrestleBet::Wrestler.where(name: name).first!
       puts name
-      puts avatar_url
-      wrestler.avatar.attach(io: URI.open(avatar_url), filename: name)
+      if wrestler.avatar.attached?
+        puts "\tavatar attached"
+      else
+        puts "\tattaching #{avatar_url}"
+        wrestler.avatar.attach(io: URI.open(avatar_url), filename: name)
+      end
     end
 
     {
@@ -154,8 +164,12 @@ namespace :wrestle_bet do
     }.each do |name, logo_url|
       college = College.find_by_corrected_name!(name)
       puts name
-      puts logo_url
-      college.logo.attach(io: URI.open(logo_url), filename: name)
+      if college.logo.attached?
+        puts "\tlogo attached"
+      else
+        puts "\tattaching #{logo_url}"
+        college.logo.attach(io: URI.open(logo_url), filename: name)
+      end
     end
   end
 end
