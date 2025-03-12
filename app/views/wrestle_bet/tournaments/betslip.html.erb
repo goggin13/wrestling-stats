@@ -35,18 +35,32 @@
   <tr>
     <th colspan='2'>
       <%= match.weight %> lbs <br/>
-      <%= match.home_wrestler.name %> (<%= match.home_wrestler.college.name %>) <br/>
-      <%= match.away_wrestler.name %> (<%= match.away_wrestler.college.name %>)
+      <%= match.home_wrestler.name %> 
+      (<%= match.home_wrestler.college.name %>) 
+
+      <br/>
+
+      <%= match.away_wrestler.name %> 
+      (<%= match.away_wrestler.college.name %>)
+
+      <% if match.completed? %>
+        <br/>Final score: <%= match.home_score %> to <%= match.away_score %>
+      <% end %>
     </th>
   </tr>
 
   <tr>
     <td colspan='2'>
       <% if match.completed? && current_bet.present? %>
+
         <% if current_bet.won? %>
-          Bet Won
+          <div class="wrestle_bet_bet_outcome wrestle_bet_bet_won">
+            Bet Won
+          </div>
         <% else %>
-          Bet Lost
+          <div class="wrestle_bet_bet_outcome wrestle_bet_bet_lost">
+            Bet Lost
+          </div>
         <% end %>
       <% elsif match.completed? %>
         match concluded
@@ -62,7 +76,7 @@
     <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "home" ? "current_bet" : "" %>">
       <%= image_tag match.home_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.home_wrestler.name %> <br/>
-      +<%= match.spread %> <br/>
+      <%= match.spread < 0 ? match.spread : "+#{match.spread}" %> <br/>
     
       <% if current_bet.present? && current_bet.wager == "home" %>
         You bet on <%= match.home_wrestler.name %>
@@ -80,7 +94,7 @@
     <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "away" ? "current_bet" : "" %>">
       <%= image_tag match.away_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.away_wrestler.name %> <br/>
-      -<%= match.spread %><br/>
+      <%= match.spread < 0 ? "+#{match.spread.abs}" : -1 * match.spread %> <br/>
 
       <% if current_bet.present? && current_bet.wager == "away" %>
         You bet on <%= match.away_wrestler.name %>

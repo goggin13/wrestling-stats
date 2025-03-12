@@ -38,44 +38,47 @@ namespace :wrestle_bet do
 
     users << User.where(email: "goggin13@gmail.com").first!
 
+    # spread is always from POV of home wrestler
+    # if you always make home wrestler the favorite, all spreads are (-)
+      # otherwise, (-) spread is home favored, (+) spread is away favored
     [
-      [125, 1, [
+      [125, 1.5, [
         ["Matt Ramos", "Purdue"],
         ["Luke Lilledahl", "Penn State"],
       ]],
-      [133, 5, [
+      [133, 0.5, [
         ["Drake Ayala", "Iowa"],
         ["Lucas Byrd", "Illinois"],
       ]],
-      [141, 7, [
+      [141, 2.5, [
         ["Brock Hardy", "Nebraska"],
         ["Andrew Alirez", "Northern Colorado"],
       ]],
-      [149, 7, [
+      [149, -1.5, [
         ["Caleb Henson", "Virginia Tech"],
         ["Ridge Lovett", "Nebraska"],
       ]],
-      [157, 7, [
+      [157, -4.5, [
         ["Tyler Kasak", "Penn State"],
         ["Meyer Shapiro", "Cornell"],
       ]],
-      [165, 7, [
+      [165, -10.5, [
         ["Mitchell Mesenbrink", "Penn State"],
         ["Michael Caliendo", "Iowa"],
       ]],
-      [174, 7, [
+      [174, -1.5, [
         ["Keegan O'Toole", "Missouri"],
         ["Levi Haines", "Penn State"],
       ]],
-      [184, 6, [
+      [184, -2.5, [
         ["Carter Starocci", "Penn State"],
         ["Parker Keckeison", "UNI"],
       ]],
-      [197, 6, [
+      [197, -1.5, [
         ["Jacob Cardenas", "Michigan"],
         ["Stephen Buchanan", "Iowa"],
       ]],
-      [285, 5, [
+      [285, -7.5, [
         ["Gable Steveson", "Minnesota"],
         ["Greg Kerkfleit", "Penn State"],
       ]],

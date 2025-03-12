@@ -52,3 +52,19 @@
   border: medium solid black;
   border-radius: 10px;
 }
+
+.wrestle_bet_bet_outcome {
+  border-radius: 10px;
+  padding: 11px 0px;
+  font-weight: bold;
+}
+
+.wrestle_bet_bet_won {
+  background-color: lightgreen;
+  color: black;
+}
+
+.wrestle_bet_bet_lost {
+  background-color: salmon;
+  color: white;
+}
