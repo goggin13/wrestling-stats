@@ -30,6 +30,9 @@ X images
 X deploy and test, get images to prod
 X async prop bet detection
 X scorecard
+
+work on prod issues, images
+make rake task more friendly, don't destroy all wrestlers/images
  
 UI makeover party
 

@@ -63,7 +63,7 @@ class College < ApplicationRecord
     return if Rails.env.test?
 
     unless logo.attached?
-      file_name = "default_college_logo.jpg"
+      file_name = "default_college_logo.png"
       default_logo_path = Rails.root.join("app", "assets", "images", file_name)
       self.logo.attach(
         io: File.open(default_logo_path),

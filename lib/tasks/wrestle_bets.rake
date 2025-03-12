@@ -75,7 +75,7 @@ namespace :wrestle_bet do
       ]],
     ].each do |weight, spread, wrestler_data|
       wrestlers = wrestler_data.map do |name, college_name|
-        college = College.where(name: college_name).first!
+        college = College.find_by_corrected_name!(college_name)
         WrestleBet::Wrestler.create!(
           name: name,
           college: college
@@ -152,7 +152,9 @@ namespace :wrestle_bet do
       "UNI" => "https://content.sportslogos.net/logos/33/786/thumbs/78670852021.gif",
       "Virginia Tech" => "https://content.sportslogos.net/logos/35/901/thumbs/90121061983.gif",
     }.each do |name, logo_url|
-      college = College.where(name: name).first!
+      college = College.find_by_corrected_name!(name)
+      puts name
+      puts logo_url
       college.logo.attach(io: URI.open(logo_url), filename: name)
     end
   end
