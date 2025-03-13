@@ -1,4 +1,6 @@
 class WrestleBet::PropBetsController < WrestleBet::ApplicationController
+  skip_before_action :authenticate_admin!, only: [:create, :update]
+  before_action :authenticate_user!, only: [:create, :update]
   before_action :set_wrestle_bet_prop_bet, only: %i[ show edit update destroy ]
   before_action :verify_tournament_has_not_started, only: %i[ create update ]
 

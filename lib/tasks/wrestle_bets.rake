@@ -1,4 +1,13 @@
 namespace :wrestle_bet do
+  def sleep_in_production
+    sleep_time = if ENV.has_key?("SLEEP_TIME")
+      ENV["SLEEP_TIME"].to_i
+    else
+      10
+    end
+    sleep(sleep_time) if Rails.env.production?
+  end
+
   task reset: :environment do
     Rake::Task["wrestle_bet:reset_data"].invoke
     Rake::Task["wrestle_bet:import_images"].invoke
@@ -22,8 +31,8 @@ namespace :wrestle_bet do
       {email: "katepotteiger@gmail.com", file: "kate.png"},
       {email: "seg12@cornell.edu", file: "steve.png"},
       {email: "cookediana@gmail.com", file: "diana.png"},
-      # {email: "cepluard@gmail.com", : file: "claire.png"},
-      # {email: "Tworhach35@gmail.com", file: "tom.png"}
+      {email: "cepluard@gmail.com", file: "claire.png"},
+      {email: "Tworhach35@gmail.com", file: "tom.png"}
     ].map do |user_data|
       user = User.where(email: user_data[:email]).first
       if user.present?
@@ -40,7 +49,7 @@ namespace :wrestle_bet do
       image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", user_data[:file])
       puts "attaching #{image_path}"
       user.avatar.attach(io: File.open(image_path), filename: user_data[:file])
-      sleep(1) if Rails.env.prod?
+      sleep_in_production
 
       user
     end
@@ -48,7 +57,7 @@ namespace :wrestle_bet do
     goggin = User.where(email: "goggin13@gmail.com").first!
     image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", "matt.png")
     goggin.avatar.attach(io: File.open(image_path), filename: "matt.png")
-    sleep(1) if Rails.env.prod?
+    sleep_in_production
     users << goggin
 
     # spread is always from POV of home wrestler
@@ -159,7 +168,7 @@ namespace :wrestle_bet do
       if ENV["REFRESH_IMAGES"].present? || !wrestler.avatar.attached?
         puts "\tattaching #{avatar_url}"
         wrestler.avatar.attach(io: URI.open(avatar_url), filename: name)
-        sleep(1) if Rails.env.prod?
+        sleep_in_production
       else
         puts "\tavatar attached"
       end
@@ -184,7 +193,7 @@ namespace :wrestle_bet do
       if ENV["REFRESH_IMAGES"].present? || !college.logo.attached?
         puts "\tattaching #{logo_url}"
         college.logo.attach(io: URI.open(logo_url), filename: name)
-        sleep(1) if Rails.env.prod?
+        sleep_in_production
       else
         puts "\tlogo attached"
       end

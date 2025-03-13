@@ -117,17 +117,17 @@ function show_jesus() {
   const sound = new Audio("/assets/heaven.mp3");
   sound.play();
   $("#wrestle_bet_jesus").fadeIn(7000);
-  reload_page_in_x_seconds(3); 
+  reload_page_in_x_seconds(10); 
 };
 
 function show_exposure() {
   $("#wrestle_bet_exposure").fadeIn(7000);
-  reload_page_in_x_seconds(3); 
+  reload_page_in_x_seconds(10); 
 };
 
 function show_challenge() {
   $("#wrestle_bet_challenge").fadeIn(7000);
-  reload_page_in_x_seconds(3); 
+  reload_page_in_x_seconds(10); 
 };
 
 function reload_page_in_x_seconds(seconds) {
