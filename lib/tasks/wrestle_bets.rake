@@ -182,8 +182,8 @@ namespace :wrestle_bet do
       "Andrew Alirez" => "https://d2779tscntxxsw.cloudfront.net/64a711eaf22fa.png?width=650&quality=80 ",
       "Matt Ramos" => "https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Fpurduesports.com%2Fimages%2F2023%2F3%2F17%2F_N8Q1934-3.jpg&height=300&type=webp",
     }.each do |name, avatar_url|
-      wrestler = WrestleBet::Wrestler.where(name: name).first!
       puts name
+      wrestler = WrestleBet::Wrestler.where(name: name).first!
       if ENV["REFRESH_IMAGES"].present? || !wrestler.avatar.attached?
         puts "\tattaching #{avatar_url}"
         wrestler.avatar.attach(io: URI.open(avatar_url), filename: name)

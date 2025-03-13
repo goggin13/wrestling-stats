@@ -8,9 +8,26 @@
   width: 100%;
 }
 
+#wrestle_bet_leaderboard,
+#wrestle_bet_match_display {
+  background-image: url("wrestle_bet/ncaa_mat.jpg");
+  background-size: cover;
+  background-position: center;
+};
+
+#wrestle_bet_match_display {
+}
+
+#wrestle_bet_leaderboard table {
+  background: white;
+  opacity: 75%;
+}
+
 #wrestle_bet_match_display td {
   width: 50%;
   vertical-align: top;
+  color: white;
+  font-size: 2em;
 }
 
 #wrestle_bet_prop_bets {
