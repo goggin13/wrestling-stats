@@ -222,9 +222,22 @@ function poll_for_match(match_path) {
   poll();
 };
 
+function random_fatality() {
+  var root = "https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/fatalaties/";
+  var min = 1;
+  var max = 27;
+  var random = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return root + random + ".gif";
+};
+
 function set_winner(winner) {
+  var loser = winner == "home" ? "away" : "home";
+  var fatality = random_fatality();
+  console.log("fatality");
+  $("#" + loser + "_wrestler").attr("src", fatality);
   console.log("setting winner!", winner);
-  reload_page_in_x_seconds(2);
+  reload_page_in_x_seconds(20);
 };
 
 function show_jesus() {

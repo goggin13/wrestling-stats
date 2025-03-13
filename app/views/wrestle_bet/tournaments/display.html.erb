@@ -12,13 +12,13 @@
 
   <tr>
     <td>
-      <%= image_tag @match.home_wrestler.avatar.variant(:large) %><br/>
+      <%= image_tag @match.home_wrestler.avatar.variant(:large), id: "home_wrestler" %><br/>
       <%= image_tag @match.home_wrestler.college.logo.variant(:thumb), class: "wrestle_bet_college" %><br/>
       <%= @match.home_wrestler.name %>
       ( <%= @match.home_wrestler.college.name %> )
     </td>
     <td>
-      <%= image_tag @match.away_wrestler.avatar.variant(:large) %><br/>
+      <%= image_tag @match.away_wrestler.avatar.variant(:large), id: "away_wrestler" %><br/>
       <%= image_tag @match.away_wrestler.college.logo.variant(:thumb), class: "wrestle_bet_college" %><br/>
       <%= @match.away_wrestler.name %>
       ( <%= @match.away_wrestler.college.name %> )

@@ -8,6 +8,11 @@
   width: 100%;
 }
 
+#wrestle_bet_match_display td {
+  width: 50%;
+  vertical-align: top;
+}
+
 #wrestle_bet_prop_bets {
   border: thin solid black;
   padding-bottom: 20px;
