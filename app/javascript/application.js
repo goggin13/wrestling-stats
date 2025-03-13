@@ -244,7 +244,7 @@ function show_jesus() {
   const sound = new Audio("/assets/heaven.mp3");
   sound.play();
   $("#wrestle_bet_jesus").fadeIn(7000);
-  reload_page_in_x_seconds(10);
+  reload_page_in_x_seconds(15);
 };
 
 function show_exposure() {
@@ -310,7 +310,7 @@ function listen_for_bets() {
           const error_data = JSON.parse(xhr.responseText);
           console.log('Parsed error data:', error_data);
           alert(error_data.error);
-          reload_page_in_x_seconds(1);
+          reload_page_in_x_seconds(0);
         } catch (e) {
           console.log('Response is not JSON');
         }
