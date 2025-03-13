@@ -241,7 +241,7 @@ function set_winner(winner) {
 };
 
 function show_jesus() {
-  const sound = new Audio("/assets/heaven.mp3");
+  const sound = new Audio("https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/wrestle_bets/heaven.mp3");
   sound.play();
   $("#wrestle_bet_jesus").fadeIn(7000);
   reload_page_in_x_seconds(15);

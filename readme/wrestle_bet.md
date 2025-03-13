@@ -30,14 +30,19 @@ X images
 X deploy and test, get images to prod
 X async prop bet detection
 X scorecard
-
-work on prod issues, images
-make rake task more friendly, don't destroy all wrestlers/images
+X - work on prod issues, images
+X - make rake task more friendly, don't destroy all wrestlers/images
  
-UI makeover party
+X - UI makeover party
+
+PreParty
+ - which jesus to use?
+ - input wrestlers/colleges as needed
+
+TimePermitting
+ - more request spec testing on scoreboard/scoring
 
 testing party - at least 2hr of good brain space only on feature/request specs
-  - feature spec for a regular user walk through
   - feature spec for a admin walk through
   - request specs
     - admin
@@ -45,6 +50,6 @@ testing party - at least 2hr of good brain space only on feature/request specs
       - updating a prop bet
       - routes used from JS land
     - users
-      - logging in from link
-      - placing a bet
-      - placing a prop bet
+      X logging in from link
+      X placing a bet
+      X placing a prop bet
