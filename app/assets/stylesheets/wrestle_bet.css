@@ -105,3 +105,7 @@ td.spread_bet_result_0,
 td.prop_bet_result_0 {
   color: red;
 }
+
+td.wrestle_bet_wrestler.current_bet input[type='submit'] {
+  display: none;
+}

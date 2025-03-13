@@ -39,7 +39,7 @@ class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
           redirect_to wrestle_bet_betslip_url(id: @bet.match.tournament_id),
           notice: "#{@bet.label} placed"
         }
-        format.json { render :show, status: :created, location: @bet }
+        format.json { render json: {status: :created}, status: :created }
       else
         @bet.errors.each do |field, message|
           Rails.logger.info("Failed to save bet: #{field}-#{message}")

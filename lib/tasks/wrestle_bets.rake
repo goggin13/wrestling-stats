@@ -131,8 +131,8 @@ namespace :wrestle_bet do
         spread: spread,
         home_wrestler: wrestlers[0],
         away_wrestler: wrestlers[1],
-        home_score: home_score,
-        away_score: away_score,
+        # home_score: home_score,
+        # away_score: away_score,
         tournament: tournament,
       )
 

@@ -38,7 +38,7 @@
         <td class="spread_bet_result_<%= result %>">
           <% if result == 1 %>
             <%= image_tag "wrestle_bet/green_check.png", size: "25x25"%>
-          <% else %>
+          <% elsif @tournament.weight_is_completed?(weight) %>
             <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
           <% end %>
         </td>
@@ -49,7 +49,7 @@
         <td class="prop_bet_result_<%= result %>">
           <% if result == 1 %>
             <%= image_tag "wrestle_bet/green_check.png", size: "25x25"%>
-          <% else %>
+          <% elsif @tournament.completed? %>
             <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
           <% end %>
         </td>

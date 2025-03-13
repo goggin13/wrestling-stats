@@ -7,12 +7,14 @@
 <div id="wrestle_bet_prop_bets">
   <h2>Prop Bets</h2>
   <div id="prop_bet_toggle">
-    <div class="prop_bets_hide_show <%= @tournament.started? ? "" : "hidden" %>">
-      Show bets
-    </div>
-    <div class="prop_bets_hide_show <%= @tournament.started? ? "hidden" : "" %>">
-      Hide bets
-    </div>
+    <% if @tournament.started? %>
+      <div class="prop_bets_hide_show <%= @tournament.started? ? "" : "hidden" %>">
+        Show bets
+      </div>
+      <div class="prop_bets_hide_show <%= @tournament.started? ? "hidden" : "" %>">
+        Hide bets
+      </div>
+    <% end %>
   </div>
   <div id="prop_bet_content" class="<%= @tournament.started? ? "hidden" : "" %>">
     <p>
@@ -79,10 +81,8 @@
       <%= image_tag match.home_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.home_wrestler.name %> <br/>
       <%= match.spread < 0 ? match.spread : "+#{match.spread}" %> <br/>
-    
-      <% if current_bet.present? && current_bet.wager == "home" %>
-        You bet on <%= match.home_wrestler.name %>
-      <% elsif match.open_for_betting? %>
+
+      <% if match.open_for_betting? %>
         <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "home")) do |form| %>
           <%= form.hidden_field :match_id %>
           <%= form.hidden_field :wager %>
@@ -93,14 +93,13 @@
         <% end %>
       <% end %>
     </td>
+
     <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "away" ? "current_bet" : "" %>">
       <%= image_tag match.away_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.away_wrestler.name %> <br/>
       <%= match.spread < 0 ? "+#{match.spread.abs}" : -1 * match.spread %> <br/>
 
-      <% if current_bet.present? && current_bet.wager == "away" %>
-        You bet on <%= match.away_wrestler.name %>
-      <% elsif match.open_for_betting? %>
+      <% if match.open_for_betting? %>
         <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "away")) do |form| %>
           <%= form.hidden_field :match_id %>
           <%= form.hidden_field :wager %>
