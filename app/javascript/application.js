@@ -293,7 +293,14 @@ function listen_for_bets() {
         $form.parents("td").addClass("current_bet");
       },
       error: function(xhr, status, error) {
-          console.error("Error:", error);
+        try {
+          const error_data = JSON.parse(xhr.responseText);
+          console.log('Parsed error data:', error_data);
+          alert(error_data.error);
+          reload_page_in_x_seconds(1);
+        } catch (e) {
+          console.log('Response is not JSON');
+        }
       }
     });
   });

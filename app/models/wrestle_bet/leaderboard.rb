@@ -53,6 +53,8 @@ class WrestleBet::Leaderboard
 
   def user_in_first_place?(user)
     max_score = @scores.values.max
+    return false if max_score == 0
+
     score_for_user(user) == max_score
   end
 

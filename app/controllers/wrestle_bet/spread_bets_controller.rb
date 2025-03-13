@@ -90,8 +90,15 @@ class WrestleBet::SpreadBetsController < WrestleBet::ApplicationController
     def verify_match_has_not_started
       @match = WrestleBet::Match.find(wrestle_bet_spread_bet_params[:match_id])
       if @match.started?
-          redirect_to wrestle_bet_betslip_url(id: @match.tournament_id),
-            alert: "Match has already started"
+        respond_to do |format|
+          format.html {
+            redirect_to wrestle_bet_betslip_url(id: @match.tournament_id),
+              alert: "Match has already started"
+          }
+          format.json {
+            render json: {error: "Match has already started"}, status: 422
+          }
+        end
       end
     end
 end
