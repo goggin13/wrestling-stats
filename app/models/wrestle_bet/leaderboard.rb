@@ -51,6 +51,11 @@ class WrestleBet::Leaderboard
     @scores[user]
   end
 
+  def user_in_first_place?(user)
+    max_score = @scores.values.max
+    score_for_user(user) == max_score
+  end
+
   def score_for_weight(user, weight)
     @scores_by_user_weight[user][weight]
   end

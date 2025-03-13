@@ -5,9 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :wrestle_bet_bets, class_name: "WrestleBet::SpreadBet"
+  has_one :wrestle_bet_prop_bet, class_name: "WrestleBet::PropBet"
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [100, 100]
+    attachable.variant :small_thumb, resize_to_fill: [50, 50]
   end
 
   after_commit :add_default_avatar, on: [:create, :update]

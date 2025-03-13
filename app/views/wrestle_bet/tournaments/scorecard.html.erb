@@ -1,5 +1,3 @@
-<h1>Scorecard</h1>
-
 <div 
   id="wrestle_bet_leaderboard"
   tournament-path="<%= wrestle_bet_tournament_path(@tournament) %>">
@@ -7,25 +5,55 @@
 <table>
   <tr>
       <th></th>
+      <th></th>
       <th>Total</th>
       <% @tournament.weights.each do |weight| %>
         <th><%= weight %></th>
       <% end %>
-      <th>Jesus</th>
-      <th>Turns</th>
-      <th>Challenge<th>
+      <th>
+        <%= image_tag "wrestle_bet/jesus.png", :size => '100x100'%> 
+      </th>
+      <th>
+          <%= image_tag "wrestle_bet/exposure.png", :size => "100x100" %> 
+      </th>
+      <th>
+        <%= image_tag "wrestle_bet/challenge.png" , :size => '100x100'%>       
+      </th>
   </tr>
   
   <% @leaderboard.users.each do |user| %>
-    <tr>
-      <th><%= user.email %></th>
-      <td><%= @leaderboard.score_for_user(user) %></td>
+    <tr class="wrestle_bet_first_place_<%= @leaderboard.user_in_first_place?(user) %>">
+      <th>
+        <%= user.handle %>
+        <% if @leaderboard.user_in_first_place?(user) %>
+          <%= image_tag "wrestle_bet/trophy.png", size: "25x25" %>
+        <% end %>
+      </th>
+      <td>
+        <%= image_tag user.avatar.variant(:small_thumb) %><br/>
+      </td>
+      <td class="total_score_for_user"><%= @leaderboard.score_for_user(user) %></td>
       <% @tournament.weights.each do |weight| %>
-        <td><%= @leaderboard.score_for_weight(user, weight) %></td>
+        <% result = @leaderboard.score_for_weight(user, weight) %>
+        <td class="spread_bet_result_<%= result %>">
+          <% if result == 1 %>
+            <%= image_tag "wrestle_bet/green_check.png", size: "25x25"%>
+          <% else %>
+            <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
+          <% end %>
+        </td>
       <% end %>
-      <td><%= @leaderboard.score_for_prop(user, :jesus) %></td>
-      <td><%= @leaderboard.score_for_prop(user, :exposure) %></td>
-      <td><%= @leaderboard.score_for_prop(user, :challenge) %></td>
+
+      <% [:jesus, :exposure, :challenges].each do |prop| %>
+        <% result = @leaderboard.score_for_prop(user, prop) %>
+        <td class="prop_bet_result_<%= result %>">
+          <% if result == 1 %>
+            <%= image_tag "wrestle_bet/green_check.png", size: "25x25"%>
+          <% else %>
+            <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
+          <% end %>
+        </td>
+      <% end %>
     </tr>
   <% end %>
 

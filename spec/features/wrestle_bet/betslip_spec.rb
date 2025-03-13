@@ -2,7 +2,7 @@ require "rails_helper"
 
 feature "WrestleBet Betslip page" do
   before do
-    @user = FactoryBot.create(:user, email: "hello@example.com")
+    @user = FactoryBot.create(:user, email: "hello@example.com", handle: "hello")
     @home_wrestler = FactoryBot.create(:wrestle_bet_wrestler, name: "Gable Steveson")
     @away_wrestler = FactoryBot.create(:wrestle_bet_wrestler, name: "Greg Kerkvliet")
     @match = FactoryBot.create(:wrestle_bet_match,
@@ -91,7 +91,7 @@ feature "WrestleBet Betslip page" do
     it "lets you bet on the home wrestler" do
       sign_in(@user)
       visit @betslip_path
-      expect(page).to have_content("hello@example.com Betslip")
+      expect(page).to have_content("hello Betslip")
 
       expect do
         click_button "Bet on Gable Steveson"
@@ -103,13 +103,13 @@ feature "WrestleBet Betslip page" do
       expect(bet.wager).to eq("home")
 
       expect(page).to have_content("Bet on Gable Steveson placed")
-      expect(page).to have_content("hello@example.com Betslip")
+      expect(page).to have_content("hello Betslip")
     end
 
     it "lets you bet on the away wrestler" do
       sign_in(@user)
       visit @betslip_path
-      expect(page).to have_content("hello@example.com Betslip")
+      expect(page).to have_content("hello Betslip")
 
       expect do
         click_button "Bet on Greg Kerkvliet"
@@ -121,7 +121,7 @@ feature "WrestleBet Betslip page" do
       expect(bet.wager).to eq("away")
 
       expect(page).to have_content("Bet on Greg Kerkvliet placed")
-      expect(page).to have_content("hello@example.com Betslip")
+      expect(page).to have_content("hello Betslip")
     end
   end
 

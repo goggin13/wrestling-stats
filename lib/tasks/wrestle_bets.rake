@@ -21,35 +21,46 @@ namespace :wrestle_bet do
     WrestleBet::SpreadBet.destroy_all
     WrestleBet::PropBet.destroy_all
 
-    tournament = WrestleBet::Tournament.create!(name: "2025 NCAA")
+    tournament = WrestleBet::Tournament.create!(
+      name: "2025 NCAA",
+      jesus: 5,
+      exposure: 3,
+      challenges: 5,
+    )
+
 
     users = [
-      {email: "klynch425@gmail.com", file: "kelly.png"},
-      {email: "lucaslemanski2@gmail.com", file: "luke.png"},
-      {email: "choy.ash831@gmail.com", file: "ashley.png"},
-      {email: "danstipanuk@gmail.com", file: "dan.jpg"},
-      {email: "katepotteiger@gmail.com", file: "kate.png"},
-      {email: "seg12@cornell.edu", file: "steve.png"},
-      {email: "cookediana@gmail.com", file: "diana.png"},
-      {email: "cepluard@gmail.com", file: "claire.png"},
-      {email: "Tworhach35@gmail.com", file: "tom.png"}
+      {email: "klynch425@gmail.com", handle: "Kelly", file: "kelly.png"},
+      {email: "lucaslemanski2@gmail.com", handle: "Lucas", file: "luke.png"},
+      {email: "choy.ash831@gmail.com", handle: "Ashley", file: "ashley.png"},
+      {email: "danstipanuk@gmail.com", handle: "Dan", file: "dan.jpg"},
+      {email: "katepotteiger@gmail.com", handle: "Kate", file: "kate.png"},
+      {email: "seg12@cornell.edu", handle: "Goggin SR", file: "steve.png"},
+      {email: "cookediana@gmail.com", handle: "Diana", file: "diana.png"},
+      {email: "cepluard@gmail.com", handle: "Claire", file: "claire.png"},
+      {email: "tworhach35@gmail.com", handle: "Tom", file: "tom.png"}
     ].map do |user_data|
       user = User.where(email: user_data[:email]).first
       if user.present?
         user
+        user.update(handle: user_data[:handle])
       else
         password = SecureRandom.hex(8)
+        puts user_data
         user = User.create!(
           :email => user_data[:email],
           :password => password,
           :password_confirmation => password,
+          :handle => user_data[:handle]
         )
       end
 
-      image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", user_data[:file])
-      puts "attaching #{image_path}"
-      user.avatar.attach(io: File.open(image_path), filename: user_data[:file])
-      sleep_in_production
+      if !user.avatar.attached? || ENV["REFRESH_IMAGES"].present?
+        image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", user_data[:file])
+        puts "attaching #{image_path}"
+        user.avatar.attach(io: File.open(image_path), filename: user_data[:file])
+        sleep_in_production
+      end
 
       user
     end
@@ -57,6 +68,7 @@ namespace :wrestle_bet do
     goggin = User.where(email: "goggin13@gmail.com").first!
     image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", "matt.png")
     goggin.avatar.attach(io: File.open(image_path), filename: "matt.png")
+    goggin.update(handle: "Goggin JR")
     sleep_in_production
     users << goggin
 
@@ -113,11 +125,14 @@ namespace :wrestle_bet do
         )
       end
 
+      home_score, away_score = (1..15).to_a.shuffle[0..1]
       match = WrestleBet::Match.create!(
         weight: weight,
         spread: spread,
         home_wrestler: wrestlers[0],
         away_wrestler: wrestlers[1],
+        home_score: home_score,
+        away_score: away_score,
         tournament: tournament,
       )
 
@@ -162,6 +177,10 @@ namespace :wrestle_bet do
       "Stephen Buchanan" => "https://image-cdn.essentiallysports.com/wp-content/uploads/Stephen-Buchana-e1723573431335.jpg",
       "Gable Steveson" => "https://img.olympics.com/images/image/private/t_s_pog_staticContent_hero_lg_2x/f_auto/primary/eguu89dfco7qzu3s1hae",
       "Greg Kerkfleit" => "https://www.ydr.com/gcdn/authoring/authoring-images/2024/03/24/PPYR/73083946007-kerk.jpg?crop=3642,2049,x0,y0&width=3200&height=1801&format=pjpg&auto=webp",
+      "Jacob Cardenas" => "https://d2779tscntxxsw.cloudfront.net/66102e66a1754.png",
+      "Brock Hardy" => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVVArcNm2xS7ZhXw6w-umHSjxpHRbVjexAsA&s",
+      "Andrew Alirez" => "https://d2779tscntxxsw.cloudfront.net/64a711eaf22fa.png?width=650&quality=80 ",
+      "Matt Ramos" => "https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Fpurduesports.com%2Fimages%2F2023%2F3%2F17%2F_N8Q1934-3.jpg&height=300&type=webp",
     }.each do |name, avatar_url|
       wrestler = WrestleBet::Wrestler.where(name: name).first!
       puts name

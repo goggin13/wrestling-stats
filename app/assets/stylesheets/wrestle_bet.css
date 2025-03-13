@@ -48,6 +48,10 @@
 .wrestle_bet_college {
 }
 
+td.wrestle_bet_wrestler {
+  border: medium dotted black;
+}
+
 #wrestle_bet_spread_bets .wrestle_bet_wrestler.current_bet {
   border: medium solid black;
   border-radius: 10px;
@@ -67,4 +71,37 @@
 .wrestle_bet_bet_lost {
   background-color: salmon;
   color: white;
+}
+
+
+#wrestle_bet_leaderboard table {
+  border-collapse: collapse; 
+  width: 100%;
+}
+
+#wrestle_bet_leaderboard th {
+  font-size: 1.5em;
+}
+
+#wrestle_bet_leaderboard td {
+  text-align: center;
+}
+
+#wrestle_bet_leaderboard tr.wrestle_bet_first_place_true {
+  border: thick solid gold;
+}
+
+td.total_score_for_user {
+  font-weight: bolder;
+  font-size: 2em;
+}
+
+td.spread_bet_result_1, 
+td.prop_bet_result_1 {
+  color: darkgreen;
+}
+
+td.spread_bet_result_0,
+td.prop_bet_result_0 {
+  color: red;
 }

@@ -1,15 +1,31 @@
 <h1>Users</h1>
 
-<ul>
+<table>
   <% User.all.each do |user| %>
-    <li>
-      <% if user.avatar.attached? %>
-        <%= image_tag user.avatar.variant(:thumb) %>
-      <% end %>
+    <tr>
+      <td>
+        <% if user.avatar.attached? %>
+          <%= image_tag user.avatar.variant(:thumb) %>
+        <% end %>
+      </td>
 
-      <%= user_betslip_link(user, @tournament) %>
+      <td>
+        <%= user_betslip_link(user, @tournament) %>
+      </td>
 
-      <%= link_to("Edit", edit_user_registration_path(user)) %>
-    </li>
+      <td>
+        <% if user.wrestle_bet_prop_bet.present? %>
+          jesus: <%= user.wrestle_bet_prop_bet.jesus %>,
+          turns: <%= user.wrestle_bet_prop_bet.exposure %>,
+          chall: <%= user.wrestle_bet_prop_bet.challenges %>,
+        <% end %>
+      </td>
+
+      <td>
+        <% user.wrestle_bet_bets.all.sort_by { |b| b.match.weight }.each do |bet| %>
+          <%= bet.match.weight %>: <%= bet.wager %>
+        <% end %>
+      </td>
+    </tr>
   <% end %>
-</ul>
+</table>
