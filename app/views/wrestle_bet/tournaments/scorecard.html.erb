@@ -1,0 +1,78 @@
+<div 
+  id="wrestle_bet_leaderboard"
+  tournament-path="<%= wrestle_bet_tournament_path(@tournament) %>">
+
+<table>
+  <tr>
+      <th></th>
+      <th></th>
+      <th>Total</th>
+      <% @tournament.weights.each do |weight| %>
+        <th><%= weight %></th>
+      <% end %>
+      <th>
+        <%= image_tag "wrestle_bet/jesus_2.png", :size => '100x100'%>
+        <br/>
+        ( <%= @tournament.jesus %> )
+      </th>
+      <th>
+        <%= image_tag "wrestle_bet/exposure.png", :size => "100x100" %> 
+        <br/>
+        ( <%= @tournament.exposure %> )
+      </th>
+      <th>
+        <%= image_tag "wrestle_bet/challenge.png" , :size => '100x100'%>       
+        <br/>
+        ( <%= @tournament.challenges %> )
+      </th>
+  </tr>
+  
+  <% @leaderboard.users.each do |user| %>
+    <tr class="wrestle_bet_first_place_<%= @leaderboard.user_in_first_place?(user) %>">
+      <th>
+        <% if @leaderboard.user_in_first_place?(user) %>
+          <%= image_tag "wrestle_bet/trophy.png", size: "50x50" %>
+        <% end %>
+        <%= user.handle %>
+        <% if @leaderboard.user_in_first_place?(user) %>
+          <%= image_tag "wrestle_bet/trophy.png", size: "50x50" %>
+        <% end %>
+      </th>
+      <td>
+        <%= image_tag user.avatar.variant(:small_thumb) %><br/>
+      </td>
+      <td class="total_score_for_user"><%= @leaderboard.score_for_user(user) %></td>
+      <% @tournament.weights.each do |weight| %>
+        <% result = @leaderboard.score_for_weight(user, weight) %>
+        <td class="spread_bet_result_<%= result %>">
+          <% if result == 1 %>
+            <%= image_tag "wrestle_bet/green_check.png", size: "25x25"%>
+          <% elsif @tournament.weight_is_completed?(weight) %>
+            <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
+          <% end %>
+        </td>
+      <% end %>
+
+      <% [:jesus, :exposure, :challenges].each do |prop| %>
+        <% result = @leaderboard.score_for_prop(user, prop) %>
+        <% prop_bet = WrestleBet::PropBet.where(user: user).first %>
+
+        <td class="prop_bet_result_<%= result %>">
+          <% if result == 1 %>
+            <%= image_tag "wrestle_bet/green_check.png", size: "25x25"%>
+          <% elsif @tournament.completed? %>
+            <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
+          <% end %>
+
+          ( <%= prop_bet.send(prop) %> )
+        </td>
+
+      <% end %>
+    </tr>
+  <% end %>
+
+</table>
+
+<%= render partial: "prop_bet_animations" %>
+
+</div>

@@ -108,3 +108,230 @@ function initialize_etoh() {
 
   startTime();
 }
+
+/* WRESTLE_BET */
+
+$(document).ready(function () {
+  var $match_display_div = $("#wrestle_bet_match_display")
+  if ($match_display_div.length > 0) {
+    var match_path = $match_display_div.attr("match-path");
+    var tournament_path = $match_display_div.attr("tournament-path");
+    poll_for_prop_bet(tournament_path);
+    poll_for_match(match_path);
+  };
+
+  var $leaderboard_div = $("#wrestle_bet_leaderboard")
+  if ($leaderboard_div.length > 0) {
+    var tournament_path = $leaderboard_div.attr("tournament-path");
+    poll_for_tournament(tournament_path);
+    poll_for_prop_bet(tournament_path);
+    fade_in_leader_rows();
+  };
+
+  var $prop_bet_toggle = $("#prop_bet_toggle");
+  if ($prop_bet_toggle.length > 0) {
+    hide_show_prop_bets($prop_bet_toggle);
+  }
+
+  console.log("checling");
+  if ($("#wrestle_bet_betslip").length > 0) {
+    listen_for_bets();
+  }
+});
+
+function fade_in_leader_rows() {
+  var rows = $("table tr:not(:first)").get().reverse();
+  $(rows).each(function(index) {
+    $(this).hide().delay(index * 1000).fadeIn(1000);
+  });
+};
+
+function poll_for_prop_bet(tournament_path) {
+  console.log("polling for prop bets:", tournament_path);
+  var initial = true;
+  var jesus_count = -1;
+  var exposure_count = -1;
+  var challenge_count = -1;
+
+  var poll = function () {
+    $.getJSON(tournament_path)
+      .done(function (tournament) {
+        console.log(tournament);
+
+        if (initial) {
+          initial = false;
+          console.log("initializing prop_bets");
+          jesus_count = tournament.jesus;
+          exposure_count = tournament.exposure;
+          challenge_count = tournament.challenges;
+        } else if (tournament.jesus != jesus_count) {
+          console.log("Display Jesus");
+          jesus_count = tournament.jesus;
+          show_jesus();
+        } else if (tournament.exposure != exposure_count) {
+          console.log("Display exposure");
+          exposure_count = tournament.exposure;
+          show_exposure();
+        } else if (tournament.challenges != challenge_count) {
+          console.log("Display challenge");
+          challenge_count = tournament.challenges;
+          show_challenge();
+        }
+
+        setTimeout(poll, 5000);
+      }).fail(function (data) {
+        console.log("ERROR - failed to get tournament data");
+        console.log(data);
+      });
+  }
+
+  poll();
+}
+
+function poll_for_tournament(tournament_path) {
+  console.log("polling for tournament:", tournament_path);
+  var poll = function () {
+    $.getJSON(tournament_path)
+      .done(function (tournament) {
+        console.log(tournament);
+        if (tournament.match_in_progress) {
+          console.log("new match starting");
+          reload_page_in_x_seconds(1);
+        } else {
+          setTimeout(poll, 5000);
+        }
+      }).fail(function (data) {
+        console.log("ERROR - failed to get tournament data");
+        console.log(data);
+      });
+  }
+
+  poll();
+};
+
+function poll_for_match(match_path) {
+  console.log("polling for match:", match_path);
+  var poll = function () {
+    $.getJSON(match_path)
+      .done(function (match) {
+        console.log(match);
+        if (match.home_score !== null) {
+          console.log("winner!");
+          set_winner(match);
+        } else {
+          setTimeout(poll, 5000);
+        }
+      }).fail(function (data) {
+        console.log("ERROR - failed to get match data");
+        console.log(data);
+      });
+  }
+
+  poll();
+};
+
+function random_fatality() {
+  var root = "https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/fatalaties/";
+  var min = 1;
+  var max = 27;
+  var random = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return root + random + ".gif";
+};
+
+function set_winner(match) {
+  var winner = match.home_score > match.away_score ? "home" : "away";
+  var loser = winner == "home" ? "away" : "home";
+
+  var fatality = random_fatality();
+  console.log("fatality");
+  $("#" + loser + "_wrestler").attr("src", fatality);
+  console.log("setting winner!", winner);
+
+  $(".wrestle_bet_result.lost").show();
+  $.each(match.winning_bet_ids, function(index, bet_id) {
+    $("#wrestle_bet_wager_" + bet_id + " .wrestle_bet_result.lost").hide();
+    $("#wrestle_bet_wager_" + bet_id + " .wrestle_bet_result.won").show();
+  });
+
+  reload_page_in_x_seconds(20);
+};
+
+function show_jesus() {
+  const sound = new Audio("https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/wrestle_bets/heaven.mp3");
+  sound.play();
+  $("#wrestle_bet_jesus").fadeIn(7000);
+  reload_page_in_x_seconds(15);
+};
+
+function show_exposure() {
+  $("#wrestle_bet_exposure").fadeIn(7000);
+  reload_page_in_x_seconds(10);
+};
+
+function show_challenge() {
+  $("#wrestle_bet_challenge").fadeIn(7000);
+  reload_page_in_x_seconds(10);
+};
+
+function reload_page_in_x_seconds(seconds) {
+  console.log("reloading page in ", seconds, " seconds");
+  setTimeout(function () {
+    window.location.reload(true);
+  }, seconds * 1000);
+};
+
+function hide_show_prop_bets($prop_bet_toggle) {
+  $prop_bet_toggle.click(function () {
+    $("#prop_bet_content").toggle();
+    $(".prop_bets_hide_show").toggle();
+  });
+}
+
+function listen_for_bets() {
+  console.log("listening");
+  $("#wrestle_bet_spread_bets td.wrestle_bet_wrestler form").on("submit", function(e) {
+    e.preventDefault();
+    console.log("clicked");
+
+    var $form = $(this);
+    var match_id = $(this).find('input[name="wrestle_bet_spread_bet[match_id]"]').val();
+    var wager = $(this).find('input[name="wrestle_bet_spread_bet[wager]"]').val();
+    var form_data = {
+      wrestle_bet_spread_bet: {
+        match_id: match_id,
+        wager: wager
+      }
+    };
+    console.log("POSTing ", form_data);
+    console.log($("meta[name='csrf-token']").attr("content"));
+
+    var path = "/wrestle_bet/spread_bets";
+
+    $.ajax({
+      url: path,
+      type: "POST",
+      contentType: "application/json",
+      headers: {
+        "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+        "Accept": "application/json"
+      },
+      data: JSON.stringify(form_data),
+      success: function(response) {
+        console.log("Success:", response);
+        $form.parents("tr").children("td").removeClass("current_bet");
+        $form.parents("td").addClass("current_bet");
+      },
+      error: function(xhr, status, error) {
+        try {
+          const error_data = JSON.parse(xhr.responseText);
+          console.log('Parsed error data:', error_data);
+          alert(error_data.error);
+          reload_page_in_x_seconds(0);
+        } catch (e) {
+          console.log('Response is not JSON');
+        }
+      }
+    });
+  });
+};

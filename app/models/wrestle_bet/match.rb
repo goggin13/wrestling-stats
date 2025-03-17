@@ -1,0 +1,48 @@
+class WrestleBet::Match < ApplicationRecord
+  belongs_to :home_wrestler, class_name: "WrestleBet::Wrestler", foreign_key: "home_wrestler_id"
+  belongs_to :away_wrestler, class_name: "WrestleBet::Wrestler", foreign_key: "away_wrestler_id"
+  belongs_to :tournament
+  has_many :bets, class_name: "WrestleBet::SpreadBet"
+  validates_presence_of :weight
+  validates_presence_of :spread
+
+  def title
+    "#{weight} lbs: #{home_wrestler.name} (#{home_wrestler.college.name}) vs. #{away_wrestler.name} (#{away_wrestler.college.name})"
+  end
+
+  def short_title
+    "#{weight} lbs: #{home_wrestler.name.split(" ")[0]} vs. #{away_wrestler.name.split(" ")[0]}"
+  end
+
+  def formatted_home_spread
+    spread < 0 ? spread : "+#{spread}"
+  end
+
+  def formatted_away_spread
+    spread < 0 ? "+#{spread.abs}" : -1 * spread
+  end
+
+  def current_bet_for_user(user)
+    bets.where(user_id: user.id).first
+  end
+
+  def completed?
+    home_score.present? && away_score.present?
+  end
+
+  def open_for_betting?
+    !started? && !completed?
+  end
+
+  def home_wagers
+    bets.where(wager: "home")
+  end
+
+  def away_wagers
+    bets.where(wager: "away")
+  end
+
+  def winning_spread_bet_ids
+    bets.select(&:won?).map(&:id)
+  end
+end

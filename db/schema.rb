@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_06_034917) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_13_022444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -119,8 +119,60 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_034917) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "handle"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "wrestle_bet_matches", force: :cascade do |t|
+    t.integer "weight"
+    t.boolean "started", default: false
+    t.integer "home_wrestler_id"
+    t.integer "away_wrestler_id"
+    t.integer "home_score"
+    t.integer "away_score"
+    t.integer "tournament_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "spread"
+  end
+
+  create_table "wrestle_bet_prop_bets", force: :cascade do |t|
+    t.integer "tournament_id"
+    t.bigint "user_id", null: false
+    t.integer "jesus"
+    t.integer "exposure"
+    t.integer "challenges"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wrestle_bet_prop_bets_on_user_id"
+  end
+
+  create_table "wrestle_bet_spread_bets", force: :cascade do |t|
+    t.integer "match_id"
+    t.bigint "user_id", null: false
+    t.string "wager"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wrestle_bet_spread_bets_on_user_id"
+  end
+
+  create_table "wrestle_bet_tournaments", force: :cascade do |t|
+    t.string "name"
+    t.integer "current_match_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "jesus", default: 0
+    t.integer "exposure", default: 0
+    t.integer "challenges", default: 0
+  end
+
+  create_table "wrestle_bet_wrestlers", force: :cascade do |t|
+    t.string "name"
+    t.bigint "college_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["college_id"], name: "index_wrestle_bet_wrestlers_on_college_id"
   end
 
   create_table "wrestlers", force: :cascade do |t|
@@ -137,5 +189,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_034917) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "wrestle_bet_prop_bets", "users"
+  add_foreign_key "wrestle_bet_spread_bets", "users"
+  add_foreign_key "wrestle_bet_wrestlers", "colleges"
   add_foreign_key "wrestlers", "colleges"
 end

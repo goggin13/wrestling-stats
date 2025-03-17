@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Spread bets</h1>
+
+<div id="wrestle_bet_spread_bets">
+  <% @wrestle_bet_spread_bets.each do |wrestle_bet_spread_bet| %>
+    <%= render wrestle_bet_spread_bet %>
+    <p>
+      <%= link_to "Show this spread bet", wrestle_bet_spread_bet %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New spread bet", new_wrestle_bet_spread_bet_path %>

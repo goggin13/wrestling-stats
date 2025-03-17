@@ -1,0 +1,2 @@
+module WrestleBet::MatchesHelper
+end

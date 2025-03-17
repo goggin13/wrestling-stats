@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NCAA Championships</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag asset_path('wrestling.png') %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+
+    <% if user_signed_in? && current_user.admin? && !(defined?(@hide_navigation) && @hide_navigation) %>
+      <%= link_to "Matches", wrestle_bet_matches_path %>
+      <%= link_to "Wrestlers", wrestle_bet_wrestlers_path %>
+      <%= link_to "Bets", wrestle_bet_spread_bets_path %>
+      <% if @tournament.present? %>
+        <%= link_to "Betslip", wrestle_bet_betslip_path(id: @tournament.id) %>
+        <%= link_to "Display", wrestle_bet_display_path(id: @tournament.id) %>
+        <%= link_to "Users", wrestle_bet_user_links_path(id: @tournament.id) %>
+      <% end %>
+    <% end %>
+
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+
+    <%= yield %>
+
+  </body>
+</html>

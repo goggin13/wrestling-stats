@@ -1,0 +1,167 @@
+#wrestle_bet_betslip,
+#wrestle_bet_match_display {
+  text-align: center;
+}
+
+#wrestle_bet_betslip table,
+#wrestle_bet_match_display table {
+  width: 100%;
+}
+
+#wrestle_bet_leaderboard,
+#wrestle_bet_match_display {
+  background-image: url("wrestle_bet/ncaa_mat.jpg");
+  background-size: cover;
+  background-position: center;
+};
+
+#wrestle_bet_match_display {
+}
+
+#wrestle_bet_leaderboard table {
+  background: white;
+  opacity: 75%;
+}
+
+#wrestle_bet_match_display td {
+  width: 50%;
+  vertical-align: top;
+  color: white;
+  font-size: 2em;
+}
+
+#wrestle_bet_prop_bets {
+  border: thin solid black;
+  padding-bottom: 20px;
+}
+
+#wrestle_bet_prop_bets input[type=submit] {
+  border-radius: 10px;
+  margin-top: 14px;
+  padding: 27px;
+  font-size: 2em;
+  background-color: salmon;
+}
+
+#wrestle_bet_spread_bets {
+  border: thin solid black;
+  margin-top: 20px;
+}
+
+#wrestle_bet_match_display table td {
+  text-align: center;
+}
+
+.wrestle_bet_prop_bet_animation {
+  display: none;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  color: white; background: #666666; opacity: .9;
+  z-index: 1000;
+}
+
+.prop_bet_score {
+  width: 33%;
+  float: left;
+}
+
+.wrestle_bet_college {
+}
+
+td.wrestle_bet_wrestler {
+  border: medium dotted black;
+}
+
+#wrestle_bet_spread_bets .wrestle_bet_wrestler.current_bet {
+  border: medium solid black;
+  border-radius: 10px;
+}
+
+.wrestle_bet_bet_outcome {
+  border-radius: 10px;
+  padding: 11px 0px;
+  font-weight: bold;
+}
+
+.wrestle_bet_bet_won {
+  background-color: lightgreen;
+  color: black;
+}
+
+.wrestle_bet_bet_lost {
+  background-color: salmon;
+  color: white;
+}
+
+
+#wrestle_bet_leaderboard table {
+  border-collapse: collapse; 
+  width: 100%;
+}
+
+#wrestle_bet_leaderboard th {
+  font-size: 1.5em;
+}
+
+#wrestle_bet_leaderboard td {
+  text-align: center;
+}
+
+#wrestle_bet_leaderboard tr.wrestle_bet_first_place_true {
+  border: thick solid gold;
+  font-size: 2em;
+}
+
+td.total_score_for_user {
+  font-weight: bolder;
+  font-size: 2em;
+}
+
+td.spread_bet_result_1, 
+td.prop_bet_result_1 {
+  color: darkgreen;
+}
+
+td.spread_bet_result_0,
+td.prop_bet_result_0 {
+  color: red;
+}
+
+td.wrestle_bet_wrestler.current_bet input[type='submit'] {
+  display: none;
+}
+
+.wrestle_bet_wager {
+  position: relative;
+}
+.wrestle_bet_wager.home {
+  float: left;
+  margin-left: 15px;
+}
+.wrestle_bet_wager.away {
+  float: right;
+  margin-right: 15px;
+}
+
+.wrestle_bet_wager .wrestle_bet_result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  display: none;
+}
+
+.wrestle_bet_result.lost {
+  color: red;
+}
+
+.wrestle_bet_result.won {
+  color: lightgreen;
+}
+
+#wrestle_bet_display_avatars img {
+  max-height: 400px;
+}

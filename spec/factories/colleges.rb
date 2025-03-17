@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :college do
-    name { "MyString" }
+    sequence :name do |n|
+      "State University - #{n}"
+    end
   end
 end

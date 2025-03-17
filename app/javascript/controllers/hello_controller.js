@@ -1,7 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
 
-export default class extends Controller {
-  connect() {
-    this.element.textContent = "Hello World!"
-  }
-}
+// I literally do not have any idea why this works here
+// ToDo: figure out this JS pipeline

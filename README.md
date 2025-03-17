@@ -35,13 +35,16 @@ psql -Udumbledore -d dumbledore_development
   - /views/layouts
 - new ApplicationController with layout in new controller dir
 - generate new nested models
-  - RAILS_ENV=development bundle exec rails g NewApplication::Drinks oz:integer abv:integer
+  - RAILS_ENV=development bundle exec rails g model NewApplication::Drinks oz:integer abv:integer
   - this will also add a models/new_application.rb module with the table prefix
 - add a new controller in new_application
 - add namespaced route in config/routes
 - add a new view in /views/new_application/controller/index.html.erb
 - Can now visit in browser
 
-
 # Run a query from the App container from a file
 psql -Udumbledore -d dumbledore_development -h database -f query.sql
+
+# Run rspec without certain irectories
+rspec --exclude-pattern="**/advocate/*"
+

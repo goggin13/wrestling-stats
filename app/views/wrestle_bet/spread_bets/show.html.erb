@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @wrestle_bet_spread_bet %>
+
+<div>
+  <%= link_to "Edit this spread bet", edit_wrestle_bet_spread_bet_path(@wrestle_bet_spread_bet) %> |
+  <%= link_to "Back to spread bets", wrestle_bet_spread_bets_path %>
+
+  <%= button_to "Destroy this spread bet", @wrestle_bet_spread_bet, method: :delete %>
+</div>

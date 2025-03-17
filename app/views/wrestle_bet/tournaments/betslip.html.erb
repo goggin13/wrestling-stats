@@ -1,0 +1,120 @@
+<div id="wrestle_bet_betslip">
+
+<h1><%= current_user.handle %> Betslip</h1>
+
+<%= image_tag current_user.avatar.variant(:thumb) %>
+
+<div id="wrestle_bet_prop_bets">
+  <h2>Prop Bets</h2>
+  <div id="prop_bet_toggle">
+    <% if @tournament.started? %>
+      <div class="prop_bets_hide_show <%= @tournament.started? ? "" : "hidden" %>">
+        Show bets
+      </div>
+      <div class="prop_bets_hide_show <%= @tournament.started? ? "hidden" : "" %>">
+        Hide bets
+      </div>
+    <% end %>
+  </div>
+  <div id="prop_bet_content" class="<%= @tournament.started? ? "hidden" : "" %>">
+    <p>
+      These must be entered before the first match starts
+    </p>
+    <%= render partial: "wrestle_bet/prop_bets/form", locals: {prop_bet: @prop_bet} %>
+  </div>
+</div>
+
+<div id="wrestle_bet_spread_bets">
+<h2>Match Bets</h2>
+<p>
+  These can be entered or altered up until each match begins
+</p>
+
+<table>
+
+  <% @matches.each do |match| %>
+
+  <% current_bet = match.current_bet_for_user(current_user) %>
+
+  <tr>
+    <th colspan='2'>
+      <%= match.weight %> lbs <br/>
+      <%= match.home_wrestler.name %> 
+      (<%= match.home_wrestler.college.name %>) 
+
+      <br/>
+
+      <%= match.away_wrestler.name %> 
+      (<%= match.away_wrestler.college.name %>)
+
+      <% if match.completed? %>
+        <br/>Final score: <%= match.home_score %> to <%= match.away_score %>
+      <% end %>
+    </th>
+  </tr>
+
+  <tr>
+    <td colspan='2'>
+      <% if match.completed? && current_bet.present? %>
+
+        <% if current_bet.won? %>
+          <div class="wrestle_bet_bet_outcome wrestle_bet_bet_won">
+            Bet Won
+          </div>
+        <% else %>
+          <div class="wrestle_bet_bet_outcome wrestle_bet_bet_lost">
+            Bet Lost
+          </div>
+        <% end %>
+      <% elsif match.completed? %>
+        match concluded
+      <% elsif match.started? %>
+        betting closed, match is in progress
+      <% else %>
+        betting open
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "home" ? "current_bet" : "" %>">
+      <%= image_tag match.home_wrestler.avatar.variant(:thumb) %><br/>
+      <%= match.home_wrestler.name %> <br/>
+      <%= match.formatted_home_spread %> <br/>
+
+      <% if match.open_for_betting? %>
+        <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "home")) do |form| %>
+          <%= form.hidden_field :match_id %>
+          <%= form.hidden_field :wager %>
+
+          <div>
+            <%= form.submit "Bet on #{match.home_wrestler.name}" %>
+          </div>
+        <% end %>
+      <% end %>
+    </td>
+
+    <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "away" ? "current_bet" : "" %>">
+      <%= image_tag match.away_wrestler.avatar.variant(:thumb) %><br/>
+      <%= match.away_wrestler.name %> <br/>
+      <%= match.formatted_away_spread %> <br/>
+
+      <% if match.open_for_betting? %>
+        <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "away")) do |form| %>
+          <%= form.hidden_field :match_id %>
+          <%= form.hidden_field :wager %>
+
+          <div>
+            <%= form.submit "Bet on #{match.away_wrestler.name}" %>
+          </div>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
+
+  <% end %>
+
+
+</table>
+</div>
+</div>
