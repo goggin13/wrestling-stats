@@ -140,6 +140,8 @@ $(document).ready(function () {
 });
 
 function fade_in_leader_rows() {
+  const sound = new Audio("https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/wrestle_bets/trumpet_fanfare.mp3");
+  sound.play();
   var rows = $("table tr:not(:first)").get().reverse();
   $(rows).each(function(index) {
     $(this).hide().delay(index * 1000).fadeIn(1000);
@@ -167,7 +169,7 @@ function poll_for_prop_bet(tournament_path) {
         } else if (tournament.jesus != jesus_count) {
           console.log("Display Jesus");
           jesus_count = tournament.jesus;
-          show_jesus();
+          show_jesus(tournament.completed);
         } else if (tournament.exposure != exposure_count) {
           console.log("Display exposure");
           exposure_count = tournament.exposure;
@@ -257,21 +259,25 @@ function set_winner(match) {
   reload_page_in_x_seconds(20);
 };
 
-function show_jesus() {
-  const sound = new Audio("https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/wrestle_bets/heaven.mp3");
+function show_jesus(tournament_completed) {
+  const sound = new Audio("https://dumbledore-public-assets.s3.us-east-1.amazonaws.com/wrestle_bets/angel_choir.mp3");
   sound.play();
-  $("#wrestle_bet_jesus").fadeIn(7000);
-  reload_page_in_x_seconds(15);
+  if (tournament_completed) {
+    $("#wrestle_bet_jesus").fadeIn(7000);
+    reload_page_in_x_seconds(15);
+  } else {
+    $("#wrestle_bet_jesus").fadeIn(7000).delay(7000).fadeOut(7000);
+  }
 };
 
 function show_exposure() {
   $("#wrestle_bet_exposure").fadeIn(7000);
-  reload_page_in_x_seconds(10);
+  reload_page_in_x_seconds(30);
 };
 
 function show_challenge() {
   $("#wrestle_bet_challenge").fadeIn(7000);
-  reload_page_in_x_seconds(10);
+  reload_page_in_x_seconds(30);
 };
 
 function reload_page_in_x_seconds(seconds) {

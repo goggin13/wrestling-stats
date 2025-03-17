@@ -44,7 +44,10 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
     @tournament = WrestleBet::Tournament.find(params[:id])
     render json: @tournament.as_json(
       only: [:id, :jesus, :exposure, :challenges],
-    ).merge(match_in_progress: @tournament.current_match.present?)
+    ).merge(
+      match_in_progress: @tournament.current_match.present?,
+      completed: @tournament.completed?
+    )
   end
 
   def update
