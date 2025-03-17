@@ -7,6 +7,8 @@
         <% if user.avatar.attached? %>
           <%= image_tag user.avatar.variant(:thumb) %>
         <% end %>
+
+        <%= user.handle %>
       </td>
 
       <td>

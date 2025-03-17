@@ -80,7 +80,7 @@
     <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "home" ? "current_bet" : "" %>">
       <%= image_tag match.home_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.home_wrestler.name %> <br/>
-      <%= match.spread < 0 ? match.spread : "+#{match.spread}" %> <br/>
+      <%= match.formatted_home_spread %> <br/>
 
       <% if match.open_for_betting? %>
         <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "home")) do |form| %>
@@ -97,7 +97,7 @@
     <td class="wrestle_bet_wrestler <%= current_bet.present? && current_bet.wager == "away" ? "current_bet" : "" %>">
       <%= image_tag match.away_wrestler.avatar.variant(:thumb) %><br/>
       <%= match.away_wrestler.name %> <br/>
-      <%= match.spread < 0 ? "+#{match.spread.abs}" : -1 * match.spread %> <br/>
+      <%= match.formatted_away_spread %> <br/>
 
       <% if match.open_for_betting? %>
         <%= form_with(model: WrestleBet::SpreadBet.new(match: match, wager: "away")) do |form| %>

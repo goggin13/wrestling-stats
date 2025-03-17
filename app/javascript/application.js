@@ -125,6 +125,7 @@ $(document).ready(function () {
     var tournament_path = $leaderboard_div.attr("tournament-path");
     poll_for_tournament(tournament_path);
     poll_for_prop_bet(tournament_path);
+    fade_in_leader_rows();
   };
 
   var $prop_bet_toggle = $("#prop_bet_toggle");
@@ -137,6 +138,13 @@ $(document).ready(function () {
     listen_for_bets();
   }
 });
+
+function fade_in_leader_rows() {
+  var rows = $("table tr:not(:first)").get().reverse();
+  $(rows).each(function(index) {
+    $(this).hide().delay(index * 1000).fadeIn(1000);
+  });
+};
 
 function poll_for_prop_bet(tournament_path) {
   console.log("polling for prop bets:", tournament_path);
@@ -209,7 +217,7 @@ function poll_for_match(match_path) {
         console.log(match);
         if (match.home_score !== null) {
           console.log("winner!");
-          set_winner(match.home_score > match.away_score ? "home" : "away");
+          set_winner(match);
         } else {
           setTimeout(poll, 5000);
         }
@@ -231,12 +239,21 @@ function random_fatality() {
   return root + random + ".gif";
 };
 
-function set_winner(winner) {
+function set_winner(match) {
+  var winner = match.home_score > match.away_score ? "home" : "away";
   var loser = winner == "home" ? "away" : "home";
+
   var fatality = random_fatality();
   console.log("fatality");
   $("#" + loser + "_wrestler").attr("src", fatality);
   console.log("setting winner!", winner);
+
+  $(".wrestle_bet_result.lost").show();
+  $.each(match.winning_bet_ids, function(index, bet_id) {
+    $("#wrestle_bet_wager_" + bet_id + " .wrestle_bet_result.lost").hide();
+    $("#wrestle_bet_wager_" + bet_id + " .wrestle_bet_result.won").show();
+  });
+
   reload_page_in_x_seconds(20);
 };
 

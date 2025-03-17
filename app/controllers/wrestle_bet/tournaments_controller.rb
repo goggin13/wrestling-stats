@@ -27,6 +27,7 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
   end
 
   def display
+    @hide_navigation = true
     @tournament = WrestleBet::Tournament.find(params[:id])
     @match = @tournament.current_match
 

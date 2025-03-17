@@ -1,4 +1,6 @@
 class WrestleBet::PropBet < ApplicationRecord
+  validates_uniqueness_of :user
+
   belongs_to :user
   belongs_to :tournament
 

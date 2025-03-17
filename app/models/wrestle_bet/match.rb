@@ -14,6 +14,14 @@ class WrestleBet::Match < ApplicationRecord
     "#{weight} lbs: #{home_wrestler.name.split(" ")[0]} vs. #{away_wrestler.name.split(" ")[0]}"
   end
 
+  def formatted_home_spread
+    spread < 0 ? spread : "+#{spread}"
+  end
+
+  def formatted_away_spread
+    spread < 0 ? "+#{spread.abs}" : -1 * spread
+  end
+
   def current_bet_for_user(user)
     bets.where(user_id: user.id).first
   end
@@ -26,11 +34,15 @@ class WrestleBet::Match < ApplicationRecord
     !started? && !completed?
   end
 
-  def users_with_home_wagers
-    bets.where(wager: "home").map(&:user)
+  def home_wagers
+    bets.where(wager: "home")
   end
 
-  def users_with_away_wagers
-    bets.where(wager: "away").map(&:user)
+  def away_wagers
+    bets.where(wager: "away")
+  end
+
+  def winning_spread_bet_ids
+    bets.select(&:won?).map(&:id)
   end
 end

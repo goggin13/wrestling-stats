@@ -58,7 +58,7 @@
   top:50%;
   left:50%;
   transform:translate(-50%, -50%);
-  color: white; background: #666666; opacity: .8;
+  color: white; background: #666666; opacity: .9;
   z-index: 1000;
 }
 
@@ -111,6 +111,7 @@ td.wrestle_bet_wrestler {
 
 #wrestle_bet_leaderboard tr.wrestle_bet_first_place_true {
   border: thick solid gold;
+  font-size: 2em;
 }
 
 td.total_score_for_user {
@@ -130,4 +131,37 @@ td.prop_bet_result_0 {
 
 td.wrestle_bet_wrestler.current_bet input[type='submit'] {
   display: none;
+}
+
+.wrestle_bet_wager {
+  position: relative;
+}
+.wrestle_bet_wager.home {
+  float: left;
+  margin-left: 15px;
+}
+.wrestle_bet_wager.away {
+  float: right;
+  margin-right: 15px;
+}
+
+.wrestle_bet_wager .wrestle_bet_result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  display: none;
+}
+
+.wrestle_bet_result.lost {
+  color: red;
+}
+
+.wrestle_bet_result.won {
+  color: lightgreen;
+}
+
+#wrestle_bet_display_avatars img {
+  max-height: 400px;
 }

@@ -14,19 +14,15 @@
 
   <body>
 
-    <% if user_signed_in? && current_user.admin? %>
-
+    <% if user_signed_in? && current_user.admin? && !(defined?(@hide_navigation) && @hide_navigation) %>
       <%= link_to "Matches", wrestle_bet_matches_path %>
       <%= link_to "Wrestlers", wrestle_bet_wrestlers_path %>
       <%= link_to "Bets", wrestle_bet_spread_bets_path %>
-      
       <% if @tournament.present? %>
         <%= link_to "Betslip", wrestle_bet_betslip_path(id: @tournament.id) %>
         <%= link_to "Display", wrestle_bet_display_path(id: @tournament.id) %>
         <%= link_to "Users", wrestle_bet_user_links_path(id: @tournament.id) %>
       <% end %>
-
-    <% else %>
     <% end %>
 
     <% if notice %>

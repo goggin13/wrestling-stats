@@ -158,6 +158,20 @@ namespace :wrestle_bet do
     end
   end
 
+  desc "add a new user"
+  task add_user: :environment do
+    password = SecureRandom.hex(8)
+    email = "#{SecureRandom.hex(8)}@example.com"
+    puts "Handle: "
+    handle = STDIN.gets.chomp
+    user = User.create!(
+      :email => email,
+      :password => password,
+      :password_confirmation => password,
+      :handle => handle
+    )
+  end
+
   desc "Assign avatars to wrestlers, logos to colleges"
   task import_images: :environment do
     {

@@ -36,8 +36,9 @@ X - make rake task more friendly, don't destroy all wrestlers/images
 X - UI makeover party
 
 PreParty
- - which jesus to use?
  - input wrestlers/colleges as needed
+ - adjust to display
+ - show prop bet winners
 
 TimePermitting
  - more request spec testing on scoreboard/scoring

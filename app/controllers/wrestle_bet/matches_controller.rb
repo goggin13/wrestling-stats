@@ -18,7 +18,7 @@ class WrestleBet::MatchesController < WrestleBet::ApplicationController
       format.json do
         render json: @wrestle_bet_match.as_json(
           only: [:id, :home_score, :away_score]
-        )
+        ).merge(winning_bet_ids: @wrestle_bet_match.winning_spread_bet_ids)
       end
     end
   end
