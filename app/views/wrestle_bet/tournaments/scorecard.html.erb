@@ -64,7 +64,7 @@
             <%= image_tag "wrestle_bet/red_x.png", size: "25x25"%>
           <% end %>
 
-          ( <%= prop_bet.send(prop) %> )
+          ( <%= prop_bet.send(prop) if prop_bet.present? %> )
         </td>
 
       <% end %>

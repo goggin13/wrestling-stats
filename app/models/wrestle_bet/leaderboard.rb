@@ -64,6 +64,7 @@ class WrestleBet::Leaderboard
 
   def score_for_prop(user, prop)
     return 0 unless @tournament.completed?
+    return 0 unless @props_for_user.has_key?(user)
 
     @props_for_user[user][prop]
   end

@@ -3,6 +3,7 @@ require "rails_helper"
 feature "WrestleBet Betslip page" do
   before do
     @user = FactoryBot.create(:user, email: "hello@example.com", handle: "hello")
+    @admin_user = FactoryBot.create(:user, :admin)
     @home_wrestler = FactoryBot.create(:wrestle_bet_wrestler, name: "Gable Steveson")
     @away_wrestler = FactoryBot.create(:wrestle_bet_wrestler, name: "Greg Kerkvliet")
     @match = FactoryBot.create(:wrestle_bet_match,
@@ -14,6 +15,7 @@ feature "WrestleBet Betslip page" do
 
     @tournament = @match.tournament
     @betslip_path = "/wrestle_bet/tournaments/#{@tournament.id}/betslip"
+    @display_path = "/wrestle_bet/tournaments/#{@tournament.id}/display"
   end
 
   scenario "redirects with an error message if no user is logged in" do
@@ -43,9 +45,9 @@ feature "WrestleBet Betslip page" do
       expect(prop_bet.exposure).to eq(2)
       expect(prop_bet.challenges).to eq(3)
 
-      fill_in "wrestle_bet_prop_bet[jesus]", with: 4
-      fill_in "wrestle_bet_prop_bet[exposure]", with: 5
-      fill_in "wrestle_bet_prop_bet[challenges]", with: 6
+      fill_in "wrestle_bet_prop_bet[jesus]", with: 44
+      fill_in "wrestle_bet_prop_bet[exposure]", with: 55
+      fill_in "wrestle_bet_prop_bet[challenges]", with: 66
 
       expect do
         click_button "Save Prop Bets"
@@ -54,9 +56,16 @@ feature "WrestleBet Betslip page" do
       expect(page).to have_content("Prop bets updated")
 
       prop_bet.reload
-      expect(prop_bet.jesus).to eq(4)
-      expect(prop_bet.exposure).to eq(5)
-      expect(prop_bet.challenges).to eq(6)
+      expect(prop_bet.jesus).to eq(44)
+      expect(prop_bet.exposure).to eq(55)
+      expect(prop_bet.challenges).to eq(66)
+
+      sign_in(@admin_user)
+      FactoryBot.create(:wrestle_bet_spread_bet, user: @user, match: @match)
+      visit @display_path
+      expect(page).to have_content("( 44 )")
+      expect(page).to have_content("( 55 )")
+      expect(page).to have_content("( 66 )")
     end
 
     it "does not allow a bet on a prop bet if the tournament has started" do
@@ -167,6 +176,15 @@ feature "WrestleBet Betslip page" do
         visit @betslip_path
 
         expect(page).to have_content(test_data[:outcome])
+
+        sign_in(@admin_user)
+        visit @display_path
+
+        if test_data[:outcome] == "Bet Won"
+          expect(page).to have_css(".spread_bet_result_1")
+        else
+          expect(page).to_not have_css(".spread_bet_result_1")
+        end
       end
     end
   end
