@@ -22,12 +22,13 @@ namespace :wrestle_bet do
     # WrestleBet::Wrestler.destroy_all
     WrestleBet::SpreadBet.destroy_all
     WrestleBet::PropBet.destroy_all
+    User.where.not(email: "goggin13@gmail.com").destroy_all
 
     tournament = WrestleBet::Tournament.create!(
       name: "2025 NCAA",
-      jesus: 5,
-      exposure: 3,
-      challenges: 5,
+      jesus: 0,
+      exposure: 0,
+      challenges: 0,
     )
 
     users = [
@@ -37,8 +38,9 @@ namespace :wrestle_bet do
       {email: "danstipanuk@gmail.com", handle: "Dan", file: "dan.jpg"},
       {email: "katepotteiger@gmail.com", handle: "Kate", file: "kate.png"},
       {email: "seg12@cornell.edu", handle: "Goggin SR", file: "steve.png"},
-      {email: "cookediana@gmail.com", handle: "Diana", file: "diana.png"},
       {email: "cepluard@gmail.com", handle: "Claire", file: "claire.png"},
+      {email: "ericsitterly@gmail.com", handle: "Eric", file: "eric.png"},
+      {email: "hardik@gmail.com", handle: "Hardik"},
     ].map do |user_data|
       user = User.where(email: user_data[:email]).first
       if user.present?
@@ -56,10 +58,12 @@ namespace :wrestle_bet do
       end
 
       if !user.avatar.attached? || ENV["REFRESH_IMAGES"].present?
-        image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", user_data[:file])
-        puts "attaching #{image_path}"
-        user.avatar.attach(io: File.open(image_path), filename: user_data[:file])
-        sleep_in_production
+        if user_data.has_key?(:file)
+          image_path = Rails.root.join("app", "assets", "images", "wrestle_bet", "avatars", user_data[:file])
+          puts "attaching #{image_path}"
+          user.avatar.attach(io: File.open(image_path), filename: user_data[:file])
+          sleep_in_production
+        end
       end
 
       user
@@ -76,27 +80,27 @@ namespace :wrestle_bet do
     # if you always make home wrestler the favorite, all spreads are (-)
       # otherwise, (-) spread is home favored, (+) spread is away favored
     [
-      [125, -1.5, [
+      [125, -0.5, [
         ["Vince Robinson", "NC State"],
         ["Troy Spratley", "Oklahoma State"],
       ]],
-      [133, 0.5, [
+      [133, -0.5, [
         ["Drake Ayala", "Iowa"],
         ["Lucas Byrd", "Illinois"],
       ]],
-      [141, 2.5, [
+      [141, -0.5, [
         ["Brock Hardy", "Nebraska"],
         ["Jesse Mendez", "Ohio State"],
       ]],
-      [149, -1.5, [
+      [149, -0.5, [
         ["Caleb Henson", "Virginia Tech"],
         ["Ridge Lovett", "Nebraska"],
       ]],
-      [157, -4.5, [
+      [157, -0.5, [
         ["Antrell Taylor", "Nebraska"],
         ["Joey Blaze", "Purdue"],
       ]],
-      [165, -10.5, [
+      [165, -9.5, [
         ["Mitchell Mesenbrink", "Penn State"],
         ["Michael Caliendo", "Iowa"],
       ]],
@@ -108,11 +112,11 @@ namespace :wrestle_bet do
         ["Carter Starocci", "Penn State"],
         ["Parker Keckeison", "Northern Iowa"],
       ]],
-      [197, -1.5, [
+      [197, 1.5, [
         ["Josh Barr", "Penn State"],
         ["Stephen Buchanan", "Iowa"],
       ]],
-      [285, -7.5, [
+      [285, -9.5, [
         ["Gable Steveson", "Minnesota"],
         ["Wyatt Hendrickson", "Oklahoma State"],
       ]],
@@ -139,23 +143,23 @@ namespace :wrestle_bet do
 
       users.each do |user|
         wager = ["home", "away"].shuffle.first
-        WrestleBet::SpreadBet.create!(
-          user: user,
-          match: match,
-          wager: wager
-        )
+        # WrestleBet::SpreadBet.create!(
+        #   user: user,
+        #   match: match,
+        #   wager: wager
+        # )
       end
     end
 
     users.each do |user|
       wager = ["home", "away"].shuffle.first
-      WrestleBet::PropBet.create!(
-        user: user,
-        tournament: tournament,
-        jesus: (1..5).to_a.shuffle.first,
-        exposure: (1..5).to_a.shuffle.first,
-        challenges: (1..5).to_a.shuffle.first,
-      )
+      # WrestleBet::PropBet.create!(
+      #   user: user,
+      #   tournament: tournament,
+      #   jesus: (1..5).to_a.shuffle.first,
+      #   exposure: (1..5).to_a.shuffle.first,
+      #   challenges: (1..5).to_a.shuffle.first,
+      # )
     end
   end
 
