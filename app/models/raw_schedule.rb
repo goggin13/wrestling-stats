@@ -1,6 +1,7 @@
 class RawSchedule
   def self.ingest
     Wrestler.destroy_all
+    # College.destroy_all
     Match.destroy_all
 
     colleges.each do |data|

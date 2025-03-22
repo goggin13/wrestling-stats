@@ -37,6 +37,13 @@
 <div id="wrestle_bet_matches">
   <% @wrestle_bet_matches.each do |wrestle_bet_match| %>
     <h3><%= wrestle_bet_match.title %> (<%= wrestle_bet_match.spread %>)</h3>
+    <p>
+      <%= image_tag wrestle_bet_match.home_wrestler.avatar.variant(:thumb) %>
+      <%= image_tag wrestle_bet_match.home_wrestler.college.logo.variant(:thumb) %>
+      <%= image_tag wrestle_bet_match.away_wrestler.avatar.variant(:thumb) %>
+      <%= image_tag wrestle_bet_match.away_wrestler.college.logo.variant(:thumb) %>
+
+    </p>
     <%= form_with(model: wrestle_bet_match) do |form| %>
       <div>
         <%= form.label :started, style: "display: block" %>
