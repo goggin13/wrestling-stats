@@ -30,8 +30,8 @@ class WrestleBet::PropBetsController < WrestleBet::ApplicationController
         }
         format.json { render :show, status: :created, location: @bet }
       else
-        @bet.errors.each do |field, message|
-          Rails.logger.info("Failed to save bet: #{field}-#{message}")
+        @bet.errors.full_messages.each do |message|
+          Rails.logger.info("Failed to save bet: #{message}")
         end
         format.html {
           redirect_to wrestle_bet_betslip_url(id: @bet.tournament_id),
@@ -52,8 +52,8 @@ class WrestleBet::PropBetsController < WrestleBet::ApplicationController
         }
         format.json { render :show, status: :ok, location: @wrestle_bet_prop_bet }
       else
-        @wrestle_bet_prop_bet.errors.each do |field, message|
-          Rails.logger.info("Failed to save bet: #{field}-#{message}")
+        @wrestle_bet_prop_bet.errors.full_messages.each do |message|
+          Rails.logger.info("Failed to update bet: #{message}")
         end
         format.html {
           redirect_to wrestle_bet_betslip_url(id: @wrestle_bet_prop_bet.tournament_id),
