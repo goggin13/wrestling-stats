@@ -18,7 +18,12 @@ class WrestleBet::TournamentsController < WrestleBet::ApplicationController
     ).first
 
     unless @prop_bet.present?
-      @prop_bet = WrestleBet::PropBet.new(tournament_id: @tournament.id)
+      @prop_bet = WrestleBet::PropBet.new(
+        tournament_id: @tournament.id,
+        jesus: 0,
+        exposure: 0,
+        challenges: 0,
+      )
     end
   end
 
